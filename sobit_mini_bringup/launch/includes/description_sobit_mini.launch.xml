@@ -1,0 +1,12 @@
+<!--
+  Robot description only (used in private and paired master).
+ -->
+<launch>
+  <arg name="base"/>
+  <arg name="stacks"/>
+  <arg name="3d_sensor"/>
+
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find sobit_education_description)/model/urdf/kobuki_hexagons_asus_xtion_pro_offset_education_turtolebot.urdf.xacro'" />
+  <param name="robot_description" command="$(arg urdf_file)" />
+
+</launch>

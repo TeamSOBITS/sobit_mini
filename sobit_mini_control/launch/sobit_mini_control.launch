@@ -1,0 +1,19 @@
+<launch>
+    <arg name="urdf_file" default="$(find sobit_mini_description)/model/urdf/sobit_mini_description.urdf" />
+    <arg name="gui" default="True" />
+    <param name="robot_description" textfile="$(arg urdf_file)" />
+    <param name="use_gui" value="$(arg gui)"/>
+
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find sobit_mini_control)/config/position_control.yaml" command="load"/>
+    <rosparam file="$(find sobit_mini_control)/config/joint_limit.yaml" command="load"/>
+    <rosparam file="$(find sobit_mini_control)/config/initial_joint_ang.yaml" command="load"/>
+    <node name="sobit_mini_control" pkg="sobit_mini_control" type="sobit_mini_control" output="screen"/>
+	<!-- load the controllers -->
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+		args="body_trajectory_controller head_trajectory_controller right_arm_trajectory_controller left_arm_trajectory_controller joint_state_controller"/>
+	<!-- convert joint states to TF transforms for rviz, etc -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+    <node name ="rviz" pkg="rviz" type="rviz" required="true"/>
+</launch>
