@@ -1705,7 +1705,7 @@
 <joint name="joint11" type="fixed">
   <parent link="link12_head"/>
   <child link="xtion"/>
-  <origin rpy="0 0 0" xyz="0 0 0.03"/>
+  <origin rpy="0 0 -1.57" xyz="0 0 0.141"/>
   <axis xyz="1 0 0"/>
   <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
 </joint>
@@ -1713,13 +1713,13 @@
 <!-- xtion -->
 <link name="xtion">
   <visual>
-    <origin xyz="0.001 0 0.161" rpy="0 0 -1.57"/>
+    <origin xyz="-0.0 0.0 0.0405" rpy="0 0 0"/>
     <geometry>
       <mesh filename="package://turtlebot_description/meshes/sensors/xtion_pro_camera.dae"/>
     </geometry>
   </visual>
   <collision>
-    <origin xyz="0 0 0" rpy="0 0 1.57" />
+    <origin xyz="0 0 0.0405" rpy="0 0 0" />
     <geometry>
     <box size="0.0730 0.2760 0.0720"/>
   </geometry>
@@ -1738,7 +1738,7 @@
 <joint name="rgb_link_xtion_joint" type="fixed">
   <parent link="xtion"/>
   <child link="rgb_link"/>
-  <origin rpy="-1.57 0 -1.57" xyz="0 0.0205 0"/>
+  <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0205 0.0375"/>
   <axis xyz="0 0 1"/>
   <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571"/>
 </joint>
@@ -1748,7 +1748,7 @@
 <joint name="depth_link_xtion_joint" type="fixed">
   <parent link="xtion"/>
   <child link="depth_link"/>
-  <origin rpy="-1.57 0 -1.57" xyz="0 0.0475 0"/>
+  <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0475 0.0375"/>
   <axis xyz="0 0 1"/>
   <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571"/>
 </joint>

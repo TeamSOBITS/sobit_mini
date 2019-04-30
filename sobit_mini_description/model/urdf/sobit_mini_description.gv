@@ -19,6 +19,7 @@ node [shape=box];
 "link6_left_arm" [label="link6_left_arm"];
 "link7_left_arm" [label="link7_left_arm"];
 "link8_left_arm" [label="link8_left_arm"];
+"left_hand_motor_dummy_link" [label="left_hand_motor_dummy_link"];
 "link10_left_arm_right_finger" [label="link10_left_arm_right_finger"];
 "link9_left_arm_left_finger" [label="link9_left_arm_left_finger"];
 "link4_right_arm" [label="link4_right_arm"];
@@ -28,15 +29,15 @@ node [shape=box];
 "link8_right_arm" [label="link8_right_arm"];
 "link10_right_arm_right_finger" [label="link10_right_arm_right_finger"];
 "link9_right_arm_left_finger" [label="link9_right_arm_left_finger"];
+"right_hand_motor_dummy_link" [label="right_hand_motor_dummy_link"];
 "body_link" [label="body_link"];
+"link14_left_ribs" [label="link14_left_ribs"];
+"link14_right_ribs" [label="link14_right_ribs"];
 "link11_head" [label="link11_head"];
 "link12_head" [label="link12_head"];
-"link13_head" [label="link13_head"];
 "xtion" [label="xtion"];
 "depth_link" [label="depth_link"];
 "rgb_link" [label="rgb_link"];
-"link14_left_ribs" [label="link14_left_ribs"];
-"link14_right_ribs" [label="link14_right_ribs"];
 "pole_bottom_0_link" [label="pole_bottom_0_link"];
 "pole_bottom_1_link" [label="pole_bottom_1_link"];
 "pole_bottom_2_link" [label="pole_bottom_2_link"];
@@ -74,58 +75,60 @@ node [shape=ellipse, color=blue, fontcolor=blue];
 "plate_bottom_joint" -> "plate_bottom_link"
 "base_link" -> "plate_middle_joint" [label="xyz: -0.01364 0 0.23 \nrpy: 0 -0 0"]
 "plate_middle_joint" -> "plate_middle_link"
-"plate_middle_link" -> "joint1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
-"joint1" -> "link1"
+"plate_middle_link" -> "body_roll_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"body_roll_joint" -> "link1"
 "link1" -> "dmmy_joint1" [label="xyz: -0.03 0 0.06 \nrpy: 0 -0 0"]
 "dmmy_joint1" -> "link2"
-"link2" -> "joint2" [label="xyz: 0.03 0 0 \nrpy: 0 -0 1.57"]
-"joint2" -> "link3"
+"link2" -> "body_lift_joint" [label="xyz: 0.03 0 0 \nrpy: 0 -0 1.57"]
+"body_lift_joint" -> "link3"
 "link3" -> "dmmy_joint3" [label="xyz: 0.01 0 0.4 \nrpy: 0 -0 0"]
 "dmmy_joint3" -> "link4_left_arm"
-"link4_left_arm" -> "joint3" [label="xyz: 0.105 0 0.02 \nrpy: 0 -0 0"]
-"joint3" -> "link5_left_arm"
-"link5_left_arm" -> "joint4" [label="xyz: 0.053 0 0 \nrpy: 0 -0 0"]
-"joint4" -> "link6_left_arm"
-"link6_left_arm" -> "joint5" [label="xyz: 0 0 -0.19 \nrpy: 0 -0 0"]
-"joint5" -> "link7_left_arm"
+"link4_left_arm" -> "left_shoulder_roll_joint" [label="xyz: 0.105 0 0.02 \nrpy: 0 -0 0"]
+"left_shoulder_roll_joint" -> "link5_left_arm"
+"link5_left_arm" -> "left_shoulder_flex_joint" [label="xyz: 0.053 0 0 \nrpy: 0 -0 0"]
+"left_shoulder_flex_joint" -> "link6_left_arm"
+"link6_left_arm" -> "left_wrist_flex_joint" [label="xyz: 0 0 -0.19 \nrpy: 0 -0 0"]
+"left_wrist_flex_joint" -> "link7_left_arm"
 "link7_left_arm" -> "dmmy_joint4" [label="xyz: 0 0 -0.05 \nrpy: 0 -0 0"]
 "dmmy_joint4" -> "link8_left_arm"
+"link8_left_arm" -> "left_hand_motor_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"left_hand_motor_joint" -> "left_hand_motor_dummy_link"
 "link8_left_arm" -> "link10_left_arm_right_finger_joint" [label="xyz: 0 -0.018 -0.043 \nrpy: 0 -0 0"]
 "link10_left_arm_right_finger_joint" -> "link10_left_arm_right_finger"
 "link8_left_arm" -> "link9_left_arm_left_finger_joint" [label="xyz: 0 0.018 -0.043 \nrpy: 0 -0 0"]
 "link9_left_arm_left_finger_joint" -> "link9_left_arm_left_finger"
 "link3" -> "dmmy_joint6" [label="xyz: -0.01 0 0.4 \nrpy: 0 -0 0"]
 "dmmy_joint6" -> "link4_right_arm"
-"link4_right_arm" -> "joint7" [label="xyz: -0.105 0 0.02 \nrpy: 0 -0 0"]
-"joint7" -> "link5_right_arm"
-"link5_right_arm" -> "joint8" [label="xyz: -0.053 0 0 \nrpy: 0 -0 0"]
-"joint8" -> "link6_right_arm"
-"link6_right_arm" -> "joint9" [label="xyz: 0 0 -0.19 \nrpy: 0 -0 0"]
-"joint9" -> "link7_right_arm"
+"link4_right_arm" -> "right_shoulder_roll_joint" [label="xyz: -0.105 0 0.02 \nrpy: 0 -0 0"]
+"right_shoulder_roll_joint" -> "link5_right_arm"
+"link5_right_arm" -> "right_shoulder_flex_joint" [label="xyz: -0.053 0 0 \nrpy: 0 -0 0"]
+"right_shoulder_flex_joint" -> "link6_right_arm"
+"link6_right_arm" -> "right_wrist_flex_joint" [label="xyz: 0 0 -0.19 \nrpy: 0 -0 0"]
+"right_wrist_flex_joint" -> "link7_right_arm"
 "link7_right_arm" -> "dmmy_joint7" [label="xyz: 0 0 -0.05 \nrpy: 0 -0 0"]
 "dmmy_joint7" -> "link8_right_arm"
 "link8_right_arm" -> "link10_right_arm_right_finger_joint" [label="xyz: 0 -0.018 -0.043 \nrpy: 0 -0 0"]
 "link10_right_arm_right_finger_joint" -> "link10_right_arm_right_finger"
 "link8_right_arm" -> "link9_right_arm_left_finger_joint" [label="xyz: 0 0.018 -0.043 \nrpy: 0 -0 0"]
 "link9_right_arm_left_finger_joint" -> "link9_right_arm_left_finger"
+"link8_right_arm" -> "right_hand_motor_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"right_hand_motor_joint" -> "right_hand_motor_dummy_link"
 "link3" -> "dmmy_joint_body" [label="xyz: 0 0 0.3 \nrpy: 0 -0 0"]
 "dmmy_joint_body" -> "body_link"
-"link3" -> "dmmy_joint_head" [label="xyz: 0 0 0.515 \nrpy: 0 -0 0"]
-"dmmy_joint_head" -> "link11_head"
-"link11_head" -> "joint10" [label="xyz: 0 -0 0.045 \nrpy: 0 -0 0"]
-"joint10" -> "link12_head"
-"link12_head" -> "joint11" [label="xyz: 0 0 0.03 \nrpy: 0 -0 0"]
-"joint11" -> "link13_head"
-"link13_head" -> "dmmy_conect_joint_3" [label="xyz: 0 0 0.11 \nrpy: 0 0 -1.57"]
-"dmmy_conect_joint_3" -> "xtion"
-"xtion" -> "depth_link_xtion_joint" [label="xyz: 0 0.0475 0 \nrpy: -1.57 -5.55112e-17 -1.57"]
-"depth_link_xtion_joint" -> "depth_link"
-"xtion" -> "rgb_link_xtion_joint" [label="xyz: 0 0.0205 0 \nrpy: -1.57 -5.55112e-17 -1.57"]
-"rgb_link_xtion_joint" -> "rgb_link"
 "link3" -> "dmmy_joint_left_ribs" [label="xyz: 0.01 0 0.05 \nrpy: 0 -0 0"]
 "dmmy_joint_left_ribs" -> "link14_left_ribs"
 "link3" -> "dmmy_joint_right_ribs" [label="xyz: -0.01 0 0.05 \nrpy: 0 -0 0"]
 "dmmy_joint_right_ribs" -> "link14_right_ribs"
+"link3" -> "head_pan_joint" [label="xyz: 0 0 0.515 \nrpy: 0 -0 0"]
+"head_pan_joint" -> "link11_head"
+"link11_head" -> "head_tilt_joint" [label="xyz: 0 0 0.025 \nrpy: 0 -0 0"]
+"head_tilt_joint" -> "link12_head"
+"link12_head" -> "joint11" [label="xyz: 0 0 0.03 \nrpy: 0 -0 0"]
+"joint11" -> "xtion"
+"xtion" -> "depth_link_xtion_joint" [label="xyz: 0 0.0475 0 \nrpy: -1.57 -5.55112e-17 -1.57"]
+"depth_link_xtion_joint" -> "depth_link"
+"xtion" -> "rgb_link_xtion_joint" [label="xyz: 0 0.0205 0 \nrpy: -1.57 -5.55112e-17 -1.57"]
+"rgb_link_xtion_joint" -> "rgb_link"
 "base_link" -> "pole_bottom_0_joint" [label="xyz: 0.12 0.082 0.1028 \nrpy: 0 -0 0"]
 "pole_bottom_0_joint" -> "pole_bottom_0_link"
 "base_link" -> "pole_bottom_1_joint" [label="xyz: 0.055 0.12 0.1028 \nrpy: 0 -0 0"]
