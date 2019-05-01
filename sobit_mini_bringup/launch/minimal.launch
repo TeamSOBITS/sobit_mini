@@ -17,6 +17,7 @@
     <!-- kobuki_controller -->
     <group ns = "robot_ctrl">
         <node pkg="sobit_mini_bringup" type="wheel_controller.py" name="wheel_controller" output="screen"/>
+        <node pkg="sobit_mini_bringup" type="joint_controller.py" name="joint_controller" output="screen"/>
     </group>
 
 </launch>

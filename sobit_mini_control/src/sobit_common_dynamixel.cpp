@@ -240,7 +240,7 @@ int SobitCommonDynamixel::getOperationMode(int id) {
 int SobitCommonDynamixel::readCurrentPosition(int id) {
   // Bulkread present position and LED status
   // dxl_comm_result = readPositonGroup.txRxPacket();
-  if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
+  // if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
 
   // Check if groupbulkread data of Dynamixel#id is available
   dxl_getdata_result = readPositonGroup.isAvailable(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
@@ -267,7 +267,7 @@ void SobitCommonDynamixel::addPositionToStorage(int id, int pos) {
 void SobitCommonDynamixel::writeGoalPositon() {
   // Bulkwrite goal position
   dxl_comm_result = writeGoalGroup.txPacket();
-  if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
+  // if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
   // Clear bulkwrite parameter storage
   writeGoalGroup.clearParam();
 }

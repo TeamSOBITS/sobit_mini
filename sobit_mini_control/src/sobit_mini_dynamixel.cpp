@@ -80,10 +80,9 @@ sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
       if (dynamixel_pos == -1) {
         joint_pos = saved_dxl_goal_position[i];
       }
+      // std::cout << joint_name << " : " << dynamixel_pos << std::endl;
       if (i == 1) {
         ofs << i << "," << joint_name << "," << dynamixel_pos << "," << joint_pos << std::endl;
-        // std::cout << "id : " << i << ", dynamixel_pos : " << dynamixel_pos << ", joint_pos : " << joint_pos
-        // << std::endl;
       }
       pose.name.push_back(joint_name);
       pose.position.push_back(joint_pos);
@@ -117,10 +116,9 @@ float SobitMiniDynamixel::toBit(int id, float rad) {
                    0.5);  // 2250は顔が前向きの状態の値,750は顔が前向きの状態から下(1500)・上(3000)向きの状態を引いた値,
                           // 0.5は前向き状態から下・上の向きに向いた時のrad差
   } else if (id == 4) {
-    return 3140 +
-           (rad * 1460 /
-            2.62);  // 3140は顔がまっすぐの状態の値,
-                    // 1460は顔がまっすぐの状態から左(4600)・右(1680)の状態を引いた値、2.62はまっすぐの状態から左・右の向きに向いた時のrad差
+    return 3083 + (rad * 2062 / 3.14);
+    // 3083は顔がまっすぐの状態の値,
+    // 2062は顔がまっすぐの状態から左(4106)・右(2044)の状態を引いた値、3.14はまっすぐの状態から左・右の向きに向いた時のrad差
   } else if (id == 10)
     return 2048 - (rad / 0.001533203125);
   else if (id == 11) {
@@ -162,7 +160,7 @@ float SobitMiniDynamixel::toRad(std::string joint_name, int bit) {
   } else if (joint_name == "head_tilt_joint") {
     return (2250 - bit) * 0.5 / 750;
   } else if (joint_name == "head_pan_joint") {
-    return (bit - 3140) * 2.62 / 1460;
+    return (bit - 3083) * 3.14 / 2062;
   } else if (joint_name == "right_shoulder_roll_joint") {
     return (2048 - bit) * 0.001533203125;
   } else if (joint_name == "right_shoulder_flex_joint") {
