@@ -8,7 +8,7 @@ from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
-from turtlebot_edu.srv import *
+from sobit_common_msg.srv import odom_base
 
 #indent = 1 tabs
 # S:1000	(1000cm直進)

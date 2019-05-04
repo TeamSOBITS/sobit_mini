@@ -26,11 +26,11 @@ SobitMiniDynamixel::SobitMiniDynamixel() {
   used_dynamixel_name[21] = "left_shoulder_flex_joint";
   used_dynamixel_name[22] = "left_wrist_flex_joint";
   used_dynamixel_name[23] = "left_hand_motor_joint";
-  std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv");
+  /*std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv");
   ofs << "ID,"
       << "joint_name,"
       << "dynamixel_pos,"
-      << "joint_pos" << std::endl;
+      << "joint_pos" << std::endl;*/
 }
 
 SobitMiniDynamixel::~SobitMiniDynamixel() {}
@@ -76,10 +76,10 @@ sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
   sensor_msgs::JointState pose;
   dxl_comm_result = readPositonGroup1.txRxPacket();
   dxl_comm_result = readPositonGroup2.txRxPacket();
-  std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv", std::ios::app);
+  /*std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv", std::ios::app);
   if (!ofs) {
     ROS_ERROR("ERROR\n");
-  }
+  }*/
   for (int i = 0; i < 30; i++) {
     if (used_dynamixel_id[i]) {
       std::string joint_name = used_dynamixel_name[i];
@@ -94,9 +94,9 @@ sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
         joint_pos = saved_dxl_goal_position[i];
       }
       // std::cout << joint_name << " : " << dynamixel_pos << std::endl;
-      if (i == 21) {
+      /*if (i == 21) {
         ofs << i << "," << joint_name << "," << dynamixel_pos << "," << joint_pos << std::endl;
-      }
+      }*/
       pose.name.push_back(joint_name);
       pose.position.push_back(joint_pos);
     }
