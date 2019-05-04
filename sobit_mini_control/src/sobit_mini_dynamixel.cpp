@@ -41,7 +41,11 @@ void SobitMiniDynamixel::initializeDynamixel() {
       setTorqueEnable(i);
       setAcceleration(i, acceleration_val);
       setVelocity(i, velocity_val);
-      setGrouopRead(i);
+      if (i == 10 || i == 11 || i == 20 || i == 21) {
+        setGrouopRead1(i);
+      } else {
+        setGrouopRead2(i);
+      }
       if (i == 13 || i == 23) {
         setTorqueLimit(i);
       }
@@ -56,6 +60,9 @@ void SobitMiniDynamixel::writeDynamixelMotors(const trajectory_msgs::JointTrajec
       continue;
     }
     int joint_pos = toBit(joint_id, pose.points[0].positions[i]);
+    if (joint_id == 21) {
+      // ROS_INFO("[ID:%03d]: %d", joint_id, joint_pos);
+    }
     if (std::abs(joint_pos == saved_dxl_goal_position[joint_id])) {
       continue;
     }
@@ -67,21 +74,27 @@ void SobitMiniDynamixel::writeDynamixelMotors(const trajectory_msgs::JointTrajec
 
 sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
   sensor_msgs::JointState pose;
-  dxl_comm_result = readPositonGroup.txRxPacket();
+  dxl_comm_result = readPositonGroup1.txRxPacket();
+  dxl_comm_result = readPositonGroup2.txRxPacket();
   std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv", std::ios::app);
   if (!ofs) {
     ROS_ERROR("ERROR\n");
   }
   for (int i = 0; i < 30; i++) {
     if (used_dynamixel_id[i]) {
-      std::string joint_name    = used_dynamixel_name[i];
-      int         dynamixel_pos = readCurrentPosition(used_dynamixel_id[i]);
-      float       joint_pos     = toRad(joint_name, dynamixel_pos);
+      std::string joint_name = used_dynamixel_name[i];
+      int         dynamixel_pos;
+      if (i == 10 || i == 11 || i == 20 || i == 21) {
+        dynamixel_pos = readCurrentPosition1(i);
+      } else {
+        dynamixel_pos = readCurrentPosition2(i);
+      }
+      float joint_pos = toRad(joint_name, dynamixel_pos);
       if (dynamixel_pos == -1) {
         joint_pos = saved_dxl_goal_position[i];
       }
       // std::cout << joint_name << " : " << dynamixel_pos << std::endl;
-      if (i == 1) {
+      if (i == 21) {
         ofs << i << "," << joint_name << "," << dynamixel_pos << "," << joint_pos << std::endl;
       }
       pose.name.push_back(joint_name);

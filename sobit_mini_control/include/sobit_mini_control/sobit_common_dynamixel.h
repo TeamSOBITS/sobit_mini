@@ -31,7 +31,7 @@
 #define ADDR_PRO_PRESENT_INPUT_VOLTAGE 144
 #define ADDR_PRO_PRESENT_TEMPERATURE 146
 
-#define BAUDRATE 57600
+#define BAUDRATE 115200
 #define DEVICENAME "/dev/dynamixel"
 
 #define TORQUE_ENABLE 1
@@ -89,10 +89,15 @@ class SobitCommonDynamixel : public hardware_interface::RobotHW {
   // ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
 
   // Initialize GroupBulkWrite instance
-  dynamixel::GroupBulkWrite writeGoalGroup = dynamixel::GroupBulkWrite(portHandler, packetHandler);
+  dynamixel::GroupBulkWrite writeGoalGroup1 = dynamixel::GroupBulkWrite(portHandler, packetHandler);
+
+  // Initialize GroupBulkWrite instance
+  dynamixel::GroupBulkWrite writeGoalGroup2 = dynamixel::GroupBulkWrite(portHandler, packetHandler);
 
   // Initialize GroupBulkRead instance
-  dynamixel::GroupBulkRead readPositonGroup = dynamixel::GroupBulkRead(portHandler, packetHandler);
+  dynamixel::GroupBulkRead readPositonGroup1 = dynamixel::GroupBulkRead(portHandler, packetHandler);
+  // Initialize GroupBulkRead instance
+  dynamixel::GroupBulkRead readPositonGroup2 = dynamixel::GroupBulkRead(portHandler, packetHandler);
 
   // int joint_id;
   // int joint_pos;
@@ -115,7 +120,8 @@ class SobitCommonDynamixel : public hardware_interface::RobotHW {
   void setAcceleration(int id, int value);
   void setTorqueLimit(int id);
   void setPosition(int id, int pos);
-  void setGrouopRead(int id);
+  void setGrouopRead1(int id);
+  void setGrouopRead2(int id);
   int  getCurrentPosition(int id);
   int  getCurrentSpeed(int id);
   int  getCurrentLoad(int id);
@@ -123,7 +129,8 @@ class SobitCommonDynamixel : public hardware_interface::RobotHW {
   int  getCurrentTemperature(int id);
   bool getCurrentMovingStatus(int value);
   int  getOperationMode(int id);
-  int  readCurrentPosition(int id);
+  int  readCurrentPosition1(int id);
+  int  readCurrentPosition2(int id);
   void addPositionToStorage(int id, int pos);
   void writeGoalPositon();
 };

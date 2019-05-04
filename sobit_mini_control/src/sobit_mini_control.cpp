@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
     sobit_mini_ctr.read(now, dt);
     cm.update(now, dt);
     sobit_mini_ctr.write(now, dt);
+    dt.sleep();
   }
   spinner.stop();
   // spinner.spin();

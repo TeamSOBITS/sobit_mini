@@ -87,7 +87,7 @@ void SobitCommonDynamixel::initializeDynamixel() {
       setTorqueEnable(i);
       setAcceleration(i, acceleration_val);
       setVelocity(i, velocity_val);
-      setGrouopRead(i);
+      setGrouopRead1(i);
       if (i == 20) {
         setTorqueLimit(i);
       }
@@ -151,8 +151,13 @@ void SobitCommonDynamixel::setPosition(int id, int pos) {
     packetHandler->getRxPacketError(this->dxl_error);
 }
 
-void SobitCommonDynamixel::setGrouopRead(int id) {
-  dxl_addparam_result = readPositonGroup.addParam(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+void SobitCommonDynamixel::setGrouopRead1(int id) {
+  dxl_addparam_result = readPositonGroup1.addParam(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+  if (dxl_addparam_result != true) fprintf(stderr, "[ID:%03d] grouBulkRead addparam failed\n", id);
+}
+
+void SobitCommonDynamixel::setGrouopRead2(int id) {
+  dxl_addparam_result = readPositonGroup2.addParam(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
   if (dxl_addparam_result != true) fprintf(stderr, "[ID:%03d] grouBulkRead addparam failed\n", id);
 }
 
@@ -237,13 +242,13 @@ int SobitCommonDynamixel::getOperationMode(int id) {
   return this->dxl_operation_mode;
 }
 
-int SobitCommonDynamixel::readCurrentPosition(int id) {
+int SobitCommonDynamixel::readCurrentPosition1(int id) {
   // Bulkread present position and LED status
   // dxl_comm_result = readPositonGroup.txRxPacket();
   // if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
 
   // Check if groupbulkread data of Dynamixel#id is available
-  dxl_getdata_result = readPositonGroup.isAvailable(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+  dxl_getdata_result = readPositonGroup1.isAvailable(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
   if (dxl_getdata_result != true) {
     fprintf(stderr, "[ID:%03d] groupBulkRead getdata failed\n", id);
     this->can_move = false;
@@ -254,11 +259,44 @@ int SobitCommonDynamixel::readCurrentPosition(int id) {
       this->can_move = true;
     }
     // Get present position value
-    return readPositonGroup.getData(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+    return readPositonGroup1.getData(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
   }
 }
+
+int SobitCommonDynamixel::readCurrentPosition2(int id) {
+  // Bulkread present position and LED status
+  // dxl_comm_result = readPositonGroup.txRxPacket();
+  // if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
+
+  // Check if groupbulkread data of Dynamixel#id is available
+  dxl_getdata_result = readPositonGroup2.isAvailable(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+  if (dxl_getdata_result != true) {
+    fprintf(stderr, "[ID:%03d] groupBulkRead getdata failed\n", id);
+    this->can_move = false;
+    return -1;
+  } else {
+    if (this->can_move == false) {
+      // initializeDynamixel();
+      this->can_move = true;
+    }
+    // Get present position value
+    return readPositonGroup2.getData(id, ADDR_PRO_PRESENT_POSITION, LEN_PRO_PRESENT_POSITION);
+  }
+}
+
 void SobitCommonDynamixel::addPositionToStorage(int id, int pos) {
-  dxl_addparam_result = writeGoalGroup.addParam(id, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION, (uint8_t *)&pos);
+  uint8_t param_goal_position[4];
+  param_goal_position[0] = DXL_LOBYTE(DXL_LOWORD(pos));
+  param_goal_position[1] = DXL_HIBYTE(DXL_LOWORD(pos));
+  param_goal_position[2] = DXL_LOBYTE(DXL_HIWORD(pos));
+  param_goal_position[3] = DXL_HIBYTE(DXL_HIWORD(pos));
+  if (id == 10 || id == 11 || id == 20 || id == 21) {
+    dxl_addparam_result =
+        writeGoalGroup1.addParam(id, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION, param_goal_position);
+  } else {
+    dxl_addparam_result =
+        writeGoalGroup2.addParam(id, ADDR_PRO_GOAL_POSITION, LEN_PRO_GOAL_POSITION, param_goal_position);
+  }
   if (dxl_addparam_result != true) {
     fprintf(stderr, "[ID:%03d] groupSyncWrite addparam failed", id);
   }
@@ -266,8 +304,12 @@ void SobitCommonDynamixel::addPositionToStorage(int id, int pos) {
 
 void SobitCommonDynamixel::writeGoalPositon() {
   // Bulkwrite goal position
-  dxl_comm_result = writeGoalGroup.txPacket();
-  // if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
+  dxl_comm_result = writeGoalGroup1.txPacket();
+  if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
+
+  dxl_comm_result = writeGoalGroup2.txPacket();
+  if (dxl_comm_result != COMM_SUCCESS) packetHandler->getTxRxResult(dxl_comm_result);
   // Clear bulkwrite parameter storage
-  writeGoalGroup.clearParam();
+  writeGoalGroup1.clearParam();
+  writeGoalGroup2.clearParam();
 }
