@@ -1,46 +1,39 @@
 <?xml version="1.0" ?>
 <robot name="sobit_mini_description">
-
-<material name="red">
-  <color rgba="1.0 0.0 0.0 1.0"/>
-</material>
-<material name="green">
-  <color rgba="0.0 1.0 0.0 1.0"/>
-</material>
-<material name="blue">
-  <color rgba="0.0 0.0 1.0 1.0"/>
-</material>
-
-<!-- urg -->
-<joint name="laser" type="fixed">
-  <origin xyz="0.205 0.0 0.01" rpy="0 0 0" />
-  <parent link="base_link" />
-  <child link="base_laser_link" />
-</joint>
-
-<link name="base_laser_link">
-  <visual>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/UST-20LX.dae"/>
-    </geometry>
-    <material name="Black" />
-  </visual>
-  <inertial>
-    <mass value="0.000001" />
-    <origin xyz="0 0 0" />
-    <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
-      iyy="0.0001" iyz="0.0"
-      izz="0.0001" />
-  </inertial>
-</link>
-<gazebo reference="base_laser_link">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-
-<!-- kobuki -->
-<link name="base_footprint"/>
-<!--
+  <material name="red">
+    <color rgba="1.0 0.0 0.0 1.0" />
+  </material>
+  <material name="green">
+    <color rgba="0.0 1.0 0.0 1.0" />
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 1.0 1.0" />
+  </material>
+  <!-- urg -->
+  <joint name="laser" type="fixed">
+    <origin xyz="0.205 0.0 0.01" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="base_laser_link" />
+  </joint>
+  <link name="base_laser_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/UST-20LX.dae" />
+      </geometry>
+      <material name="Black" />
+    </visual>
+    <inertial>
+      <mass value="0.000001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+    </inertial>
+  </link>
+  <gazebo reference="base_laser_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <!-- kobuki -->
+  <link name="base_footprint" />
+  <!--
  Base link is set at the bottom of the base mould.
  This is done to be compatible with the way base link
  was configured for turtlebot 1. Refer to
@@ -51,1788 +44,1632 @@
  axis, set the z-distance from the base_footprint
  to 0.352.
 -->
-<joint name="base_joint" type="fixed">
-<origin xyz="0 0 0.0102" rpy="0 0 0" />
-<parent link="base_footprint"/>
-<child link="base_link" />
-</joint>
-<link name="base_link">
-<visual>
-  <geometry>
-    <!-- new mesh -->
-    <mesh filename="package://kobuki_description/meshes/main_body.dae" />
-  </geometry>
-  <origin xyz="0.001 0 0.05199" rpy="0 0 0"/>
-</visual>
-<collision name="base">
-  <geometry>
-    <cylinder length="0.10938" radius="0.178"/>
-  </geometry>
-  <origin xyz="0.0 0 0.05949" rpy="0 0 0"/>
-</collision>
-<inertial>
-  <!-- COM experimentally determined -->
-  <origin xyz="0.01 0 0"/>
-  <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
-  <!-- Kobuki's inertia tensor is approximated by a cylinder with homogeneous mass distribution
+  <joint name="base_joint" type="fixed">
+    <origin xyz="0 0 0.0102" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <!-- new mesh -->
+        <mesh filename="package://kobuki_description/meshes/main_body.dae" />
+      </geometry>
+      <origin xyz="0.001 0 0.05199" rpy="0 0 0" />
+    </visual>
+    <collision name="base">
+      <geometry>
+        <cylinder length="0.10938" radius="0.178" />
+      </geometry>
+      <origin xyz="0.0 0 0.05949" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <!-- COM experimentally determined -->
+      <origin xyz="0.01 0 0" />
+      <mass value="2.4" /> <!-- 2.4/2.6 kg for small/big battery pack -->
+      <!-- Kobuki's inertia tensor is approximated by a cylinder with homogeneous mass distribution
        More details: http://en.wikipedia.org/wiki/List_of_moment_of_inertia_tensors
        m = 2.4 kg; h = 0.09 m; r = 0.175 m
        ixx = 1/12 * m * (3 * r^2 + h^2)
        iyy = 1/12 * m * (3 * r^2 + h^2)
        izz = 1/2 * m * r^2
     -->
-  <inertia ixx="0.019995" ixy="0.0" ixz="0.0"
-           iyy="0.019995" iyz="0.0"
-           izz="0.03675" />
-</inertial>
-</link>
-
-<joint name="wheel_left_joint" type="continuous">
-<parent link="base_link"/>
-<child link="wheel_left_link"/>
-<origin xyz="0.00 0.115 0.0250" rpy="-1.57 0 0"/>
-<axis xyz="0 0 1"/>
-</joint>
-<link name="wheel_left_link">
-<visual>
-  <geometry>
-    <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
-  </geometry>
-  <origin xyz="0 0 0" rpy="0 0 0"/>
-</visual>
-<collision>
-  <geometry>
-    <cylinder length="0.0206" radius="0.0352"/>
-  </geometry>
-  <origin rpy="0 0 0" xyz="0 0 0"/>
-</collision>
-<inertial>
-  <mass value="0.01" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-           iyy="0.001" iyz="0.0"
-           izz="0.001" />
-</inertial>
-</link>
-
-<joint name="wheel_right_joint" type="continuous">
-<parent link="base_link"/>
-<child link="wheel_right_link"/>
-<origin xyz="0.00 -0.115 0.0250" rpy="-1.57 0 0"/>
-<axis xyz="0 0 1"/>
-</joint>
-<link name="wheel_right_link">
-<visual>
-  <geometry>
-    <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
-  </geometry>
-  <origin xyz="0 0 0" rpy="0 0 0"/>
-</visual>
-<collision>
-  <geometry>
-    <cylinder length="0.0206" radius="0.0350"/>
-  </geometry>
-  <origin rpy="0 0 0" xyz="0 0 0"/>
-</collision>
-<inertial>
-  <mass value="0.01" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-           iyy="0.001" iyz="0.0"
-           izz="0.001" />
-</inertial>
-</link>
-
-<joint name="caster_front_joint" type="fixed">
-<parent link="base_link"/>
-<child link="caster_front_link"/>
-<origin xyz="0.115 0.0 0.007" rpy="-1.57 0 0"/>
-</joint>
-<link name="caster_front_link">
-<collision>
-  <geometry>
-    <cylinder length="0.0176" radius="0.017"/>
-  </geometry>
-  <origin rpy="0 0 0" xyz="0 0 0"/>
-</collision>
-<inertial>
-  <mass value="0.01" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-           iyy="0.001" iyz="0.0"
-           izz="0.001" />
-</inertial>
-</link>
-
-<joint name="caster_back_joint" type="fixed">
-<parent link="base_link"/>
-<child link="caster_back_link"/>
-<origin xyz="-0.135 0.0 0.009" rpy="-1.57 0 0"/>
-</joint>
-<link name="caster_back_link">
-<collision>
-  <geometry>
-    <cylinder length="0.0176" radius="0.017"/>
-  </geometry>
-  <origin rpy="0 0 0" xyz="0 0 0"/>
-</collision>
-<inertial>
-  <mass value="0.01" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-           iyy="0.001" iyz="0.0"
-           izz="0.001" />
-</inertial>
-</link>
-
-<!-- Kobuki's sensors -->
-<joint name="gyro_joint" type="fixed">
-<axis xyz="0 1 0"/>
-<origin xyz="0.056 0.062 0.0202" rpy="0 0 0"/>
-<parent link="base_link"/>
-<child link="gyro_link"/>
-</joint>
-<link name="gyro_link">
-<inertial>
-  <mass value="0.001"/>
-  <origin xyz="0 0 0" rpy="0 0 0"/>
-  <inertia ixx="0.0001" ixy="0" ixz="0"
-           iyy="0.000001" iyz="0"
-           izz="0.0001"/>
-</inertial>
-</link>
-
-<joint name="cliff_sensor_left_joint" type="fixed">
-<origin xyz="0.08734 0.13601 0.0214" rpy="0 1.57 0" />
-<parent link="base_link"/>
-<child link="cliff_sensor_left_link" />
-</joint>
-<link name="cliff_sensor_left_link">
-<inertial>
-  <mass value="0.0001" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
-           iyy="0.0001" iyz="0.0"
-           izz="0.0001" />
-</inertial>
-</link>
-
-<joint name="cliff_sensor_right_joint" type="fixed">
-<origin xyz="0.085 -0.13601 0.0214" rpy="0 1.57 0" />
-<parent link="base_link"/>
-<child link="cliff_sensor_right_link" />
-</joint>
-<link name="cliff_sensor_right_link">
-<inertial>
-  <mass value="0.0001" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
-           iyy="0.0001" iyz="0.0"
-           izz="0.0001" />
-</inertial>
-</link>
-
-<joint name="cliff_sensor_front_joint" type="fixed">
-<origin xyz="0.156 0.00 0.0214" rpy="0 1.57 0" />
-<parent link="base_link"/>
-<child link="cliff_sensor_front_link" />
-</joint>
-<link name="cliff_sensor_front_link">
-<inertial>
-  <mass value="0.0001" />
-  <origin xyz="0 0 0" />
-  <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
-           iyy="0.0001" iyz="0.0"
-           izz="0.0001" />
-</inertial>
-</link>
-
-<!-- gazebo -->
-<gazebo reference="wheel_left_link">
-<mu1>1.0</mu1>
-<mu2>1.0</mu2>
-<kp>1000000.0</kp>
-<kd>100.0</kd>
-<minDepth>0.001</minDepth>
-<maxVel>1.0</maxVel>
-</gazebo>
-
-<gazebo reference="wheel_right_link">
-<mu1>1.0</mu1>
-<mu2>1.0</mu2>
-<kp>1000000.0</kp>
-<kd>100.0</kd>
-<minDepth>0.001</minDepth>
-<maxVel>1.0</maxVel>
-</gazebo>
-
-<gazebo reference="caster_front_link">
-<mu1>0.0</mu1>
-<mu2>0.0</mu2>
-<kp>1000000.0</kp>
-<kd>100.0</kd>
-<minDepth>0.001</minDepth>
-<maxVel>1.0</maxVel>
-</gazebo>
-
-<gazebo reference="caster_back_link">
-<mu1>0.0</mu1>
-<mu2>0.0</mu2>
-<kp>1000000.0</kp>
-<kd>100.0</kd>
-<minDepth>0.001</minDepth>
-<maxVel>1.0</maxVel>
-</gazebo>
-
-<gazebo reference="base_link">
-<mu1>0.3</mu1>
-<mu2>0.3</mu2>
-<sensor type="contact" name="bumpers">
-<always_on>1</always_on>
-<update_rate>50.0</update_rate>
-<visualize>true</visualize>
-<contact>
-<collision>base_footprint_fixed_joint_lump__base_collision</collision>
-</contact>
-</sensor>
-</gazebo>
-
-<gazebo reference="cliff_sensor_left_link">
-<sensor type="ray" name="cliff_sensor_left">
-<always_on>true</always_on>
-<update_rate>50</update_rate>
-<visualize>true</visualize>
-<ray>
-<scan>
-  <horizontal>
-    <samples>50</samples>
-    <resolution>1.0</resolution>
-    <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-    <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-  </horizontal>
-<!--            Can't use vertical rays until this bug is resolved: -->
-<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
-<!-- 	          <vertical> -->
-<!-- 	            <samples>50</samples> -->
-<!-- 	            <resolution>1.0</resolution> -->
-<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
-<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
-<!-- 	          </vertical> -->
-</scan>
-<range>
-  <min>0.01</min>
-  <max>0.15</max>
-  <resolution>1.0</resolution>
-</range>
-</ray>
-</sensor>
-</gazebo>
-
-<gazebo reference="cliff_sensor_right_link">
-<sensor type="ray" name="cliff_sensor_right">
-<always_on>true</always_on>
-<update_rate>50</update_rate>
-<visualize>true</visualize>
-<ray>
-<scan>
-  <horizontal>
-    <samples>50</samples>
-    <resolution>1.0</resolution>
-    <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-    <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-  </horizontal>
-<!--            Can't use vertical rays until this bug is resolved: -->
-<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
-<!-- 	          <vertical> -->
-<!-- 	            <samples>50</samples> -->
-<!-- 	            <resolution>1.0</resolution> -->
-<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
-<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
-<!-- 	          </vertical> -->
-</scan>
-<range>
-  <min>0.01</min>
-  <max>0.15</max>
-  <resolution>1.0</resolution>
-</range>
-</ray>
-</sensor>
-</gazebo>
-
-<gazebo reference="cliff_sensor_front_link">
-<sensor type="ray" name="cliff_sensor_front">
-<always_on>true</always_on>
-<update_rate>50</update_rate>
-<visualize>true</visualize>
-<ray>
-<scan>
-  <horizontal>
-    <samples>50</samples>
-    <resolution>1.0</resolution>
-    <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-    <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-  </horizontal>
-<!-- 	          Can't use vertical rays until this bug is resolved: -->
-<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
-<!-- 	          <vertical> -->
-<!-- 	            <samples>50</samples> -->
-<!-- 	            <resolution>1.0</resolution> -->
-<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
-<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
-<!-- 	          </vertical> -->
-</scan>
-<range>
-  <min>0.01</min>
-  <max>0.15</max>
-  <resolution>1.0</resolution>
-</range>
-</ray>
-</sensor>
-</gazebo>
-
-<gazebo reference="gyro_link">
-<sensor type="imu" name="imu">
-<always_on>true</always_on>
-<update_rate>50</update_rate>
-<visualize>false</visualize>
-<imu>
-<noise>
-  <type>gaussian</type>
-  <rate>
-    <mean>0.0</mean>
-    <stddev>${0.0014*0.0014}</stddev> <!-- 0.25 x 0.25 (deg/s) -->
-    <bias_mean>0.0</bias_mean>
-    <bias_stddev>0.0</bias_stddev>
-  </rate>
-  <accel> <!-- not used in the plugin and real robot, hence using tutorial values -->
-    <mean>0.0</mean>
-    <stddev>1.7e-2</stddev>
-    <bias_mean>0.1</bias_mean>
-    <bias_stddev>0.001</bias_stddev>
-  </accel>
-</noise>
-</imu>
-</sensor>
-</gazebo>
-
-<gazebo>
-  <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
-  <publish_tf>1</publish_tf>
-  <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
-  <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
-  <wheel_separation>.230</wheel_separation>
-  <wheel_diameter>0.070</wheel_diameter>
-  <torque>1.0</torque>
-  <velocity_command_timeout>0.6</velocity_command_timeout>
-  <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
-  <cliff_sensor_center_name>cliff_sensor_front</cliff_sensor_center_name>
-  <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
-  <cliff_detection_threshold>0.04</cliff_detection_threshold>
-  <bumper_name>bumpers</bumper_name>
-  <imu_name>imu</imu_name>
-  </plugin>
-</gazebo>
-
-
-<!-- hexagons -->
-<joint name="pole_bottom_0_joint" type="fixed">
-  <origin xyz="0.120 0.082 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_0_link"/>
-</joint>
-
-<link name="pole_bottom_0_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<joint name="pole_bottom_1_joint" type="fixed">
-  <origin xyz="0.055 0.120 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_1_link"/>
-</joint>
-
-<link name="pole_bottom_1_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<joint name="pole_bottom_2_joint" type="fixed">
-  <origin xyz="-0.055 0.120 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_2_link"/>
-</joint>
-
-<link name="pole_bottom_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<joint name="pole_bottom_3_joint" type="fixed">
-  <origin xyz="0.120 -0.082 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_3_link"/>
-</joint>
-<link name="pole_bottom_3_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<joint name="pole_bottom_4_joint" type="fixed">
-  <origin xyz="0.055 -0.120 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_4_link"/>
-</joint>
-
-<link name="pole_bottom_4_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<joint name="pole_bottom_5_joint" type="fixed">
-  <origin xyz="-0.055 -0.120 0.1028" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="pole_bottom_5_link"/>
-</joint>
-
-<link name="pole_bottom_5_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0492" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.008"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <inertia ixx="0.000001686" ixy="0.0" ixz="0.0"
-             iyy="0.000001686" iyz="0.0"
-             izz="0.000000144"/>
-  </inertial>
-</link>
-
-<!-- pole_middle -->
-<joint name="pole_middle_0_joint" type="fixed">
-  <origin xyz="0.0381 0.1505 0.1640" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_0_link"/>
-</joint>
-
-<link name="pole_middle_0_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_0_2_joint" type="fixed">
-  <origin xyz="0.0381 0.1505 0.21" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_0_2_link"/>
-</joint>
-
-<link name="pole_middle_0_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_1_joint" type="fixed">
-  <origin xyz="0.0381 -0.1505 0.1640" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_1_link"/>
-</joint>
-
-<link name="pole_middle_1_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-
-<!-- dmmy Link 16 -->
-  <link name="link16_spine">
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0.035 -0.2"/>
+      <inertia ixx="0.019995" ixy="0.0" ixz="0.0" iyy="0.019995" iyz="0.0" izz="0.03675" />
+    </inertial>
+  </link>
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_left_link" />
+    <origin xyz="0.00 0.115 0.0250" rpy="-1.57 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="wheel_left_link">
+    <visual>
       <geometry>
-        <box size="0.02 0.03 0.4"/>
+        <mesh filename="package://kobuki_description/meshes/wheel.dae" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.0206" radius="0.0352" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_right_link" />
+    <origin xyz="0.00 -0.115 0.0250" rpy="-1.57 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="wheel_right_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://kobuki_description/meshes/wheel.dae" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.0206" radius="0.0350" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  <joint name="caster_front_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="caster_front_link" />
+    <origin xyz="0.115 0.0 0.007" rpy="-1.57 0 0" />
+  </joint>
+  <link name="caster_front_link">
+    <collision>
+      <geometry>
+        <cylinder length="0.0176" radius="0.017" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  <joint name="caster_back_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="caster_back_link" />
+    <origin xyz="-0.135 0.0 0.009" rpy="-1.57 0 0" />
+  </joint>
+  <link name="caster_back_link">
+    <collision>
+      <geometry>
+        <cylinder length="0.0176" radius="0.017" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  <!-- Kobuki's sensors -->
+  <joint name="gyro_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.056 0.062 0.0202" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="gyro_link" />
+  </joint>
+  <link name="gyro_link">
+    <inertial>
+      <mass value="0.001" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001" />
+    </inertial>
+  </link>
+  <joint name="cliff_sensor_left_joint" type="fixed">
+    <origin xyz="0.08734 0.13601 0.0214" rpy="0 1.57 0" />
+    <parent link="base_link" />
+    <child link="cliff_sensor_left_link" />
+  </joint>
+  <link name="cliff_sensor_left_link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+    </inertial>
+  </link>
+  <joint name="cliff_sensor_right_joint" type="fixed">
+    <origin xyz="0.085 -0.13601 0.0214" rpy="0 1.57 0" />
+    <parent link="base_link" />
+    <child link="cliff_sensor_right_link" />
+  </joint>
+  <link name="cliff_sensor_right_link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+    </inertial>
+  </link>
+  <joint name="cliff_sensor_front_joint" type="fixed">
+    <origin xyz="0.156 0.00 0.0214" rpy="0 1.57 0" />
+    <parent link="base_link" />
+    <child link="cliff_sensor_front_link" />
+  </joint>
+  <link name="cliff_sensor_front_link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+    </inertial>
+  </link>
+  <!-- gazebo -->
+  <gazebo reference="wheel_left_link">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+  <gazebo reference="wheel_right_link">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+  <gazebo reference="caster_front_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+  <gazebo reference="caster_back_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+  <gazebo reference="base_link">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+    <sensor type="contact" name="bumpers">
+      <always_on>1</always_on>
+      <update_rate>50.0</update_rate>
+      <visualize>true</visualize>
+      <contact>
+        <collision>base_footprint_fixed_joint_lump__base_collision</collision>
+      </contact>
+    </sensor>
+  </gazebo>
+  <gazebo reference="cliff_sensor_left_link">
+    <sensor type="ray" name="cliff_sensor_left">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>true</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>50</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-0.0436</min_angle> <!-- -2.5 degree -->
+            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+          </horizontal>
+          <!--            Can't use vertical rays until this bug is resolved: -->
+          <!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+          <!-- 	          <vertical> -->
+          <!-- 	            <samples>50</samples> -->
+          <!-- 	            <resolution>1.0</resolution> -->
+          <!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+          <!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+          <!-- 	          </vertical> -->
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>0.15</max>
+          <resolution>1.0</resolution>
+        </range>
+      </ray>
+    </sensor>
+  </gazebo>
+  <gazebo reference="cliff_sensor_right_link">
+    <sensor type="ray" name="cliff_sensor_right">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>true</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>50</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-0.0436</min_angle> <!-- -2.5 degree -->
+            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+          </horizontal>
+          <!--            Can't use vertical rays until this bug is resolved: -->
+          <!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+          <!-- 	          <vertical> -->
+          <!-- 	            <samples>50</samples> -->
+          <!-- 	            <resolution>1.0</resolution> -->
+          <!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+          <!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+          <!-- 	          </vertical> -->
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>0.15</max>
+          <resolution>1.0</resolution>
+        </range>
+      </ray>
+    </sensor>
+  </gazebo>
+  <gazebo reference="cliff_sensor_front_link">
+    <sensor type="ray" name="cliff_sensor_front">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>true</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>50</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-0.0436</min_angle> <!-- -2.5 degree -->
+            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+          </horizontal>
+          <!-- 	          Can't use vertical rays until this bug is resolved: -->
+          <!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+          <!-- 	          <vertical> -->
+          <!-- 	            <samples>50</samples> -->
+          <!-- 	            <resolution>1.0</resolution> -->
+          <!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+          <!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+          <!-- 	          </vertical> -->
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>0.15</max>
+          <resolution>1.0</resolution>
+        </range>
+      </ray>
+    </sensor>
+  </gazebo>
+  <gazebo reference="gyro_link">
+    <sensor type="imu" name="imu">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>false</visualize>
+      <imu>
+        <noise>
+          <type>gaussian</type>
+          <rate>
+            <mean>0.0</mean>
+            <stddev>${0.0014*0.0014}</stddev> <!-- 0.25 x 0.25 (deg/s) -->
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </rate>
+          <accel>
+            <!-- not used in the plugin and real robot, hence using tutorial values -->
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </accel>
+        </noise>
+      </imu>
+    </sensor>
+  </gazebo>
+  <gazebo>
+    <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
+      <publish_tf>1</publish_tf>
+      <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
+      <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
+      <wheel_separation>.230</wheel_separation>
+      <wheel_diameter>0.070</wheel_diameter>
+      <torque>1.0</torque>
+      <velocity_command_timeout>0.6</velocity_command_timeout>
+      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
+      <cliff_sensor_center_name>cliff_sensor_front</cliff_sensor_center_name>
+      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
+      <cliff_detection_threshold>0.04</cliff_detection_threshold>
+      <bumper_name>bumpers</bumper_name>
+      <imu_name>imu</imu_name>
+    </plugin>
+  </gazebo>
+  <!-- hexagons -->
+  <joint name="pole_bottom_0_joint" type="fixed">
+    <origin xyz="0.120 0.082 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_0_link" />
+  </joint>
+  <link name="pole_bottom_0_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <joint name="pole_bottom_1_joint" type="fixed">
+    <origin xyz="0.055 0.120 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_1_link" />
+  </joint>
+  <link name="pole_bottom_1_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <joint name="pole_bottom_2_joint" type="fixed">
+    <origin xyz="-0.055 0.120 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_2_link" />
+  </joint>
+  <link name="pole_bottom_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <joint name="pole_bottom_3_joint" type="fixed">
+    <origin xyz="0.120 -0.082 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_3_link" />
+  </joint>
+  <link name="pole_bottom_3_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <joint name="pole_bottom_4_joint" type="fixed">
+    <origin xyz="0.055 -0.120 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_4_link" />
+  </joint>
+  <link name="pole_bottom_4_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <joint name="pole_bottom_5_joint" type="fixed">
+    <origin xyz="-0.055 -0.120 0.1028" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_bottom_5_link" />
+  </joint>
+  <link name="pole_bottom_5_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0492" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.008" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001686" ixy="0.0" ixz="0.0" iyy="0.000001686" iyz="0.0" izz="0.000000144" />
+    </inertial>
+  </link>
+  <!-- pole_middle -->
+  <joint name="pole_middle_0_joint" type="fixed">
+    <origin xyz="0.0381 0.1505 0.1640" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_0_link" />
+  </joint>
+  <link name="pole_middle_0_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_0_2_joint" type="fixed">
+    <origin xyz="0.0381 0.1505 0.21" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_0_2_link" />
+  </joint>
+  <link name="pole_middle_0_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_1_joint" type="fixed">
+    <origin xyz="0.0381 -0.1505 0.1640" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_1_link" />
+  </joint>
+  <link name="pole_middle_1_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- dmmy Link 16 -->
+      <link name="link16_spine">
+        <collision>
+          <origin rpy="0 0 0" xyz="0 0.035 -0.2" />
+          <geometry>
+            <box size="0.02 0.03 0.4" />
+          </geometry>
+        </collision>
+        <visual>
+          <origin rpy="0 0 0" xyz="0 0.035 -0.2" />
+          <geometry>
+            <box size="0.02 0.03 0.4" />
+          </geometry>
+          <material name="black" />
+        </visual>
+        <inertial>
+          <origin rpy="0 0 0" xyz="0 0.035 -0.2" />
+          <mass value="0.08" />
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        </inertial>
+      </link>
+      <gazebo reference="link16_spine">
+        <material>Gazebo/Black</material>
+      </gazebo>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_1_2_joint" type="fixed">
+    <origin xyz="0.0381 -0.1505 0.21" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_1_2_link" />
+  </joint>
+  <link name="pole_middle_1_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_2_joint" type="fixed">
+    <origin xyz="-0.0381 0.1505 0.1640" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_2_link" />
+  </joint>
+  <link name="pole_middle_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_2_2_joint" type="fixed">
+    <origin xyz="-0.0381 0.1505 0.21" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_2_2_link" />
+  </joint>
+  <link name="pole_middle_2_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_3_joint" type="fixed">
+    <origin xyz="-0.0381 -0.1505 0.1640" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_3_link" />
+  </joint>
+  <link name="pole_middle_3_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="pole_middle_3_2_joint" type="fixed">
+    <origin xyz="-0.0381 -0.1505 0.21" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="pole_middle_3_2_link" />
+  </joint>
+  <link name="pole_middle_3_2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 3.1415926535897931 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0608" radius="0.006" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.012" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.000003805" ixy="0.0" ixz="0.0" iyy="0.000003805" iyz="0.0" izz="0.000000216" />
+    </inertial>
+  </link>
+  <joint name="plate_bottom_joint" type="fixed">
+    <origin xyz="0.02364 0.0 0.1306" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="plate_bottom_link" />
+  </joint>
+  <link name="plate_bottom_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_bottom.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.02364 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.006" radius="0.170" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.520" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.003328" ixy="0.0" ixz="0.0" iyy="0.003328" iyz="0.0" izz="0.006656" />
+    </inertial>
+  </link>
+  <joint name="plate_middle_joint" type="fixed">
+    <origin xyz="-0.01364 0.0 0.23" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="plate_middle_link" />
+  </joint>
+  <link name="plate_middle_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_middle.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.01364 0.0 0.0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.006" radius="0.170" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.520" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.003328" ixy="0.0" ixz="0.0" iyy="0.003328" iyz="0.0" izz="0.006656" />
+    </inertial>
+  </link>
+  <!-- sobit base -->
+  <!-- Link 1 -->
+  <link name="link1">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.03" />
+      <geometry>
+        <box size="0.16 0.16 0.06" />
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0.035 -0.2"/>
+      <origin rpy="0 0 0" xyz="0 0 0.03" />
       <geometry>
-        <box size="0.02 0.03 0.4"/>
+        <box size="0.16 0.16 0.06" />
       </geometry>
-      <material name="black"/>
+      <material name="black" />
     </visual>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0.035 -0.2"/>
-      <mass value="0.08"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.03" />
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
     </inertial>
   </link>
-  <gazebo reference="link16_spine">
+  <joint name="body_roll_joint" type="revolute">
+    <parent link="plate_middle_link" />
+    <child link="link1" />
+    <origin rpy="0 0 0" xyz="0 0 0.0" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <gazebo reference="link1">
     <material>Gazebo/Black</material>
   </gazebo>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_1_2_joint" type="fixed">
-  <origin xyz="0.0381 -0.1505 0.21" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_1_2_link"/>
-</joint>
-
-<link name="pole_middle_1_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_2_joint" type="fixed">
-  <origin xyz="-0.0381 0.1505 0.1640" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_2_link"/>
-</joint>
-
-<link name="pole_middle_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_2_2_joint" type="fixed">
-  <origin xyz="-0.0381 0.1505 0.21" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_2_2_link"/>
-</joint>
-
-<link name="pole_middle_2_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_3_joint" type="fixed">
-  <origin xyz="-0.0381 -0.1505 0.1640" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_3_link"/>
-</joint>
-
-<link name="pole_middle_3_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="pole_middle_3_2_joint" type="fixed">
-  <origin xyz="-0.0381 -0.1505 0.21" rpy="0 0 0" />
-  <parent link="base_link"/>
-  <child link="pole_middle_3_2_link"/>
-</joint>
-
-<link name="pole_middle_3_2_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 3.1415926535897931 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.0608" radius="0.006"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.012"/>
-    <origin xyz="0 0 0"/>
-    <inertia ixx="0.000003805" ixy="0.0" ixz="0.0"
-             iyy="0.000003805" iyz="0.0"
-             izz="0.000000216"/>
-  </inertial>
-</link>
-
-<joint name="plate_bottom_joint" type="fixed">
-  <origin xyz="0.02364 0.0 0.1306" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="plate_bottom_link"/>
-</joint>
-
-<link name="plate_bottom_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_bottom.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="-0.02364 0 0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.006" radius="0.170"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.520" />
-    <origin xyz="0 0 0" />
-    <inertia ixx="0.003328" ixy="0.0" ixz="0.0"
-             iyy="0.003328" iyz="0.0"
-             izz="0.006656" />
-  </inertial>
-</link>
-
-<joint name="plate_middle_joint" type="fixed">
-  <origin xyz="-0.01364 0.0 0.23" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="plate_middle_link"/>
-</joint>
-
-<link name="plate_middle_link">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_middle.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0.01364 0.0 0.0" rpy="0 0 0"/>
-    <geometry>
-      <cylinder length="0.006" radius="0.170"/>
-    </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.520" />
-    <origin xyz="0 0 0" />
-    <inertia ixx="0.003328" ixy="0.0" ixz="0.0"
-             iyy="0.003328" iyz="0.0"
-             izz="0.006656" />
-  </inertial>
-</link>
-
-<!-- sobit base -->
-<!-- Link 1 -->
-<link name="link1">
-  <collision>
-    <origin rpy="0 0 0" xyz="0 0 0.03"/>
-    <geometry>
-      <box size="0.16 0.16 0.06"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0 0 0.03"/>
-    <geometry>
-      <box size="0.16 0.16 0.06"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 0.03"/>
-    <mass value="1"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="body_roll_joint" type="revolute">
-  <parent link="plate_middle_link"/>
-  <child link="link1"/>
-  <origin rpy="0 0 0" xyz="0 0 0.0"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-<gazebo reference="link1">
-  <material>Gazebo/Black</material>
-</gazebo>
-<transmission name="body_roll_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="body_roll_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <transmission name="body_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="body_roll_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="body_roll_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <joint name="dmmy_joint1" type="fixed">
+    <parent link="link1" />
+    <child link="link2" />
+    <origin rpy="0 0 0" xyz="-0.03 0 0.06" />
+    <axis xyz="1 0 0" />
+    <limit effort="30" lower="-2.35" upper="0" velocity="1.571" />
   </joint>
-  <actuator name="body_roll_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<joint name="dmmy_joint1" type="fixed">
-  <parent link="link1"/>
-  <child link="link2"/>
-  <origin rpy="0 0 0" xyz="-0.03 0 0.06"/>
-  <axis xyz="1 0 0"/>
-  <limit effort="30" lower="-2.35" upper="0" velocity="1.571"/>
-</joint>
-<gazebo reference="link2">
-  <material>Gazebo/FlatBlack</material>
-</gazebo>
-
-<!-- Link 2 -->
-<link name="link2">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.255"/>
-    <geometry>
-      <box size="0.02 0.03 0.51"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.255"/>
-    <geometry>
-      <box size="0.02 0.03 0.51"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.255"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link2">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-<joint name="body_lift_joint" type="prismatic">
-  <parent link="link2"/>
-  <child link="link3"/>
-  <origin rpy="0 0 1.57" xyz="0.03 0.0 0.0"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="0" upper="0.17" velocity="0.2"/>
-  <dynamics damping="1.0"/>
-</joint>
-<gazebo reference="link2">
-  <material>Gazebo/Black</material>
-</gazebo>
-<transmission name="body_lift_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="body_lift_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <gazebo reference="link2">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <!-- Link 2 -->
+  <link name="link2">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.255" />
+      <geometry>
+        <box size="0.02 0.03 0.51" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.255" />
+      <geometry>
+        <box size="0.02 0.03 0.51" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.255" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link2">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="body_lift_joint" type="prismatic">
+    <parent link="link2" />
+    <child link="link3" />
+    <origin rpy="0 0 1.57" xyz="0.03 0.0 0.0" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="0" upper="0.17" velocity="0.2" />
+    <dynamics damping="1.0" />
   </joint>
-  <actuator name="body_lift_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- Link 3 -->
-<link name="link3">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0 0.2575"/>
-    <geometry>
-      <box size="0.02 0.02 0.515"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0 0.2575"/>
-    <geometry>
-      <box size="0.02 0.02 0.515"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 0.2575"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<!-- sobit limb Branch -->
-<joint name="dmmy_joint3" type="fixed">
-  <parent link="link3"/>
-  <child link="link4_left_arm"/>
-  <origin rpy="0 0 0" xyz="0.01 0 0.4"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571"/>
-</joint>
-
-<joint name="dmmy_joint6" type="fixed">
-  <parent link="link3"/>
-  <child link="link4_right_arm"/>
-  <origin rpy="0 0 0" xyz="-0.01 0 0.4"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571"/>
-</joint>
-
-<joint name="head_pan_joint" type="revolute">
-  <parent link="link3"/>
-  <child link="link11_head"/>
-  <origin rpy="0 0 0" xyz="0 0 0.515"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-2.617" upper="2.617" velocity="1.571"/>
-</joint>
-
-<joint name="dmmy_joint_left_ribs" type="fixed">
-  <parent link="link3"/>
-  <child link="link14_left_ribs"/>
-  <origin rpy="0 0 0" xyz="0.01 0 0.05"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571"/>
-</joint>
-
-<joint name="dmmy_joint_right_ribs" type="fixed">
-  <parent link="link3"/>
-  <child link="link14_right_ribs"/>
-  <origin rpy="0 0 0" xyz="-0.01 0 0.05"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571"/>
-</joint>
-
-<joint name="dmmy_joint_body" type="fixed">
-  <parent link="link3"/>
-  <child link="body_link"/>
-  <origin rpy="0 0 0" xyz="0 0 0.3"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571"/>
-</joint>
-
-
-
-<!-- sobit Left_arm-->
-<!-- link4_left_arm -->
-<link name="link4_left_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0525 0 0.0"/>
-    <geometry>
-      <box size="0.105 0.03 0.055"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0525 0 0.0"/>
-    <geometry>
-      <box size="0.105 0.03 0.055"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0.0525 0 0.0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="left_shoulder_roll_joint" type="revolute">
-  <parent link="link4_left_arm"/>
-  <child link="link5_left_arm"/>
-  <origin rpy="0 0 0" xyz="0.105 0 0.02"/>
-  <axis xyz="1 0 0"/>
-  <limit effort="30" lower="-1.57" upper="0" velocity="1.571"/>
-</joint>
-<gazebo reference="link4_left_arm">
-  <material>Gazebo/FlatBlack</material>
-</gazebo>
-<transmission name="left_shoulder_roll_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_shoulder_roll_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <gazebo reference="link2">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <transmission name="body_lift_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="body_lift_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="body_lift_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- Link 3 -->
+  <link name="link3">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 0.2575" />
+      <geometry>
+        <box size="0.02 0.02 0.515" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 0.2575" />
+      <geometry>
+        <box size="0.02 0.02 0.515" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.2575" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <!-- sobit limb Branch -->
+  <joint name="dmmy_joint3" type="fixed">
+    <parent link="link3" />
+    <child link="link4_left_arm" />
+    <origin rpy="0 0 0" xyz="0.01 0 0.4" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
   </joint>
-  <actuator name="left_shoulder_roll_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link5_left_arm -->
-<link name="link5_left_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.034 0 0.0"/>
-    <geometry>
-      <box size="0.068 0.05 0.04"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.034 0 0.0"/>
-    <geometry>
-      <box size="0.068 0.05 0.04"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0.034 0 0.0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link5_left_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<joint name="left_shoulder_flex_joint" type="revolute">
-  <parent link="link5_left_arm"/>
-  <child link="link6_left_arm"/>
-  <origin rpy="0 0 0" xyz="0.053 0.0 0.0"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="-3.14" upper="0" velocity="1.571"/>
-</joint>
-<gazebo reference="link5_left_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<transmission name="left_shoulder_flex_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_shoulder_flex_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <joint name="dmmy_joint6" type="fixed">
+    <parent link="link3" />
+    <child link="link4_right_arm" />
+    <origin rpy="0 0 0" xyz="-0.01 0 0.4" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
   </joint>
-  <actuator name="left_shoulder_flex_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link6_left_arm -->
-<link name="link6_left_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.095"/>
-    <geometry>
-      <box size="0.035 0.05 0.19"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.095"/>
-    <geometry>
-      <box size="0.035 0.05 0.19"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 -0.095"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="left_wrist_flex_joint" type="revolute">
-  <parent link="link6_left_arm"/>
-  <child link="link7_left_arm"/>
-  <origin rpy="0 0 0" xyz="0 0 -0.19"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-<gazebo reference="link6_left_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<transmission name="left_wrist_flex_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="left_wrist_flex_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <joint name="head_pan_joint" type="revolute">
+    <parent link="link3" />
+    <child link="link11_head" />
+    <origin rpy="0 0 0" xyz="0 0 0.515" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-2.617" upper="2.617" velocity="1.571" />
   </joint>
-  <actuator name="left_wrist_flex_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link7_left_arm -->
-<link name="link7_left_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.035"/>
-    <geometry>
-      <box size="0.06 0.04 0.07"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.035"/>
-    <geometry>
-      <box size="0.06 0.04 0.07"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 -0.035"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link7_left_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<joint name="dmmy_joint4" type="fixed">
-  <parent link="link7_left_arm"/>
-  <child link="link8_left_arm"/>
-  <origin rpy="0 0 0" xyz="0 0 -0.05"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-
-<!-- link8_left_arm -->
-<link name="link8_left_arm">
-  <collision>
-    <origin rpy="0 3.14 0" xyz="0.0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 3.14 0" xyz="0.0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<!-- link9_left_arm_left_finger -->
-<link name="link9_left_arm_left_finger">
-  <collision>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<joint name="left_hand_motor_joint" type="revolute">
-		<parent link="link8_left_arm"/>
-		<child link="left_hand_motor_dummy_link"/>
-		<axis xyz="1 0 0" />
-		<limit lower="0.0" upper="1.57" effort="1" velocity="1" />
-	</joint>
-
+  <joint name="dmmy_joint_left_ribs" type="fixed">
+    <parent link="link3" />
+    <child link="link14_left_ribs" />
+    <origin rpy="0 0 0" xyz="0.01 0 0.05" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
+  </joint>
+  <joint name="dmmy_joint_right_ribs" type="fixed">
+    <parent link="link3" />
+    <child link="link14_right_ribs" />
+    <origin rpy="0 0 0" xyz="-0.01 0 0.05" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
+  </joint>
+  <joint name="dmmy_joint_body" type="fixed">
+    <parent link="link3" />
+    <child link="body_link" />
+    <origin rpy="0 0 0" xyz="0 0 0.3" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
+  </joint>
+  <!-- sobit Left_arm-->
+  <!-- link4_left_arm -->
+  <link name="link4_left_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
+      <geometry>
+        <box size="0.105 0.03 0.055" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
+      <geometry>
+        <box size="0.105 0.03 0.055" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="left_shoulder_roll_joint" type="revolute">
+    <parent link="link4_left_arm" />
+    <child link="link5_left_arm" />
+    <origin rpy="0 0 0" xyz="0.105 0 0.02" />
+    <axis xyz="1 0 0" />
+    <limit effort="30" lower="-1.57" upper="0" velocity="1.571" />
+  </joint>
+  <gazebo reference="link4_left_arm">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <transmission name="left_shoulder_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_shoulder_roll_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_shoulder_roll_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link5_left_arm -->
+  <link name="link5_left_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.034 0 0.0" />
+      <geometry>
+        <box size="0.068 0.05 0.04" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.034 0 0.0" />
+      <geometry>
+        <box size="0.068 0.05 0.04" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.034 0 0.0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link5_left_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="left_shoulder_flex_joint" type="revolute">
+    <parent link="link5_left_arm" />
+    <child link="link6_left_arm" />
+    <origin rpy="0 0 0" xyz="0.053 0.0 0.0" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="-3.14" upper="0" velocity="1.571" />
+  </joint>
+  <gazebo reference="link5_left_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <transmission name="left_shoulder_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_shoulder_flex_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_shoulder_flex_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link6_left_arm -->
+  <link name="link6_left_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
+      <geometry>
+        <box size="0.035 0.05 0.19" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
+      <geometry>
+        <box size="0.035 0.05 0.19" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.095" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="left_wrist_flex_joint" type="revolute">
+    <parent link="link6_left_arm" />
+    <child link="link7_left_arm" />
+    <origin rpy="0 0 0" xyz="0 0 -0.19" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <gazebo reference="link6_left_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <transmission name="left_wrist_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_wrist_flex_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_wrist_flex_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link7_left_arm -->
+  <link name="link7_left_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
+      <geometry>
+        <box size="0.06 0.04 0.07" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
+      <geometry>
+        <box size="0.06 0.04 0.07" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.035" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link7_left_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="dmmy_joint4" type="fixed">
+    <parent link="link7_left_arm" />
+    <child link="link8_left_arm" />
+    <origin rpy="0 0 0" xyz="0 0 -0.05" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <!-- link8_left_arm -->
+  <link name="link8_left_arm">
+    <collision>
+      <origin rpy="0 3.14 0" xyz="0.0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 0" xyz="0.0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <!-- link9_left_arm_left_finger -->
+  <link name="link9_left_arm_left_finger">
+    <collision>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="left_hand_motor_joint" type="revolute">
+    <parent link="link8_left_arm" />
+    <child link="left_hand_motor_dummy_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="0.0" upper="1.57" effort="1" velocity="1" />
+  </joint>
   <transmission name="left_hand_motor_joint_transmission">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="left_hand_motor_joint">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
-  <actuator name="left_hand_motor_joint_actuator">
+    <actuator name="left_hand_motor_joint_actuator">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-  <link name="left_hand_motor_dummy_link"/>
-
-<joint name="link9_left_arm_left_finger_joint" type="revolute">
-  <parent link="link8_left_arm"/>
-  <child link="link9_left_arm_left_finger"/>
-      <origin rpy="0 0 0" xyz="0 0.018 -0.043"/>
-      <axis xyz="1 0 0"/>
-  <limit lower="-1.0" upper="0.0" effort="1" velocity="1" />
-  <mimic joint="left_hand_motor_joint" multiplier="1.0" offset="-1.0"/>
-</joint>
-<gazebo reference="link9_left_arm_left_finger">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-<!-- link10_left_arm_right_finger -->
-<link name="link10_left_arm_right_finger">
-  <collision>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="link10_left_arm_right_finger_joint" type="revolute">
-  <parent link="link8_left_arm"/>
-  <child link="link10_left_arm_right_finger"/>
-      <origin rpy="0 0 0" xyz="0 -0.018 -0.043"/>
-      <axis xyz="1 0 0"/>
-  <limit lower="0.0" upper="1.0" effort="1" velocity="1" />
-  <mimic joint="left_hand_motor_joint" multiplier="-1.0" offset="1.0"/>
-</joint>
-<gazebo reference="link10_left_arm_right_finger">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-<!-- sobit Right_arm -->
-<!-- link4_right_arm -->
-<link name="link4_right_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="-0.0525 0 0.0"/>
-    <geometry>
-      <box size="0.105 0.03 0.055"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="-0.0525 0 0.0"/>
-    <geometry>
-      <box size="0.105 0.03 0.055"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="-0.0525 0 0.0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="right_shoulder_roll_joint" type="revolute">
-  <parent link="link4_right_arm"/>
-  <child link="link5_right_arm"/>
-  <origin rpy="0 0 0" xyz="-0.105 0 0.02"/>
-  <axis xyz="1 0 0"/>
-  <limit effort="30" lower="-1.57" upper="0" velocity="1.571"/>
-</joint>
-<gazebo reference="link4_right_arm">
-  <material>Gazebo/FlatBlack</material>
-</gazebo>
-<transmission name="right_shoulder_roll_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_shoulder_roll_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+  <link name="left_hand_motor_dummy_link" />
+  <joint name="link9_left_arm_left_finger_joint" type="revolute">
+    <parent link="link8_left_arm" />
+    <child link="link9_left_arm_left_finger" />
+    <origin rpy="0 0 0" xyz="0 0.018 -0.043" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.0" upper="0.0" effort="1" velocity="1" />
+    <mimic joint="left_hand_motor_joint" multiplier="1.0" offset="-1.0" />
   </joint>
-  <actuator name="right_shoulder_roll_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link5_right_arm -->
-<link name="link5_right_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="-0.034 0 0.0"/>
-    <geometry>
-      <box size="0.068 0.05 0.04"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="-0.034 0 0.0"/>
-    <geometry>
-      <box size="0.068 0.05 0.04"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="-0.034 0 0.0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link5_right_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<joint name="right_shoulder_flex_joint" type="revolute">
-  <parent link="link5_right_arm"/>
-  <child link="link6_right_arm"/>
-  <origin rpy="0 0 0" xyz="-0.053 0.0 0.0"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="0" upper="3.14" velocity="1.571"/>
-</joint>
-<transmission name="right_shoulder_flex_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_shoulder_flex_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <gazebo reference="link9_left_arm_left_finger">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <!-- link10_left_arm_right_finger -->
+  <link name="link10_left_arm_right_finger">
+    <collision>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="link10_left_arm_right_finger_joint" type="revolute">
+    <parent link="link8_left_arm" />
+    <child link="link10_left_arm_right_finger" />
+    <origin rpy="0 0 0" xyz="0 -0.018 -0.043" />
+    <axis xyz="1 0 0" />
+    <limit lower="0.0" upper="1.0" effort="1" velocity="1" />
+    <mimic joint="left_hand_motor_joint" multiplier="-1.0" offset="1.0" />
   </joint>
-  <actuator name="right_shoulder_flex_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link6_right_arm -->
-<link name="link6_right_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.095"/>
-    <geometry>
-      <box size="0.035 0.05 0.19"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.095"/>
-    <geometry>
-      <box size="0.035 0.05 0.19"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 -0.095"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="right_wrist_flex_joint" type="revolute">
-  <parent link="link6_right_arm"/>
-  <child link="link7_right_arm"/>
-  <origin rpy="0 0 0" xyz="0 0 -0.19"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-<gazebo reference="link6_right_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<transmission name="right_wrist_flex_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="right_wrist_flex_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  <gazebo reference="link10_left_arm_right_finger">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <!-- sobit Right_arm -->
+  <!-- link4_right_arm -->
+  <link name="link4_right_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0525 0 0.0" />
+      <geometry>
+        <box size="0.105 0.03 0.055" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.0525 0 0.0" />
+      <geometry>
+        <box size="0.105 0.03 0.055" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0525 0 0.0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="right_shoulder_roll_joint" type="revolute">
+    <parent link="link4_right_arm" />
+    <child link="link5_right_arm" />
+    <origin rpy="0 0 0" xyz="-0.105 0 0.02" />
+    <axis xyz="1 0 0" />
+    <limit effort="30" lower="-1.57" upper="0" velocity="1.571" />
   </joint>
-  <actuator name="right_wrist_flex_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- link7_right_arm -->
-<link name="link7_right_arm">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.035"/>
-    <geometry>
-      <box size="0.06 0.04 0.07"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.0 0 -0.035"/>
-    <geometry>
-      <box size="0.06 0.04 0.07"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 -0.035"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link7_right_arm">
-  <material>Gazebo/Black</material>
-</gazebo>
-<joint name="dmmy_joint7" type="fixed">
-  <parent link="link7_right_arm"/>
-  <child link="link8_right_arm"/>
-  <origin rpy="0 0 0" xyz="0 0 -0.05"/>
-  <axis xyz="0 1 0"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-
-<!-- link8_right_arm -->
-<link name="link8_right_arm">
-  <collision>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-  <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<!-- link9_right_arm_left_finger -->
-<link name="link9_right_arm_left_finger">
-  <collision>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 3.14" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<joint name="right_hand_motor_joint" type="revolute">
-		<parent link="link8_right_arm"/>
-		<child link="right_hand_motor_dummy_link"/>
-		<axis xyz="1 0 0" />
-		<limit lower="0.0" upper="1.57" effort="1" velocity="1" />
-	</joint>
-
+  <gazebo reference="link4_right_arm">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <transmission name="right_shoulder_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_shoulder_roll_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_shoulder_roll_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link5_right_arm -->
+  <link name="link5_right_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.034 0 0.0" />
+      <geometry>
+        <box size="0.068 0.05 0.04" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.034 0 0.0" />
+      <geometry>
+        <box size="0.068 0.05 0.04" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.034 0 0.0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link5_right_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="right_shoulder_flex_joint" type="revolute">
+    <parent link="link5_right_arm" />
+    <child link="link6_right_arm" />
+    <origin rpy="0 0 0" xyz="-0.053 0.0 0.0" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="0" upper="3.14" velocity="1.571" />
+  </joint>
+  <transmission name="right_shoulder_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_shoulder_flex_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_shoulder_flex_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link6_right_arm -->
+  <link name="link6_right_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
+      <geometry>
+        <box size="0.035 0.05 0.19" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
+      <geometry>
+        <box size="0.035 0.05 0.19" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.095" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="right_wrist_flex_joint" type="revolute">
+    <parent link="link6_right_arm" />
+    <child link="link7_right_arm" />
+    <origin rpy="0 0 0" xyz="0 0 -0.19" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <gazebo reference="link6_right_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <transmission name="right_wrist_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_wrist_flex_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_wrist_flex_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- link7_right_arm -->
+  <link name="link7_right_arm">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
+      <geometry>
+        <box size="0.06 0.04 0.07" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
+      <geometry>
+        <box size="0.06 0.04 0.07" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.035" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link7_right_arm">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="dmmy_joint7" type="fixed">
+    <parent link="link7_right_arm" />
+    <child link="link8_right_arm" />
+    <origin rpy="0 0 0" xyz="0 0 -0.05" />
+    <axis xyz="0 1 0" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <!-- link8_right_arm -->
+  <link name="link8_right_arm">
+    <collision>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/Manipulator_X4_Gripper_fix.dae" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <!-- link9_right_arm_left_finger -->
+  <link name="link9_right_arm_left_finger">
+    <collision>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 3.14" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="right_hand_motor_joint" type="revolute">
+    <parent link="link8_right_arm" />
+    <child link="right_hand_motor_dummy_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="0.0" upper="1.57" effort="1" velocity="1" />
+  </joint>
   <transmission name="right_hand_motor_joint_transmission">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="right_hand_motor_joint">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
-  <actuator name="right_hand_motor_joint_actuator">
+    <actuator name="right_hand_motor_joint_actuator">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-  <link name="right_hand_motor_dummy_link"/>
-
-<joint name="link9_right_arm_left_finger_joint" type="revolute">
-	<parent link="link8_right_arm"/>
-	<child link="link9_right_arm_left_finger"/>
-      <origin rpy="0 0 0" xyz="0 0.018 -0.043"/>
-      <axis xyz="1 0 0"/>
-	<limit lower="-1" upper="0" effort="1" velocity="1" />
-  <mimic joint="right_hand_motor_joint" multiplier="1.0" offset="-1.0"/>
-</joint>
-<gazebo reference="right_arm_left_finger">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-<!-- link10_right_arm_right_finger -->
-<link name="link10_right_arm_right_finger">
-  <collision>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="0 3.14 0" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="link10_right_arm_right_finger_joint" type="revolute">
-	<parent link="link8_right_arm"/>
-	<child link="link10_right_arm_right_finger"/>
-      <origin rpy="0 0 0" xyz="0 -0.018 -0.043"/>
-      <axis xyz="1 0 0"/>
-	<limit lower="0.0" upper="1" effort="1" velocity="1" />
-  <mimic joint="right_hand_motor_joint" multiplier="-1.0" offset="1.0"/>
-</joint>
-<gazebo reference="link10_right_arm_right_finger">
-  <material>Gazebo/Black</material>
-</gazebo>
-
-
-
-<!-- sobit Head -->
-<!-- Link 11_head -->
-<link name="link11_head">
-  <collision>
-    <origin rpy="1.57 0 0" xyz="0 0 0.0135"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/sobit hed_neck.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="1.57 0 0" xyz="0 0 0.0135"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/sobit hed_neck.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="1.57 0 0" xyz="0 0 0.0135"/>
-    <mass value="0.6"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<joint name="head_tilt_joint" type="revolute">
-  <parent link="link11_head"/>
-  <child link="link12_head"/>
-  <origin rpy="0 0 0" xyz="0 0 0.025"/>
-  <axis xyz="1 0 0"/>
-  <limit effort="30" lower="-1" upper="1" velocity="1.571"/>
-</joint>
-<gazebo reference="link11_head">
-  <material>Gazebo/FlatBlack</material>
-</gazebo>
-<transmission name="head_tilt_joint_transmission">
-  <type>transmission_interface/SimpleTransmission</type>
-  <joint name="head_tilt_joint">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+  <link name="right_hand_motor_dummy_link" />
+  <joint name="link9_right_arm_left_finger_joint" type="revolute">
+    <parent link="link8_right_arm" />
+    <child link="link9_right_arm_left_finger" />
+    <origin rpy="0 0 0" xyz="0 0.018 -0.043" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1" upper="0" effort="1" velocity="1" />
+    <mimic joint="right_hand_motor_joint" multiplier="1.0" offset="-1.0" />
   </joint>
-  <actuator name="head_tilt_joint_actuator">
-    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    <mechanicalReduction>1</mechanicalReduction>
-  </actuator>
-</transmission>
-
-<!-- Link 12_head -->
-<link name="link12_head">
-  <collision>
-    <origin rpy="1.57 0 0" xyz="0 0 -0.012"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/sobit hed_top.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="1.57 0 0" xyz="0 0 -0.012"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/sobit hed_top.dae"/>
-    </geometry>
-    <material name="blue">
-      <color rgba="0.0 0.0 1.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="1.57 0 0" xyz="0 0 -0.031"/>
-    <mass value="0.3"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-<gazebo reference="link12_head">
-  <material>Gazebo/Black</material>
-</gazebo>
-<joint name="joint11" type="fixed">
-  <parent link="link12_head"/>
-  <child link="xtion"/>
-  <origin rpy="0 0 -1.57" xyz="0 0 0.141"/>
-  <axis xyz="1 0 0"/>
-  <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571"/>
-</joint>
-
-<!-- xtion -->
-<link name="xtion">
-  <visual>
-    <origin xyz="-0.0 0.0 0.0405" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://turtlebot_description/meshes/sensors/xtion_pro_camera.dae"/>
-    </geometry>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0.0405" rpy="0 0 0" />
-    <geometry>
-    <box size="0.0730 0.2760 0.0720"/>
-  </geometry>
-  </collision>
-  <inertial>
-    <mass value="0.170" />
-    <origin xyz="0 0 0" />
-    <inertia ixx="0.001152600" ixy="0.0" ixz="0.0"
-             iyy="0.000148934" iyz="0.0"
-             izz="0.001154654" />
-  </inertial>
-</link>
-
-<!-- rgb_link -->
-<link name="rgb_link"/>
-<joint name="rgb_link_xtion_joint" type="fixed">
-  <parent link="xtion"/>
-  <child link="rgb_link"/>
-  <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0205 0.0375"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571"/>
-</joint>
-
-<!-- depth_link -->
-<link name="depth_link"/>
-<joint name="depth_link_xtion_joint" type="fixed">
-  <parent link="xtion"/>
-  <child link="depth_link"/>
-  <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0475 0.0375"/>
-  <axis xyz="0 0 1"/>
-  <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571"/>
-</joint>
-
-
-
-<!-- sobit Ribs -->
-<!-- link14_left_ribs -->
-<link name="link14_left_ribs">
-  <collision>
-    <origin rpy="0 0 0" xyz="0.07 0 0.0075"/>
-    <geometry>
-      <box size="0.14 0.015 0.015"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0.07 0 0.0075"/>
-    <geometry>
-      <box size="0.14 0.015 0.015"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0.07 0 0.0075"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-<!-- link14_right_ribs -->
-<link name="link14_right_ribs">
-  <collision>
-    <origin rpy="0 0 0" xyz="-0.07 0 0.0075"/>
-    <geometry>
-      <box size="0.14 0.015 0.015"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="-0.07 0 0.0075"/>
-    <geometry>
-      <box size="0.14 0.015 0.015"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="-0.07 0 0.0075"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-
-
-<!-- sobit Body -->
-<link name="body_link">
-  <collision>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/mini_sobit_body_size_fix.dae"/>
-    </geometry>
-  </collision>
-  <visual>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <geometry>
-      <mesh filename="package://sobit_mini_description/model/dae/mini_sobit_body_size_fix.dae"/>
-    </geometry>
-    <material name="black">
-      <color rgba="0.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
-  <inertial>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <mass value="0.08"/>
-    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-  </inertial>
-</link>
-
-
-
-<gazebo>
-  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-    <robotNamespace>/sobit_mini_description</robotNamespace>
-  </plugin>
-</gazebo>
-
-
+  <gazebo reference="right_arm_left_finger">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <!-- link10_right_arm_right_finger -->
+  <link name="link10_right_arm_right_finger">
+    <collision>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/ManipulatorX4_Finger_left.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 3.14 0" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="link10_right_arm_right_finger_joint" type="revolute">
+    <parent link="link8_right_arm" />
+    <child link="link10_right_arm_right_finger" />
+    <origin rpy="0 0 0" xyz="0 -0.018 -0.043" />
+    <axis xyz="1 0 0" />
+    <limit lower="0.0" upper="1" effort="1" velocity="1" />
+    <mimic joint="right_hand_motor_joint" multiplier="-1.0" offset="1.0" />
+  </joint>
+  <gazebo reference="link10_right_arm_right_finger">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <!-- sobit Head -->
+  <!-- Link 11_head -->
+  <link name="link11_head">
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0.0135" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/sobit hed_neck.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="1.57 0 0" xyz="0 0 0.0135" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/sobit hed_neck.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="1.57 0 0" xyz="0 0 0.0135" />
+      <mass value="0.6" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <joint name="head_tilt_joint" type="revolute">
+    <parent link="link11_head" />
+    <child link="link12_head" />
+    <origin rpy="0 0 0" xyz="0 0 0.025" />
+    <axis xyz="1 0 0" />
+    <limit effort="30" lower="-1" upper="1" velocity="1.571" />
+  </joint>
+  <gazebo reference="link11_head">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <transmission name="head_tilt_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_tilt_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_tilt_joint_actuator">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <!-- Link 12_head -->
+  <link name="link12_head">
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 -0.012" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/sobit hed_top.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="1.57 0 0" xyz="0 0 -0.012" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/sobit hed_top.dae" />
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="1.57 0 0" xyz="0 0 -0.031" />
+      <mass value="0.3" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="link12_head">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <joint name="joint11" type="fixed">
+    <parent link="link12_head" />
+    <child link="xtion" />
+    <origin rpy="0 0 -1.57" xyz="0 0 0.22" />
+    <axis xyz="1 0 0" />
+    <limit effort="30" lower="-1.57" upper="1.57" velocity="1.571" />
+  </joint>
+  <!-- xtion -->
+  <link name="xtion">
+    <visual>
+      <origin xyz="-0.0 0.0 0.0405" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://turtlebot_description/meshes/sensors/xtion_pro_camera.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0405" rpy="0 0 0" />
+      <geometry>
+        <box size="0.0730 0.2760 0.0720" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.170" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001152600" ixy="0.0" ixz="0.0" iyy="0.000148934" iyz="0.0" izz="0.001154654" />
+    </inertial>
+  </link>
+  <!-- rgb_link -->
+  <link name="rgb_link" />
+  <joint name="rgb_link_xtion_joint" type="fixed">
+    <parent link="xtion" />
+    <child link="rgb_link" />
+    <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0205 0.0375" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571" />
+  </joint>
+  <!-- depth_link -->
+  <link name="depth_link" />
+  <joint name="depth_link_xtion_joint" type="fixed">
+    <parent link="xtion" />
+    <child link="depth_link" />
+    <origin rpy="-1.57 0 -1.57" xyz="0.02 0.0475 0.0375" />
+    <axis xyz="0 0 1" />
+    <limit effort="30" lower="-3.14" upper="3.14" velocity="1.571" />
+  </joint>
+  <!-- sobit Ribs -->
+  <!-- link14_left_ribs -->
+  <link name="link14_left_ribs">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.07 0 0.0075" />
+      <geometry>
+        <box size="0.14 0.015 0.015" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.07 0 0.0075" />
+      <geometry>
+        <box size="0.14 0.015 0.015" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.07 0 0.0075" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <!-- link14_right_ribs -->
+  <link name="link14_right_ribs">
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.07 0 0.0075" />
+      <geometry>
+        <box size="0.14 0.015 0.015" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.07 0 0.0075" />
+      <geometry>
+        <box size="0.14 0.015 0.015" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.07 0 0.0075" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <!-- sobit Body -->
+  <link name="body_link">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/mini_sobit_body_size_fix.dae" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://sobit_mini_description/model/dae/mini_sobit_body_size_fix.dae" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+      </material>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/sobit_mini_description</robotNamespace>
+    </plugin>
+  </gazebo>
 </robot>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot name="head" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find sobit_mini_description)/urdf/head/head.transmission.xacro" />
+  <xacro:macro name="head" params="prefix parent">
+    <joint name="${prefix}_pan_joint" type="revolute">
+      <parent link="${parent}" />
+      <child link="${prefix}_pan_link" />
+      <origin rpy="0 0 0" xyz="0 0 0.515" />
+      <axis xyz="0 0 1" />
+      <limit effort="30" lower="-2.617" upper="2.617" velocity="${M_PI/2.0}" />
+    </joint>
+    <link name="${prefix}_pan_link">
+      <collision>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 0.0135" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit hed_neck.dae" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 0.0135" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit hed_neck.dae" />
+        </geometry>
+        <material name="black">
+          <color rgba="0.0 0.0 0.0 1.0" />
+        </material>
+      </visual>
+      <inertial>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 0.0135" />
+        <mass value="0.6" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+      </inertial>
+    </link>
+    <joint name="${prefix}_tilt_joint" type="revolute">
+      <parent link="${prefix}_pan_link" />
+      <child link="${prefix}_tilt_link" />
+      <origin rpy="0 0 0" xyz="0 0 0.025" />
+      <axis xyz="1 0 0" />
+      <limit effort="30" lower="-1" upper="1" velocity="${M_PI/2.0}" />
+    </joint>
+    <link name="${prefix}_tilt_link">
+      <collision>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 -0.012" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit hed_top.dae" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 -0.012" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit hed_top.dae" />
+        </geometry>
+        <material name="blue">
+          <color rgba="0.0 0.0 1.0 1.0" />
+        </material>
+      </visual>
+      <inertial>
+        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 -0.031" />
+        <mass value="0.3" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+      </inertial>
+    </link>
+    <xacro:head_transmission prefix="${prefix}"/>
+  </xacro:macro>
+</robot>

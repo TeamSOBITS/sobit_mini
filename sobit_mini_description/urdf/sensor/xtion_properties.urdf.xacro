@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<robot>
+  <property name="cam_px" value="0" />
+  <property name="cam_py" value="0" />
+  <property name="cam_pz" value="0.20" />
+  <property name="cam_or" value="0" />
+  <property name="cam_op" value="0" />
+  <property name="cam_oy" value="-1.57" />
+</robot>
