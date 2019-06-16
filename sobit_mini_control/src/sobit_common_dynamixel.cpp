@@ -161,6 +161,14 @@ void SobitCommonDynamixel::setGrouopRead2(int id) {
   if (dxl_addparam_result != true) fprintf(stderr, "[ID:%03d] grouBulkRead addparam failed\n", id);
 }
 
+void SobitCommonDynamixel::setPositionIGain(int id) {
+  this->dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, id, POSITION_I_GAIN, (uint16_t)25, &this->dxl_error);
+  if (this->dxl_comm_result != COMM_SUCCESS)
+    packetHandler->getTxRxResult(this->dxl_comm_result);
+  else if (this->dxl_error != 0)
+    packetHandler->getRxPacketError(this->dxl_error);
+}
+
 int SobitCommonDynamixel::getCurrentPosition(int id) {
   // read current_position
   this->dxl_comm_result = packetHandler->read4ByteTxRx(

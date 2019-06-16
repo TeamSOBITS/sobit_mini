@@ -13,7 +13,6 @@
         <arg name="serialport" value="$(arg serialport)" />
     </include>
     <include file="$(find sobit_mini_control)/launch/sobit_mini_control.launch"/>
-    <node pkg="sobit_mini_bringup" type="initial_joint_publisher.py" name="intial_joint_publisher_node" output="screen"/>
     <!-- kobuki_controller -->
     <group ns = "robot_ctrl">
         <node pkg="sobit_mini_bringup" type="wheel_controller.py" name="wheel_controller" output="screen"/>

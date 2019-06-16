@@ -128,38 +128,6 @@ SobitMiniControl::SobitMiniControl() {
   registerInterface(&jnt_limit_interface_);
 }
 
-void SobitMiniControl::writeInitialJoint() {
-  trajectory_msgs::JointTrajectory traj;
-  traj.joint_names.push_back("body_lift_joint");
-  traj.joint_names.push_back("body_roll_joint");
-  traj.joint_names.push_back("head_tilt_joint");
-  traj.joint_names.push_back("head_pan_joint");
-  traj.joint_names.push_back("right_shoulder_roll_joint");
-  traj.joint_names.push_back("right_shoulder_flex_joint");
-  traj.joint_names.push_back("right_wrist_flex_joint");
-  traj.joint_names.push_back("right_hand_motor_joint");
-  traj.joint_names.push_back("left_shoulder_roll_joint");
-  traj.joint_names.push_back("left_shoulder_flex_joint");
-  traj.joint_names.push_back("left_wrist_flex_joint");
-  traj.joint_names.push_back("left_hand_motor_joint");
-  traj.points.resize(1);
-  traj.points[0].positions.resize(12);
-  nh_.getParam("/initial_joint/body_lift_joint", traj.points[0].positions[0]);
-  nh_.getParam("/initial_joint/body_roll_joint", traj.points[0].positions[1]);
-  nh_.getParam("/initial_joint/head_tilt_joint", traj.points[0].positions[2]);
-  nh_.getParam("/initial_joint/head_pan_joint", traj.points[0].positions[3]);
-  nh_.getParam("/initial_joint/right_shoulder_roll_joint", traj.points[0].positions[4]);
-  nh_.getParam("/initial_joint/right_shoulder_flex_joint", traj.points[0].positions[5]);
-  nh_.getParam("/initial_joint/right_wrist_flex_joint", traj.points[0].positions[6]);
-  nh_.getParam("/initial_joint/right_hand_motor_joint", traj.points[0].positions[7]);
-  nh_.getParam("/initial_joint/left_shoulder_roll_joint", traj.points[0].positions[8]);
-  nh_.getParam("/initial_joint/left_shoulder_flex_joint", traj.points[0].positions[9]);
-  nh_.getParam("/initial_joint/left_wrist_flex_joint", traj.points[0].positions[10]);
-  nh_.getParam("/initial_joint/left_hand_motor_joint", traj.points[0].positions[11]);
-  traj.points[0].time_from_start = ros::Duration(0.0);
-  writeDynamixelMotors(traj);
-}
-
 void SobitMiniControl::read(ros::Time time, ros::Duration period) {
   sensor_msgs::JointState pose = readDynamixelMotors();
   for (int i = 0; i < pose.name.size(); i++) {

@@ -1,54 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot name="left_arm" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find sobit_mini_description)/urdf/left_arm/left_arm.transmission.xacro" />
+
   <xacro:macro name="left_arm" params="prefix parent">
+
     <joint name="${prefix}_shoulder_fixed_joint" type="fixed">
       <parent link="${parent}" />
       <child link="${prefix}_shoulder_fixed_link" />
-      <origin rpy="0 0 0" xyz="0.01 0 0.4" />
+      <origin rpy="0 0 0" xyz="0.0 0 0.343" />
       <axis xyz="0 0 1" />
       <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
     </joint>
+
     <link name="${prefix}_shoulder_fixed_link">
-      <collision>
-        <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
-        <geometry>
-          <box size="0.105 0.03 0.055" />
-        </geometry>
-      </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
+        <origin rpy="${M_PI/2.0} 0 ${M_PI}" xyz="0.0 0.081 0.007" />
         <geometry>
-          <box size="0.105 0.03 0.055" />
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_shoulder1.dae" />
         </geometry>
-        <material name="black" />
       </visual>
       <inertial>
-        <origin rpy="0 0 0" xyz="0.0525 0 0.0" />
+        <origin rpy="0 0 0" xyz="0.0 0 0.0" />
         <mass value="0.08" />
         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
       </inertial>
     </link>
+
     <joint name="${prefix}_shoulder_roll_joint" type="revolute">
       <parent link="${prefix}_shoulder_fixed_link" />
       <child link="${prefix}_shoulder_roll_link" />
-      <origin rpy="0 0 0" xyz="0.105 0 0.02" />
-      <axis xyz="1 0 0" />
-      <limit effort="30" lower="${-M_PI/2.0}" upper="0" velocity="${M_PI}" />
+      <origin rpy="0 0 0" xyz="0.0 0.11986 0.03941" />
+      <axis xyz="0 -1 0" />
+      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI}" />
     </joint>
+
     <link name="${prefix}_shoulder_roll_link">
       <collision>
-        <origin rpy="0 0 0" xyz="0.034 0 0.0" />
+        <origin rpy="0 0 0" xyz="0.0 0 0.0" />
         <geometry>
           <box size="0.068 0.05 0.04" />
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.034 0 0.0" />
+        <origin rpy="0 ${M_PI/2.0} 0" xyz="0.0 0.0525 0.0" />
         <geometry>
-          <box size="0.068 0.05 0.04" />
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_shoulder2.dae" />
         </geometry>
-        <material name="black" />
       </visual>
       <inertial>
         <origin rpy="0 0 0" xyz="0.034 0 0.0" />
@@ -56,13 +53,15 @@
         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
       </inertial>
     </link>
+
     <joint name="${prefix}_shoulder_flex_joint" type="revolute">
       <parent link="${prefix}_shoulder_roll_link" />
       <child link="${prefix}_shoulder_flex_link" />
-      <origin rpy="0 0 0" xyz="0.053 0.0 0.0" />
-      <axis xyz="0 1 0" />
-      <limit effort="30" lower="${-M_PI}" upper="0" velocity="${M_PI/2.0}" />
+      <origin rpy="${M_PI/2.0} 0 0" xyz="0.0 0.0525 0.0" />
+      <axis xyz="1 0 0" />
+      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
+
     <link name="${prefix}_shoulder_flex_link">
       <collision>
         <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
@@ -71,11 +70,10 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.0 0 -0.095" />
+        <origin rpy="0 ${M_PI} ${M_PI/2.0}" xyz="0.018 0.017 -0.14803" />
         <geometry>
-          <box size="0.035 0.05 0.19" />
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_arm.dae" />
         </geometry>
-        <material name="black" />
       </visual>
       <inertial>
         <origin rpy="0 0 0" xyz="0 0 -0.095" />
@@ -83,14 +81,16 @@
         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
       </inertial>
     </link>
+
     <joint name="${prefix}_wrist_flex_joint" type="revolute">
       <parent link="${prefix}_shoulder_flex_link" />
-      <child link="${prefix}_wrist_flex_joint" />
-      <origin rpy="0 0 0" xyz="0 0 -0.19" />
-      <axis xyz="0 1 0" />
+      <child link="${prefix}_wrist_flex_link" />
+      <origin rpy="0 0 0" xyz="0 0 -0.1892" />
+      <axis xyz="1 0 0" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
-    <link name="${prefix}_wrist_flex_joint">
+
+    <link name="${prefix}_wrist_flex_link">
       <collision>
         <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
         <geometry>
@@ -98,11 +98,10 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 0 0" xyz="0.0 0 -0.035" />
+        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="0.021 0.01 -0.029" />
         <geometry>
-          <box size="0.06 0.04 0.07" />
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_wrist.dae" />
         </geometry>
-        <material name="black" />
       </visual>
       <inertial>
         <origin rpy="0 0 0" xyz="0 0 -0.035" />
@@ -110,6 +109,7 @@
         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
       </inertial>
     </link>
+
     <xacro:left_arm_transmission prefix="${prefix}"/>
   </xacro:macro>
 </robot>

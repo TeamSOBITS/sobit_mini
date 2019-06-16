@@ -26,11 +26,6 @@ SobitMiniDynamixel::SobitMiniDynamixel() {
   used_dynamixel_name[21] = "left_shoulder_flex_joint";
   used_dynamixel_name[22] = "left_wrist_flex_joint";
   used_dynamixel_name[23] = "left_hand_motor_joint";
-  /*std::ofstream ofs("/home/kento-nasu/catkin_ws/src/sobit_mini/sobit_mini_control/config/debug.csv");
-  ofs << "ID,"
-      << "joint_name,"
-      << "dynamixel_pos,"
-      << "joint_pos" << std::endl;*/
 }
 
 SobitMiniDynamixel::~SobitMiniDynamixel() {}
@@ -41,6 +36,7 @@ void SobitMiniDynamixel::initializeDynamixel() {
       setTorqueEnable(i);
       setAcceleration(i, acceleration_val);
       setVelocity(i, velocity_val);
+      setPositionIGain(i);
       if (i == 10 || i == 11 || i == 20 || i == 21) {
         setGrouopRead1(i);
       } else {
@@ -114,96 +110,59 @@ int SobitMiniDynamixel::getJointNumber(std::string joint_name) {
 }
 
 float SobitMiniDynamixel::toBit(int id, float rad) {
-  if (id == 1) {
-    float bit = 90163.9344262 * rad + 2048;
-    if (bit > 29548) bit = 29548;
-    if (bit < 2048) bit = 2048;
-    return bit;
-  } else if (id == 2) {
-    return 2048 -
-           (rad * 5258 /
-            M_PI_2);  // 2048は胴が正面の状態の値,5258は胴が正面を向いている状態から左(-3210)・右(7306)向きの状態を引いた値,
-                      // 1.57は正面の状態から左・右の向きに向いた時のrad差
+  if (id == 1) {  // 2048->センター、0.045233->１回転で伸びるm
+    return 2048 + rad / 0.045233 * 4096;
+  } else if (id == 2) {  // 116->big_gearの歯の数, 22->mini_gearの歯の数
+    return 2048 + rad / (M_PI * 2) * 4096 * (116.0 / 22.0);
   } else if (id == 3) {
-    return 2250 - (rad * 750 /
-                   0.5);  // 2250は顔が前向きの状態の値,750は顔が前向きの状態から下(1500)・上(3000)向きの状態を引いた値,
-                          // 0.5は前向き状態から下・上の向きに向いた時のrad差
+    return 984 + rad / (M_PI * 2) * 4096 * (48.0 / 23.0);
   } else if (id == 4) {
-    return 3083 + (rad * 2062 / 3.14);
-    // 3083は顔がまっすぐの状態の値,
-    // 2062は顔がまっすぐの状態から左(4106)・右(2044)の状態を引いた値、3.14はまっすぐの状態から左・右の向きに向いた時のrad差
-  } else if (id == 10)
-    return 2048 - (rad / 0.001533203125);
-  else if (id == 11) {
-    if (rad > 1.57)                                   //平行時より上 1.57 < 3.14
-      return ((3.14 - rad) / 0.001533203125) + 1024;  // 2048以上
-    else                                              //平行時より下 0 < 3.14
-      return ((1.57 - rad) / 0.001533203125) + 2048;  // 2048以下
+    return 2560 + rad / (M_PI * 2) * 4096;
+  } else if (id == 10) {
+    return 2048 + rad / (M_PI * 2) * 4096;
+  } else if (id == 11) {
+    return 2048 + rad / (M_PI * 2) * 4096;
   } else if (id == 12) {
-    if (rad <= 0)                             //内側に曲がる -1.57 < 0
-      return 2048 + (rad / -0.001533203125);  // 2048以上
-    else                                      //外側に曲がる
-      return 2048 - (rad / 0.001533203125);   // 2048以下
+    return 2048 + rad / (M_PI * 2) * 4096;
   } else if (id == 13) {
-    return 2200 -
-           (rad * 1000 /
-            M_PI_2);  // 2200は閉めた状態　1000は開きの状態(1200)から閉めの状態(2200)を引いた値, 1.57は閉めから開き状態の時のrad差
+    return 1910 + rad / (M_PI * 2) * 4096;
   } else if (id == 20)
-    return 2048 - (rad / -0.001533203125);
+    return 2048 + rad / (M_PI * 2) * 4096;
   else if (id == 21)
-    return 1024 + (rad / -0.001533203125);
+    return 2048 + rad / (M_PI * 2) * 4096;
   else if (id == 22) {
-    if (rad <= 0)                             //外側に曲がる -1.57 < 0
-      return 2048 + (rad / -0.001533203125);  // 2048以上
-    else                                      //内側に曲がる
-      return 2048 - (rad / 0.001533203125);   // 2048以下
+    return 2048 + rad / (M_PI * 2) * 4096;
   } else if (id == 23) {
-    return 1900 + (rad * 1000 /
-                   M_PI_2);  // 1900は閉めた状態
-                             // 1000は開きの状態(2900)から閉めの状態(1900)を引いた値, 1.57は閉めから開き状態の時のrad差
+    return 1900 + rad / (M_PI * 2) * 4096;
   } else
     return -1;
 }
 
 float SobitMiniDynamixel::toRad(std::string joint_name, int bit) {
   if (joint_name == "body_lift_joint") {
-    return (bit - 2048) / 90163.9344262;
+    return (bit - 2048) * (0.045233 / 4096);
   } else if (joint_name == "body_roll_joint") {
-    return (2048 - bit) * 1.57 / 5258;
+    return (bit - 2048) * ((M_PI * 2) / 4096) * (22.0 / 116.0);
   } else if (joint_name == "head_tilt_joint") {
-    return (2250 - bit) * 0.5 / 750;
+    return (bit - 984) * ((M_PI * 2) / 4096) * (23.0 / 48.0);
   } else if (joint_name == "head_pan_joint") {
-    return (bit - 3083) * 3.14 / 2062;
+    return (bit - 2560) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_shoulder_roll_joint") {
-    return (2048 - bit) * 0.001533203125;
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_shoulder_flex_joint") {
-    if (bit < 2048) {
-      return 3.14 - (0.001533203125 * (bit - 1024));  // 3.17から3.14に変更した
-    } else {
-      return 1.57 - (0.001533203125 * (bit - 2048));
-    }
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_wrist_flex_joint") {
-    if (bit >= 2048) {
-      return (bit - 2048) * -0.001533203125;
-    } else {
-      return (2048 - bit) * 0.001533203125;
-    }
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_hand_motor_joint") {
-    return (2200 - bit) * M_PI_2 / 1000;
+    return (bit - 1910) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_shoulder_roll_joint") {
-    return (2048 - bit) * -0.001533203125;
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_shoulder_flex_joint") {
-    return (bit - 1024) * -0.001533203125;
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_wrist_flex_joint") {
-    if (bit >= 2048)  // 1.57
-    {
-      return (bit - 2048) * -0.001533203125;
-    } else  // 1.57
-    {       // -1.57
-      return (2048 - bit) * 0.001533203125;
-    }
+    return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_hand_motor_joint") {
-    return (bit - 1900) * M_PI_2 / 1000;
+    return (bit - 1900) * ((M_PI * 2) / 4096);
   }
   return -1;
 }

@@ -14,7 +14,6 @@ int main(int argc, char *argv[]) {
   // ros::MultiThreadedSpinner spinner(4);
   spinner.start();
   // ros::Duration(2).sleep();
-  ROS_WARN("initial_finish");
 
   while (ros::ok()) {
     ros::Time     now = sobit_mini_ctr.getTime();

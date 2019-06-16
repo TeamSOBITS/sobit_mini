@@ -190,7 +190,5 @@
         <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
       </inertial>
     </link>
-    <!-- Kobuki Gazebo simulation details -->
-    <kobuki_sim />
   </xacro:macro>
 </robot>

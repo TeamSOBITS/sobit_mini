@@ -6,6 +6,12 @@
   <material name="black">
     <color rgba="0.1 0.1 0.1 1.0" />
   </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0" />
+  </material>
+  <material name="silver">
+    <color rgba="0.741 0.752 0.760 1.0" />
+  </material>
   <material name="red">
     <color rgba="1.0 0.0 0.0 1.0" />
   </material>
