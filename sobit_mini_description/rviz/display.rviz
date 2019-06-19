@@ -331,114 +331,114 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_footprint:
-          Value: true
+          Value: false
         base_laser_link:
-          Value: true
+          Value: false
         base_link:
-          Value: true
+          Value: false
         body_back_pole_link:
-          Value: true
+          Value: false
         body_big_gear_link:
-          Value: true
+          Value: false
         body_front_pole_link:
-          Value: true
+          Value: false
         body_lift_link:
-          Value: true
+          Value: false
         body_roll_link:
-          Value: true
+          Value: false
         body_small_gear_link:
-          Value: true
+          Value: false
         body_square_bottom_link:
-          Value: true
+          Value: false
         body_square_top_link:
-          Value: true
+          Value: false
         camera_depth_optical_frame:
-          Value: true
+          Value: false
         camera_fixed_link:
           Value: true
         camera_link:
-          Value: true
+          Value: false
         camera_rgb_optical_frame:
-          Value: true
+          Value: false
         caster_back_link:
-          Value: true
+          Value: false
         caster_front_link:
-          Value: true
+          Value: false
         cliff_sensor_front_link:
-          Value: true
+          Value: false
         cliff_sensor_left_link:
-          Value: true
+          Value: false
         cliff_sensor_right_link:
-          Value: true
+          Value: false
         depth_link:
-          Value: true
+          Value: false
         gyro_link:
-          Value: true
+          Value: false
         head_pan_link:
-          Value: true
+          Value: false
         head_tilt_link:
-          Value: true
+          Value: false
         left_hand_left_finger_link:
-          Value: true
+          Value: false
         left_hand_motor_link:
-          Value: true
+          Value: false
         left_hand_right_finger_link:
-          Value: true
+          Value: false
         left_shoulder_fixed_link:
-          Value: true
+          Value: false
         left_shoulder_flex_link:
-          Value: true
+          Value: false
         left_shoulder_roll_link:
-          Value: true
+          Value: false
         left_wrist_flex_link:
-          Value: true
+          Value: false
         plate_bottom_link:
-          Value: true
+          Value: false
         plate_middle_link:
-          Value: true
+          Value: false
         pole_bottom_0_link:
-          Value: true
+          Value: false
         pole_bottom_1_link:
-          Value: true
+          Value: false
         pole_bottom_2_link:
-          Value: true
+          Value: false
         pole_bottom_3_link:
-          Value: true
+          Value: false
         pole_bottom_4_link:
-          Value: true
+          Value: false
         pole_bottom_5_link:
-          Value: true
+          Value: false
         pole_middle_0_link:
-          Value: true
+          Value: false
         pole_middle_1_link:
-          Value: true
+          Value: false
         pole_middle_2_link:
-          Value: true
+          Value: false
         pole_middle_3_link:
-          Value: true
+          Value: false
         rgb_link:
           Value: true
         right_hand_left_finger_link:
-          Value: true
+          Value: false
         right_hand_motor_link:
-          Value: true
+          Value: false
         right_hand_right_finger_link:
-          Value: true
+          Value: false
         right_shoulder_fixed_link:
-          Value: true
+          Value: false
         right_shoulder_flex_link:
-          Value: true
+          Value: false
         right_shoulder_roll_link:
-          Value: true
+          Value: false
         right_wrist_flex_link:
-          Value: true
+          Value: false
         test:
-          Value: true
+          Value: false
         wheel_left_link:
-          Value: true
+          Value: false
         wheel_right_link:
-          Value: true
-      Marker Scale: 0.100000001
+          Value: false
+      Marker Scale: 0.300000012
       Name: TF
       Show Arrows: false
       Show Axes: true
@@ -559,7 +559,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.69560671
+      Distance: 0.66064167
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -574,10 +574,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.159797832
+      Pitch: 0.0797978714
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.133177176
+      Yaw: 1.52317607
     Saved: ~
 Window Geometry:
   Displays:

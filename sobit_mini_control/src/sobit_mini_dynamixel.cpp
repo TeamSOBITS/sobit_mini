@@ -59,11 +59,10 @@ void SobitMiniDynamixel::writeDynamixelMotors(const trajectory_msgs::JointTrajec
     if (joint_id == 21) {
       // ROS_INFO("[ID:%03d]: %d", joint_id, joint_pos);
     }
-    if (std::abs(joint_pos == saved_dxl_goal_position[joint_id])) {
+    if (std::abs(joint_pos == saved_dynamixel_position[joint_id])) {
       continue;
     }
     addPositionToStorage(joint_id, joint_pos);
-    saved_dxl_goal_position[joint_id] = joint_pos;
   }
   writeGoalPositon();
 }
@@ -87,7 +86,9 @@ sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
       }
       float joint_pos = toRad(joint_name, dynamixel_pos);
       if (dynamixel_pos == -1) {
-        joint_pos = saved_dxl_goal_position[i];
+        joint_pos = toRad(joint_name, saved_dynamixel_position[i]);
+      } else {
+        saved_dynamixel_position[i] = dynamixel_pos;
       }
       // std::cout << joint_name << " : " << dynamixel_pos << std::endl;
       /*if (i == 21) {
@@ -115,7 +116,7 @@ float SobitMiniDynamixel::toBit(int id, float rad) {
   } else if (id == 2) {  // 116->big_gearの歯の数, 22->mini_gearの歯の数
     return 2048 + rad / (M_PI * 2) * 4096 * (116.0 / 22.0);
   } else if (id == 3) {
-    return 984 + rad / (M_PI * 2) * 4096 * (48.0 / 23.0);
+    return 984 + rad / (M_PI * 2) * 4096 * (47.0 / 23.0);
   } else if (id == 4) {
     return 2560 + rad / (M_PI * 2) * 4096;
   } else if (id == 10) {
@@ -144,7 +145,7 @@ float SobitMiniDynamixel::toRad(std::string joint_name, int bit) {
   } else if (joint_name == "body_roll_joint") {
     return (bit - 2048) * ((M_PI * 2) / 4096) * (22.0 / 116.0);
   } else if (joint_name == "head_tilt_joint") {
-    return (bit - 984) * ((M_PI * 2) / 4096) * (23.0 / 48.0);
+    return (bit - 984) * ((M_PI * 2) / 4096) * (23.0 / 47.0);
   } else if (joint_name == "head_pan_joint") {
     return (bit - 2560) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_shoulder_roll_joint") {

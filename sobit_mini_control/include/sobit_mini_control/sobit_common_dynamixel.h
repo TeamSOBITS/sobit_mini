@@ -64,7 +64,7 @@ class SobitCommonDynamixel : public hardware_interface::RobotHW {
   bool    can_move            = true;
 
   int dxl_goal_position[30];
-  int saved_dxl_goal_position[30] = {0};
+  int saved_dynamixel_position[30] = {0};
   int used_dynamixel_id[30]       = {0};
 
   int velocity_val;

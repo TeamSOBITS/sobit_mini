@@ -20,7 +20,7 @@
     <link name="camera_fixed_link" />
 
     <joint name="camera_rgb_joint" type="fixed">
-      <origin xyz="0.013 0.0220 0.022" rpy="0 -0.1221 0" />
+      <origin xyz="0.011 0.0220 0.022" rpy="0 -0.1221 0" />
       <parent link="camera_fixed_link" />
       <child link="rgb_link" />
     </joint>
