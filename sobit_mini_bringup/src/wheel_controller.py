@@ -29,16 +29,14 @@ def request(req):
     # 初期の位置を保存する
     initial_value = odometry_value
 
-    if "S" in req.vector:
+    if req.straight_line != 0.0 and req.turn_angle == 0.0:
         rospy.loginfo("order_Straight")
 
-        order_value = read_value(req) # 移動距離を読み取る
+        while xt < abs(req.straight_line):
 
-        while xt < abs(order_value):
+            result = pid_calculation(abs(req.straight_line), xt, t1, req.max_speed) # PID制御の計算を行う
 
-            result = pid_calculation(abs(order_value), xt, t1, req.max_speed) # PID制御の計算を行う
-
-            if order_value < 0:
+            if req.straight_line < 0:
                 speed.linear.x = -result
             else:
                 speed.linear.x = result
@@ -49,13 +47,13 @@ def request(req):
             y_diff = odometry_value.pose.pose.position.y - initial_value.pose.pose.position.y
             xt = math.sqrt(x_diff ** 2 + y_diff ** 2) # ユークリッド距離の計算
 
-            #rospy.loginfo("%s %s", xt, order_value)
+            rospy.loginfo("%s %s", xt, req.straight_line)
             rate.sleep()
 
-    elif "T" in req.vector:
+    elif req.straight_line == 0.0 and req.turn_angle != 0.0:
         rospy.loginfo("order_Trun")
 
-        order_value = math.radians(read_value(req)) # 度数法での回転角を読み取り弧度法に変換する
+        order_value = math.radians(req.turn_angle)
 
         while xt < abs(order_value):
 
@@ -72,17 +70,11 @@ def request(req):
             initial_euler = tf.transformations.euler_from_quaternion((initial_value.pose.pose.orientation.x,initial_value.pose.pose.orientation.y,initial_value.pose.pose.orientation.z,initial_value.pose.pose.orientation.w))
             xt = abs(odometry_euler[2] - initial_euler[2]) # ユークリッド距離の計算
 
-            #rospy.loginfo("%s %s", xt, order_value)
+            rospy.loginfo("%s %s", math.degrees(xt), req.turn_angle)
             rate.sleep()
 
     xt = 0.0
     return 'finished'
-
-# 値を取り出す
-def read_value(req):
-    value_str = req.vector[2:len(req.vector)]
-    value = float(value_str)
-    return value
 
 # PID制御の計算を行う
 def pid_calculation(xd, xt, t1, max_speed):
@@ -107,7 +99,6 @@ def pid_calculation(xd, xt, t1, max_speed):
 # 車輪のオドメトリを返す
 def odometory_save(odometry):
     global odometry_value
-
     odometry_value = odometry
 
 # メイン
@@ -124,7 +115,7 @@ if __name__ == '__main__':
     # パラメータの設定
     Kp = rospy.get_param("/proportional_control", 0.1)
     Kv = rospy.get_param("/derivation_control", 0.4)
-    Ki = rospy.get_param("/integral_control", 0.1)
+    Ki = rospy.get_param("/integral_control", 0.3)
 
     print "Ready to serve"
     rospy.spin()
