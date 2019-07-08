@@ -19,7 +19,7 @@
   <xacro:base/>
   <stack_hexagons parent="base_link" />
   <xacro:urg parent="base_link"/>
-  <xacro:real_sense parent="base_link"/>
+  <xacro:real_sense child="base_footprint"/>
   <xacro:body prefix="body" parent="plate_middle_link"/>
   <xacro:left_arm prefix="left" parent="body_lift_link"/>
   <xacro:right_arm prefix="right" parent="body_lift_link"/>
