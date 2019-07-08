@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot name="real_sense" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="real_sense" params="parent">
+    <joint name="real_sense_joint" type="fixed">
+      <origin xyz="0.205 0.0 0.01" rpy="0 0 0" />
+      <parent link="${parent}" />
+      <child link="t265_odom_frame" />
+    </joint>
+    <link name="t265_odom_frame"/>
+  </xacro:macro>
+</robot>
