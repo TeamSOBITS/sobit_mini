@@ -10,7 +10,7 @@
 
     <param name="/proportional_control" type="double" value="0.10"/>
     <param name="/derivation_control" type="double" value="0.40"/>
-    <param name="/integral_control" type="double" value="0.30"/>
+    <param name="/integral_control" type="double" value="0.80"/>
 
     <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
         <arg name="base" value="$(arg base)" />
