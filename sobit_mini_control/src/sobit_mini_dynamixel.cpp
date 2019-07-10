@@ -86,16 +86,16 @@ sensor_msgs::JointState SobitMiniDynamixel::readDynamixelMotors() {
       }
       float joint_pos = toRad(joint_name, dynamixel_pos);
       if (dynamixel_pos == -1) {
-        joint_pos = toRad(joint_name, saved_dynamixel_position[i]);
+        // joint_pos = toRad(joint_name, saved_dynamixel_position[i]);
       } else {
         saved_dynamixel_position[i] = dynamixel_pos;
+        pose.name.push_back(joint_name);
+        pose.position.push_back(joint_pos);
       }
       // std::cout << joint_name << " : " << dynamixel_pos << std::endl;
       /*if (i == 21) {
         ofs << i << "," << joint_name << "," << dynamixel_pos << "," << joint_pos << std::endl;
       }*/
-      pose.name.push_back(joint_name);
-      pose.position.push_back(joint_pos);
     }
   }
   return pose;
