@@ -87,8 +87,13 @@ void SobitCommonDynamixel::initializeDynamixel() {
       setTorqueEnable(i);
       setAcceleration(i, acceleration_val);
       setVelocity(i, velocity_val);
-      setGrouopRead1(i);
-      if (i == 20) {
+      setPositionIGain(i);
+      if (i == 10 || i == 11 || i == 20 || i == 21) {
+        setGrouopRead1(i);
+      } else {
+        setGrouopRead2(i);
+      }
+      if (i == 13 || i == 23) {
         setTorqueLimit(i);
       }
     }
@@ -162,7 +167,8 @@ void SobitCommonDynamixel::setGrouopRead2(int id) {
 }
 
 void SobitCommonDynamixel::setPositionIGain(int id) {
-  this->dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, id, POSITION_I_GAIN, (uint16_t)25, &this->dxl_error);
+  this->dxl_comm_result =
+      packetHandler->write2ByteTxRx(portHandler, id, POSITION_I_GAIN, (uint16_t)25, &this->dxl_error);
   if (this->dxl_comm_result != COMM_SUCCESS)
     packetHandler->getTxRxResult(this->dxl_comm_result);
   else if (this->dxl_error != 0)
@@ -263,7 +269,7 @@ int SobitCommonDynamixel::readCurrentPosition1(int id) {
     return -1;
   } else {
     if (this->can_move == false) {
-      // initializeDynamixel();
+      initializeDynamixel();
       this->can_move = true;
     }
     // Get present position value
