@@ -44,7 +44,7 @@
 #define DXL_MOVING_STATUS_THRESHOLD 20
 #define ESC_ASCII_VALUE 0x1b
 #define LEN_PRO_GOAL_POSITION 4     // 4
-#define LEN_PRO_PRESENT_POSITION 4  // 4 // 2
+#define LEN_PRO_PRESENT_POSITION 2  // 4 // 2
 
 #define MAGNIFICATION_VALUE 651.89864690440329530934  // 2048 / 3.14
 
@@ -65,7 +65,7 @@ class SobitCommonDynamixel : public hardware_interface::RobotHW {
 
   int dxl_goal_position[30];
   int saved_dynamixel_position[30] = {0};
-  int used_dynamixel_id[30]       = {0};
+  int used_dynamixel_id[30]        = {0};
 
   int velocity_val;
   int acceleration_val;
