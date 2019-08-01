@@ -59,7 +59,7 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        All Links Enabled: true
+        All Links Enabled: false
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
@@ -72,27 +72,27 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_back_pole_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_big_gear_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_front_pole_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_lift_link:
           Alpha: 1
           Show Axes: false
@@ -105,17 +105,17 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_square_bottom_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         body_square_top_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         camera_depth_optical_frame:
           Alpha: 1
           Show Axes: false
@@ -128,7 +128,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         camera_rgb_optical_frame:
           Alpha: 1
           Show Axes: false
@@ -137,12 +137,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         caster_front_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         cliff_sensor_front_link:
           Alpha: 1
           Show Axes: false
@@ -167,17 +167,17 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         head_tilt_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         left_hand_left_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         left_hand_motor_link:
           Alpha: 1
           Show Axes: false
@@ -186,7 +186,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         left_shoulder_fixed_link:
           Alpha: 1
           Show Axes: false
@@ -196,77 +196,77 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         left_shoulder_roll_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         left_wrist_flex_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         plate_bottom_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         plate_middle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_0_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_1_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_2_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_3_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_4_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         pole_bottom_5_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        pole_middle_0_link:
+          Value: false
+        pole_kinect_0_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        pole_middle_1_link:
+          Value: false
+        pole_kinect_1_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        pole_middle_2_link:
+          Value: false
+        pole_kinect_2_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        pole_middle_3_link:
+          Value: false
+        pole_kinect_3_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         rgb_link:
           Alpha: 1
           Show Axes: false
@@ -275,7 +275,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         right_hand_motor_link:
           Alpha: 1
           Show Axes: false
@@ -284,7 +284,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         right_shoulder_fixed_link:
           Alpha: 1
           Show Axes: false
@@ -294,31 +294,27 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         right_shoulder_roll_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         right_wrist_flex_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        test:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
+          Value: false
         wheel_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wheel_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -355,7 +351,7 @@ Visualization Manager:
         camera_depth_optical_frame:
           Value: false
         camera_fixed_link:
-          Value: true
+          Value: false
         camera_link:
           Value: false
         camera_rgb_optical_frame:
@@ -385,11 +381,11 @@ Visualization Manager:
         left_hand_right_finger_link:
           Value: false
         left_shoulder_fixed_link:
-          Value: false
+          Value: true
         left_shoulder_flex_link:
           Value: false
         left_shoulder_roll_link:
-          Value: false
+          Value: true
         left_wrist_flex_link:
           Value: false
         plate_bottom_link:
@@ -408,16 +404,16 @@ Visualization Manager:
           Value: false
         pole_bottom_5_link:
           Value: false
-        pole_middle_0_link:
+        pole_kinect_0_link:
           Value: false
-        pole_middle_1_link:
+        pole_kinect_1_link:
           Value: false
-        pole_middle_2_link:
+        pole_kinect_2_link:
           Value: false
-        pole_middle_3_link:
+        pole_kinect_3_link:
           Value: false
         rgb_link:
-          Value: true
+          Value: false
         right_hand_left_finger_link:
           Value: false
         right_hand_motor_link:
@@ -425,20 +421,18 @@ Visualization Manager:
         right_hand_right_finger_link:
           Value: false
         right_shoulder_fixed_link:
-          Value: false
+          Value: true
         right_shoulder_flex_link:
           Value: false
         right_shoulder_roll_link:
-          Value: false
+          Value: true
         right_wrist_flex_link:
-          Value: false
-        test:
           Value: false
         wheel_left_link:
           Value: false
         wheel_right_link:
           Value: false
-      Marker Scale: 0.300000012
+      Marker Scale: 0.100000001
       Name: TF
       Show Arrows: false
       Show Axes: true
@@ -500,8 +494,6 @@ Visualization Manager:
                                 {}
                               right_hand_right_finger_link:
                                 {}
-                        test:
-                          {}
                 body_square_top_link:
                   {}
               body_small_gear_link:
@@ -520,13 +512,13 @@ Visualization Manager:
               {}
             pole_bottom_5_link:
               {}
-            pole_middle_0_link:
+            pole_kinect_0_link:
               {}
-            pole_middle_1_link:
+            pole_kinect_1_link:
               {}
-            pole_middle_2_link:
+            pole_kinect_2_link:
               {}
-            pole_middle_3_link:
+            pole_kinect_3_link:
               {}
             wheel_left_link:
               {}
@@ -559,25 +551,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.66064167
+      Distance: 0.056455113
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0116081601
-        Y: -0.0536810234
-        Z: 0.960707426
+        X: 0.022085486
+        Y: -0.12215957
+        Z: 0.676518619
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.0797978714
+      Pitch: 0.0452026203
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.52317607
+      Yaw: 5.97638416
     Saved: ~
 Window Geometry:
   Displays:

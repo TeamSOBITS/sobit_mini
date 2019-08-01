@@ -21,9 +21,9 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="${M_PI/2.0} 0 0" xyz="0.0 -0.081 0.007" />
+        <origin rpy="${M_PI/2.0} 0 0" xyz="-0.0199 -0.09019 -0.0089" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_shoulder1.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/shoulder1.dae" />
         </geometry>
       </visual>
       <inertial>
@@ -33,20 +33,10 @@
       </inertial>
     </link>
 
-    <joint name="test_joint" type="fixed">
-      <parent link="${prefix}_shoulder_fixed_link" />
-      <child link="test" />
-      <origin rpy="0 0 0" xyz="0.0 0.11751 0.03822" />
-      <axis xyz="0 0 1" />
-      <limit effort="30" lower="-0.1" upper="0.1" velocity="1.571" />
-    </joint>
-
-    <link name="test"/>
-
     <joint name="${prefix}_shoulder_roll_joint" type="revolute">
       <parent link="${prefix}_shoulder_fixed_link" />
       <child link="${prefix}_shoulder_roll_link" />
-      <origin rpy="0 0 0" xyz="0.0 -0.11986 0.03941" />
+      <origin rpy="0 0 0" xyz="0.0 -0.13946 0.03941" />
       <axis xyz="0 -1 0" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
@@ -89,7 +79,7 @@
       <visual>
         <origin rpy="0 ${M_PI} ${M_PI/2.0}" xyz="0.018 0.017 -0.14803" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_arm.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/arm1_right.dae" />
         </geometry>
       </visual>
       <inertial>
@@ -117,7 +107,7 @@
       <visual>
         <origin rpy="${M_PI/2.0} 0 ${-M_PI/2.0}" xyz="-0.021 -0.01 -0.029" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_wrist.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/arm2_right.dae" />
         </geometry>
       </visual>
       <inertial>
