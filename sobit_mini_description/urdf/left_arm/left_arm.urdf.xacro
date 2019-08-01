@@ -14,9 +14,9 @@
 
     <link name="${prefix}_shoulder_fixed_link">
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI}" xyz="0.0 0.081 0.007" />
+        <origin rpy="${M_PI/2.0} 0 ${M_PI}" xyz="0.0199 0.09019 -0.0089" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_shoulder1.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/shoulder1.dae" />
         </geometry>
       </visual>
       <inertial>
@@ -29,7 +29,7 @@
     <joint name="${prefix}_shoulder_roll_joint" type="revolute">
       <parent link="${prefix}_shoulder_fixed_link" />
       <child link="${prefix}_shoulder_roll_link" />
-      <origin rpy="0 0 0" xyz="0.0 0.11986 0.03941" />
+      <origin rpy="0 0 0" xyz="0.0 0.14146 0.03941" />
       <axis xyz="0 -1 0" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI}" />
     </joint>
@@ -42,7 +42,7 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 ${M_PI/2.0} 0" xyz="0.0 0.0525 0.0" />
+        <origin rpy="0 ${M_PI/2.0} 0" xyz="0.0 0.0509 0.0" />
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/sobit_mini_shoulder2.dae" />
         </geometry>
@@ -57,7 +57,7 @@
     <joint name="${prefix}_shoulder_flex_joint" type="revolute">
       <parent link="${prefix}_shoulder_roll_link" />
       <child link="${prefix}_shoulder_flex_link" />
-      <origin rpy="${M_PI/2.0} 0 0" xyz="0.0 0.0525 0.0" />
+      <origin rpy="0 0 0" xyz="0 0.0511 0.0" />
       <axis xyz="1 0 0" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
@@ -70,9 +70,9 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="0 ${M_PI} ${M_PI/2.0}" xyz="0.018 0.017 -0.14803" />
+        <origin rpy="${-M_PI/2.0} ${-M_PI/2.0} 0" xyz="-0.0265 0.0702 -0.017" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_arm.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/arm1_left.dae" />
         </geometry>
       </visual>
       <inertial>
@@ -85,8 +85,8 @@
     <joint name="${prefix}_wrist_flex_joint" type="revolute">
       <parent link="${prefix}_shoulder_flex_link" />
       <child link="${prefix}_wrist_flex_link" />
-      <origin rpy="0 0 0" xyz="0 0 -0.1892" />
-      <axis xyz="1 0 0" />
+      <origin rpy="0 0 0" xyz="-0.0005 0.1105 0" />
+      <axis xyz="0 0 1" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
 
@@ -98,9 +98,9 @@
         </geometry>
       </collision>
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="0.021 0.01 -0.029" />
+        <origin rpy="${-M_PI/2.0} ${-M_PI/2.0} 0" xyz="-0.0260  -0.0405 -0.0172" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_wrist.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/arm2_left.dae" />
         </geometry>
       </visual>
       <inertial>

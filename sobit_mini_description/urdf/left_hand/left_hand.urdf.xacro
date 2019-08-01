@@ -5,9 +5,20 @@
 
   <xacro:macro name="left_hand" params="prefix parent">
 
-    <joint name="${prefix}_motor_joint" type="revolute">
+    <joint name="${prefix}_motor_dummy_joint" type="fixed">
       <parent link="${parent}" />
+      <child link="${prefix}_motor_dummy_link" />
+      <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0 0.15 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="0.0" upper="${M_PI/2.0}" effort="1" velocity="1" />
+    </joint>
+
+    <link name="${prefix}_motor_dummy_link" />
+    
+    <joint name="${prefix}_motor_joint" type="revolute">
+      <parent link="${prefix}_motor_dummy_link" />
       <child link="${prefix}_motor_link" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="${M_PI/2.0}" effort="1" velocity="1" />
     </joint>
@@ -15,9 +26,9 @@
     <link name="${prefix}_motor_link" />
 
     <joint name="${prefix}_left_finger_joint" type="revolute">
-      <parent link="${parent}" />
+      <parent link="${prefix}_motor_dummy_link" />
       <child link="${prefix}_left_finger_link" />
-      <origin rpy="0 0 0" xyz="-0.015855 0.0 -0.04202" />
+      <origin rpy="0 0 0" xyz="-0.015855 0.0 0.0" />
       <axis xyz="0 1 0" />
       <limit lower="-1.0" upper="0.0" effort="1" velocity="1" />
       <mimic joint="${prefix}_motor_joint" multiplier="1.0" offset="-0.1" />
@@ -44,9 +55,9 @@
     </link>
 
     <joint name="${prefix}_right_finger_joint" type="revolute">
-      <parent link="${parent}" />
+      <parent link="${prefix}_motor_dummy_link" />
       <child link="${prefix}_right_finger_link" />
-      <origin rpy="0 0 0" xyz="0.015855 0.0 -0.04202" />
+      <origin rpy="0 0 0" xyz="0.015855 0.0 0.0" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="1.0" effort="1" velocity="1" />
       <mimic joint="${prefix}_motor_joint" multiplier="-1.0" offset="0.1" />
