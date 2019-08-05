@@ -30,7 +30,7 @@ right_arm_trajectory_controller:
   joints:
     - right_shoulder_roll_joint
     - right_shoulder_flex_joint
-    - right_wrist_flex_joint
+    - right_elbow_roll_joint
     - right_hand_motor_joint
   constraints:
     stopped_velocity_tolerance: 0.5
@@ -42,7 +42,7 @@ left_arm_trajectory_controller:
   joints:
     - left_shoulder_roll_joint
     - left_shoulder_flex_joint
-    - left_wrist_flex_joint
+    - left_elbow_roll_joint
     - left_hand_motor_joint
   constraints:
     stopped_velocity_tolerance: 0.5

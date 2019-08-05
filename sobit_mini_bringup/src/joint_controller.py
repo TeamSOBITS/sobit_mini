@@ -46,7 +46,7 @@ class JointController:
         self.from_base_to_arm_flex_link_z_cm = 7.6
         self.arm_flex_link_x_cm = 2.4
         self.arm_flex_link_z_cm = 14.8
-        self.wrist_flex_link_z_cm = 15.0
+        self.elbow_roll_link_z_cm = 15.0
         self.can_grasp_min_x_cm = 20.0
         self.can_grasp_max_x_cm = 42.0
         self.from_base_to_shoulder_z_cm = 72.0
@@ -90,19 +90,19 @@ class JointController:
             self.move_body_joint('body_lift_joint', lift_cm * 0.01, time_from_start)
             self.move_right_arm_joint('right_shoulder_flex_joint', 1.57, time_from_start)
             self.move_right_arm_joint('right_shoulder_roll_joint', 0.0, time_from_start)
-            self.move_right_arm_joint('right_wrist_flex_joint', 0.0, time_from_start)
+            self.move_right_arm_joint('right_elbow_roll_joint', 0.0, time_from_start)
             moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm
         else:
             print "objectが肩の高さより低い場合"
             from_shoulder_to_object_z = self.from_base_to_shoulder_z_cm - object_z_cm
             from_shoulder_to_object_x = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm
             right_shoulder_flex_joint_rad = 1.57 - math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
-            right_wrist_flex_joint_rad = math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
+            right_elbow_roll_joint_rad = math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
             self.move_right_arm_joint('right_shoulder_flex_joint', right_shoulder_flex_joint_rad, time_from_start)
-            self.move_right_arm_joint('right_wrist_flex_joint', right_wrist_flex_joint_rad, time_from_start)
+            self.move_right_arm_joint('right_elbow_roll_joint', right_elbow_roll_joint_rad, time_from_start)
             print 'right_shoulder_flex_joint : ', right_shoulder_flex_joint_rad
-            print 'right_wrist_flex_joint : ', right_wrist_flex_joint_rad
-            moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm * math.cos(right_wrist_flex_joint_rad)
+            print 'right_elbow_roll_joint : ', right_elbow_roll_joint_rad
+            moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm * math.cos(right_elbow_roll_joint_rad)
 
         turning_deg = math.atan(object_y_cm / object_x_cm) * 57.2958
         str_turning_deg = 'T:' + str(turning_deg)
@@ -144,20 +144,20 @@ class JointController:
             rospy.sleep(time_from_start)
             self.move_left_arm_joint('left_shoulder_flex_joint', -1.57, time_from_start)
             self.move_left_arm_joint('left_shoulder_roll_joint', 0.0, time_from_start)
-            self.move_left_arm_joint('left_wrist_flex_joint', 0.0, time_from_start)
+            self.move_left_arm_joint('left_elbow_roll_joint', 0.0, time_from_start)
             moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm
         else:
             print "objectが肩の高さより低い場合"
             from_shoulder_to_object_z = self.from_base_to_shoulder_z_cm - object_z_cm
             from_shoulder_to_object_x = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm
             left_shoulder_flex_joint_rad = -1.57 + math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
-            left_wrist_flex_joint_rad = -math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
+            left_elbow_roll_joint_rad = -math.atan2(from_shoulder_to_object_z, from_shoulder_to_object_x)
             rospy.sleep(time_from_start)
-            self.move_left_arm_joint('left_wrist_flex_joint', left_wrist_flex_joint_rad, time_from_start)
+            self.move_left_arm_joint('left_elbow_roll_joint', left_elbow_roll_joint_rad, time_from_start)
             self.move_left_arm_joint('left_shoulder_flex_joint', left_shoulder_flex_joint_rad, time_from_start)
             print 'left_shoulder_flex_joint : ', left_shoulder_flex_joint_rad
-            print 'left_wrist_flex_joint : ', left_wrist_flex_joint_rad
-            moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm * math.cos(left_wrist_flex_joint_rad)
+            print 'left_elbow_roll_joint : ', left_elbow_roll_joint_rad
+            moving_cm = math.sqrt(object_x_cm**2 + object_y_cm**2) - self.from_base_to_shoulder_x_cm - self.from_shoulder_to_wrist_x_cm * math.cos(left_elbow_roll_joint_rad)
 
         turning_deg = math.atan(object_y_cm / object_x_cm) * 57.2958
         str_turning_deg = 'T:' + str(turning_deg)
@@ -297,11 +297,11 @@ class JointController:
         self.add_head_control_data_to_storage('head_pan_joint', 0)
         self.add_right_arm_control_data_to_storage('right_shoulder_roll_joint', 0)
         self.add_right_arm_control_data_to_storage('right_shoulder_flex_joint', -0.82)
-        self.add_right_arm_control_data_to_storage('right_wrist_flex_joint', 0)
+        self.add_right_arm_control_data_to_storage('right_elbow_roll_joint', 0)
         self.add_right_arm_control_data_to_storage('right_hand_motor_joint', 0)
         self.add_left_arm_control_data_to_storage('left_shoulder_roll_joint', 0)
         self.add_left_arm_control_data_to_storage('left_shoulder_flex_joint', -0.82)
-        self.add_left_arm_control_data_to_storage('left_wrist_flex_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_elbow_roll_joint', 0)
         self.add_left_arm_control_data_to_storage('left_hand_motor_joint', 0)
         self.publish_body_control_data(time_from_start_sec)
         self.publish_head_control_data(time_from_start_sec)
@@ -318,7 +318,7 @@ class JointController:
             rospy.sleep(time_from_start)
             self.move_arm_joint("elbow_flex_joint", 1.31, time_from_start)
             rospy.sleep(time_from_start)
-            self.move_arm_joint("wrist_flex_joint", -1.31, time_from_start)
+            self.move_arm_joint("elbow_roll_joint", -1.31, time_from_start)
             rospy.sleep(time_from_start)
             self.move_arm_joint("hand_motor_joint", 0.00, time_from_start)
             rospy.sleep(time_from_start)

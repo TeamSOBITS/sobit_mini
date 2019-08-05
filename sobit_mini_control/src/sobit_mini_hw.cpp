@@ -13,16 +13,16 @@ SobitMiniControl::SobitMiniControl() {
       "right_shoulder_roll_joint", &pos_[4], &vel_[4], &eff_[4]);
   hardware_interface::JointStateHandle state_handle_right_shoulder_flex(
       "right_shoulder_flex_joint", &pos_[5], &vel_[5], &eff_[5]);
-  hardware_interface::JointStateHandle state_handle_right_wrist_flex(
-      "right_wrist_flex_joint", &pos_[6], &vel_[6], &eff_[6]);
+  hardware_interface::JointStateHandle state_handle_right_elbow_roll(
+      "right_elbow_roll_joint", &pos_[6], &vel_[6], &eff_[6]);
   hardware_interface::JointStateHandle state_handle_right_hand_motor(
       "right_hand_motor_joint", &pos_[7], &vel_[7], &eff_[7]);
   hardware_interface::JointStateHandle state_handle_left_shoulder_roll(
       "left_shoulder_roll_joint", &pos_[8], &vel_[8], &eff_[8]);
   hardware_interface::JointStateHandle state_handle_left_shoulder_flex(
       "left_shoulder_flex_joint", &pos_[9], &vel_[9], &eff_[9]);
-  hardware_interface::JointStateHandle state_handle_left_wrist_flex(
-      "left_wrist_flex_joint", &pos_[10], &vel_[10], &eff_[10]);
+  hardware_interface::JointStateHandle state_handle_left_elbow_roll(
+      "left_elbow_roll_joint", &pos_[10], &vel_[10], &eff_[10]);
   hardware_interface::JointStateHandle state_handle_left_hand_motor(
       "left_hand_motor_joint", &pos_[11], &vel_[11], &eff_[11]);
   jnt_state_interface_.registerHandle(state_handle_body_lift);
@@ -31,11 +31,11 @@ SobitMiniControl::SobitMiniControl() {
   jnt_state_interface_.registerHandle(state_handle_head_pan);
   jnt_state_interface_.registerHandle(state_handle_right_shoulder_roll);
   jnt_state_interface_.registerHandle(state_handle_right_shoulder_flex);
-  jnt_state_interface_.registerHandle(state_handle_right_wrist_flex);
+  jnt_state_interface_.registerHandle(state_handle_right_elbow_roll);
   jnt_state_interface_.registerHandle(state_handle_right_hand_motor);
   jnt_state_interface_.registerHandle(state_handle_left_shoulder_roll);
   jnt_state_interface_.registerHandle(state_handle_left_shoulder_flex);
-  jnt_state_interface_.registerHandle(state_handle_left_wrist_flex);
+  jnt_state_interface_.registerHandle(state_handle_left_elbow_roll);
   jnt_state_interface_.registerHandle(state_handle_left_hand_motor);
   registerInterface(&jnt_state_interface_);
 
@@ -48,7 +48,7 @@ SobitMiniControl::SobitMiniControl() {
       jnt_state_interface_.getHandle("right_shoulder_roll_joint"), &cmd_[4]);
   hardware_interface::JointHandle pos_handle_right_shoulder_flex(
       jnt_state_interface_.getHandle("right_shoulder_flex_joint"), &cmd_[5]);
-  hardware_interface::JointHandle pos_handle_right_wrist_flex(jnt_state_interface_.getHandle("right_wrist_flex_joint"),
+  hardware_interface::JointHandle pos_handle_right_elbow_roll(jnt_state_interface_.getHandle("right_elbow_roll_joint"),
                                                               &cmd_[6]);
   hardware_interface::JointHandle pos_handle_right_hand_motor(jnt_state_interface_.getHandle("right_hand_motor_joint"),
                                                               &cmd_[7]);
@@ -56,7 +56,7 @@ SobitMiniControl::SobitMiniControl() {
       jnt_state_interface_.getHandle("left_shoulder_roll_joint"), &cmd_[8]);
   hardware_interface::JointHandle pos_handle_left_shoulder_flex(
       jnt_state_interface_.getHandle("left_shoulder_flex_joint"), &cmd_[9]);
-  hardware_interface::JointHandle pos_handle_left_wrist_flex(jnt_state_interface_.getHandle("left_wrist_flex_joint"),
+  hardware_interface::JointHandle pos_handle_left_elbow_roll(jnt_state_interface_.getHandle("left_elbow_roll_joint"),
                                                              &cmd_[10]);
   hardware_interface::JointHandle pos_handle_left_hand_motor(jnt_state_interface_.getHandle("left_hand_motor_joint"),
                                                              &cmd_[11]);
@@ -66,11 +66,11 @@ SobitMiniControl::SobitMiniControl() {
   jnt_pos_interface_.registerHandle(pos_handle_head_pan);
   jnt_pos_interface_.registerHandle(pos_handle_right_shoulder_roll);
   jnt_pos_interface_.registerHandle(pos_handle_right_shoulder_flex);
-  jnt_pos_interface_.registerHandle(pos_handle_right_wrist_flex);
+  jnt_pos_interface_.registerHandle(pos_handle_right_elbow_roll);
   jnt_pos_interface_.registerHandle(pos_handle_right_hand_motor);
   jnt_pos_interface_.registerHandle(pos_handle_left_shoulder_roll);
   jnt_pos_interface_.registerHandle(pos_handle_left_shoulder_flex);
-  jnt_pos_interface_.registerHandle(pos_handle_left_wrist_flex);
+  jnt_pos_interface_.registerHandle(pos_handle_left_elbow_roll);
   jnt_pos_interface_.registerHandle(pos_handle_left_hand_motor);
   registerInterface(&jnt_pos_interface_);
 
@@ -95,9 +95,9 @@ SobitMiniControl::SobitMiniControl() {
   getJointLimits("right_shoulder_flex_joint", nh_, joint_limits);
   joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_right_shoulder_flex(
       pos_handle_right_shoulder_flex, joint_limits, soft_joint_limits);
-  getJointLimits("right_wrist_flex_joint", nh_, joint_limits);
-  joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_right_wrist_flex(
-      pos_handle_right_wrist_flex, joint_limits, soft_joint_limits);
+  getJointLimits("right_elbow_roll_joint", nh_, joint_limits);
+  joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_right_elbow_roll(
+      pos_handle_right_elbow_roll, joint_limits, soft_joint_limits);
   getJointLimits("right_hand_motor", nh_, joint_limits);
   joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_right_hand_motor(
       pos_handle_right_hand_motor, joint_limits, soft_joint_limits);
@@ -107,9 +107,9 @@ SobitMiniControl::SobitMiniControl() {
   getJointLimits("left_shoulder_flex", nh_, joint_limits);
   joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_left_shoulder_flex(
       pos_handle_left_shoulder_flex, joint_limits, soft_joint_limits);
-  getJointLimits("left_wrist_flex", nh_, joint_limits);
-  joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_left_wrist_flex(
-      pos_handle_left_wrist_flex, joint_limits, soft_joint_limits);
+  getJointLimits("left_elbow_roll", nh_, joint_limits);
+  joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_left_elbow_roll(
+      pos_handle_left_elbow_roll, joint_limits, soft_joint_limits);
   getJointLimits("left_hand_motor", nh_, joint_limits);
   joint_limits_interface::PositionJointSoftLimitsHandle joint_limit_left_hand_motor(
       pos_handle_left_hand_motor, joint_limits, soft_joint_limits);
@@ -119,11 +119,11 @@ SobitMiniControl::SobitMiniControl() {
   jnt_limit_interface_.registerHandle(joint_limit_head_pan);
   jnt_limit_interface_.registerHandle(joint_limit_right_shoulder_roll);
   jnt_limit_interface_.registerHandle(joint_limit_right_shoulder_flex);
-  jnt_limit_interface_.registerHandle(joint_limit_right_wrist_flex);
+  jnt_limit_interface_.registerHandle(joint_limit_right_elbow_roll);
   jnt_limit_interface_.registerHandle(joint_limit_right_hand_motor);
   jnt_limit_interface_.registerHandle(joint_limit_left_shoulder_roll);
   jnt_limit_interface_.registerHandle(joint_limit_left_shoulder_flex);
-  jnt_limit_interface_.registerHandle(joint_limit_left_wrist_flex);
+  jnt_limit_interface_.registerHandle(joint_limit_left_elbow_roll);
   jnt_limit_interface_.registerHandle(joint_limit_left_hand_motor);
   registerInterface(&jnt_limit_interface_);
 }
@@ -144,7 +144,7 @@ void SobitMiniControl::read(ros::Time time, ros::Duration period) {
       pos_[4] = pose.position[i];
     } else if (pose.name[i] == "right_shoulder_flex_joint") {
       pos_[5] = pose.position[i];
-    } else if (pose.name[i] == "right_wrist_flex_joint") {
+    } else if (pose.name[i] == "right_elbow_roll_joint") {
       pos_[6] = pose.position[i];
     } else if (pose.name[i] == "right_hand_motor_joint") {
       pos_[7] = pose.position[i];
@@ -152,7 +152,7 @@ void SobitMiniControl::read(ros::Time time, ros::Duration period) {
       pos_[8] = pose.position[i];
     } else if (pose.name[i] == "left_shoulder_flex_joint") {
       pos_[9] = pose.position[i];
-    } else if (pose.name[i] == "left_wrist_flex_joint") {
+    } else if (pose.name[i] == "left_elbow_roll_joint") {
       pos_[10] = pose.position[i];
     } else if (pose.name[i] == "left_hand_motor_joint") {
       pos_[11] = pose.position[i];
@@ -168,11 +168,11 @@ void SobitMiniControl::write(ros::Time time, ros::Duration period) {
   traj.joint_names.push_back("head_pan_joint");
   traj.joint_names.push_back("right_shoulder_roll_joint");
   traj.joint_names.push_back("right_shoulder_flex_joint");
-  traj.joint_names.push_back("right_wrist_flex_joint");
+  traj.joint_names.push_back("right_elbow_roll_joint");
   traj.joint_names.push_back("right_hand_motor_joint");
   traj.joint_names.push_back("left_shoulder_roll_joint");
   traj.joint_names.push_back("left_shoulder_flex_joint");
-  traj.joint_names.push_back("left_wrist_flex_joint");
+  traj.joint_names.push_back("left_elbow_roll_joint");
   traj.joint_names.push_back("left_hand_motor_joint");
   traj.points.resize(1);
   traj.points[0].positions.resize(12);

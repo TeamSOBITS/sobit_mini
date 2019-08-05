@@ -21,8 +21,8 @@
   <xacro:body prefix="body" parent="plate_middle_link"/>
   <xacro:left_arm prefix="left" parent="body_lift_link"/>
   <xacro:right_arm prefix="right" parent="body_lift_link"/>
-  <xacro:left_hand prefix="left_hand" parent="left_wrist_flex_link"/>
-  <xacro:right_hand prefix="right_hand" parent="right_wrist_flex_link"/>
+  <xacro:left_hand prefix="left_hand" parent="left_elbow_roll_link"/>
+  <xacro:right_hand prefix="right_hand" parent="right_elbow_roll_link"/>
   <xacro:head prefix="head" parent="body_lift_link"/>
   <xacro:sensor_asus_xtion_pro parent="head_tilt_link"/>
 </robot>

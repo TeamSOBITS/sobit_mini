@@ -269,7 +269,7 @@ int SobitCommonDynamixel::readCurrentPosition1(int id) {
     return -1;
   } else {
     if (this->can_move == false) {
-      initializeDynamixel();
+      // initializeDynamixel();
       this->can_move = true;
     }
     // Get present position value
@@ -290,7 +290,7 @@ int SobitCommonDynamixel::readCurrentPosition2(int id) {
     return -1;
   } else {
     if (this->can_move == false) {
-      initializeDynamixel();
+      // initializeDynamixel();
       this->can_move = true;
     }
     // Get present position value

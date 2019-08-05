@@ -47,7 +47,7 @@ joint_limits:
     max_velocity: 1.0
     has_acceleration_limits: true
     max_acceleration: 1.0
-  right_wrist_flex_joint:
+  right_elbow_roll_joint:
     has_position_limits: true
     min_position: -1.57
     max_position: 1.57
@@ -79,7 +79,7 @@ joint_limits:
     max_velocity: 1.0
     has_acceleration_limits: true
     max_acceleration: 1.0
-  left_wrist_flex_joint:
+  left_elbow_roll_joint:
     has_position_limits: true
     min_position: -1.57
     max_position: 1.57

@@ -20,11 +20,11 @@ SobitMiniDynamixel::SobitMiniDynamixel() {
   used_dynamixel_name[4]  = "head_pan_joint";
   used_dynamixel_name[10] = "right_shoulder_roll_joint";
   used_dynamixel_name[11] = "right_shoulder_flex_joint";
-  used_dynamixel_name[12] = "right_wrist_flex_joint";
+  used_dynamixel_name[12] = "right_elbow_roll_joint";
   used_dynamixel_name[13] = "right_hand_motor_joint";
   used_dynamixel_name[20] = "left_shoulder_roll_joint";
   used_dynamixel_name[21] = "left_shoulder_flex_joint";
-  used_dynamixel_name[22] = "left_wrist_flex_joint";
+  used_dynamixel_name[22] = "left_elbow_roll_joint";
   used_dynamixel_name[23] = "left_hand_motor_joint";
 }
 
@@ -126,15 +126,15 @@ float SobitMiniDynamixel::toBit(int id, float rad) {
   } else if (id == 12) {
     return 2048 + rad / (M_PI * 2) * 4096;
   } else if (id == 13) {
-    return 1910 + rad / (M_PI * 2) * 4096;
+    return 1410 + rad / (M_PI * 2) * 4096;
   } else if (id == 20)
     return 2048 + rad / (M_PI * 2) * 4096;
   else if (id == 21)
-    return 2048 + rad / (M_PI * 2) * 4096;
+    return 3584 + rad / (M_PI * 2) * 4096;
   else if (id == 22) {
-    return 2048 + rad / (M_PI * 2) * 4096;
+    return 1536 + rad / (M_PI * 2) * 4096;
   } else if (id == 23) {
-    return 1900 + rad / (M_PI * 2) * 4096;
+    return 2412 + rad / (M_PI * 2) * 4096;
   } else
     return -1;
 }
@@ -152,18 +152,18 @@ float SobitMiniDynamixel::toRad(std::string joint_name, int bit) {
     return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_shoulder_flex_joint") {
     return (bit - 2048) * ((M_PI * 2) / 4096);
-  } else if (joint_name == "right_wrist_flex_joint") {
+  } else if (joint_name == "right_elbow_roll_joint") {
     return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_hand_motor_joint") {
-    return (bit - 1910) * ((M_PI * 2) / 4096);
+    return (bit - 1410) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_shoulder_roll_joint") {
     return (bit - 2048) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_shoulder_flex_joint") {
-    return (bit - 2048) * ((M_PI * 2) / 4096);
-  } else if (joint_name == "left_wrist_flex_joint") {
-    return (bit - 2048) * ((M_PI * 2) / 4096);
+    return (bit - 3584) * ((M_PI * 2) / 4096);
+  } else if (joint_name == "left_elbow_roll_joint") {
+    return (bit - 1536) * ((M_PI * 2) / 4096);
   } else if (joint_name == "left_hand_motor_joint") {
-    return (bit - 1900) * ((M_PI * 2) / 4096);
+    return (bit - 2412) * ((M_PI * 2) / 4096);
   }
   return -1;
 }
