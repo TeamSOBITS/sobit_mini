@@ -116,7 +116,7 @@ float SobitMiniDynamixel::toBit(int id, float rad) {
   } else if (id == 2) {  // 116->big_gearの歯の数, 22->mini_gearの歯の数
     return 2048 + rad / (M_PI * 2) * 4096 * (116.0 / 22.0);
   } else if (id == 3) {
-    return 984 + rad / (M_PI * 2) * 4096 * (47.0 / 23.0);
+    return 3700 + rad / (M_PI * 2) * 4096 * (47.0 / 23.0);
   } else if (id == 4) {
     return 2560 + rad / (M_PI * 2) * 4096;
   } else if (id == 10) {
@@ -145,7 +145,7 @@ float SobitMiniDynamixel::toRad(std::string joint_name, int bit) {
   } else if (joint_name == "body_roll_joint") {
     return (bit - 2048) * ((M_PI * 2) / 4096) * (22.0 / 116.0);
   } else if (joint_name == "head_tilt_joint") {
-    return (bit - 984) * ((M_PI * 2) / 4096) * (23.0 / 47.0);
+    return (bit - 3700) * ((M_PI * 2) / 4096) * (23.0 / 47.0);
   } else if (joint_name == "head_pan_joint") {
     return (bit - 2560) * ((M_PI * 2) / 4096);
   } else if (joint_name == "right_shoulder_roll_joint") {
