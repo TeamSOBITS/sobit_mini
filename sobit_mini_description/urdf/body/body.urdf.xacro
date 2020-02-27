@@ -122,10 +122,10 @@
       </inertial>
     </link>
 
-    <joint name="${prefix}_lift_joint" type="prismatic">
+    <joint name="${prefix}_lift_joint" type="fixed">
       <parent link="${prefix}_back_pole_link" />
       <child link="${prefix}_lift_link" />
-      <origin rpy="0 0.01 0" xyz="0.03 0.0 0.03" />
+      <origin rpy="0 0.0 0" xyz="0.03 0.0 0.03" />
       <axis xyz="0 0 1" />
       <limit effort="30" lower="0" upper="0.17" velocity="0.2" />
       <dynamics damping="1.0" />
