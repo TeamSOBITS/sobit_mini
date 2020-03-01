@@ -25,13 +25,15 @@ class JointController:
         self.pub_left_arm_control = rospy.Publisher('/left_arm_trajectory_controller/command', JointTrajectory, queue_size=10)
         self.pub_right_arm_control = rospy.Publisher('/right_arm_trajectory_controller/command', JointTrajectory, queue_size=10)
         self.sub = rospy.Subscriber('/joint_states', JointState, self.joint_states_callback)
-        self.servise = rospy.Service("right_gripper_move_to_target", gripper_move, self.move_right_gripper_to_target_server)
-        self.servise = rospy.Service("left_gripper_move_to_target", gripper_move, self.move_left_gripper_to_target_server)
+        #self.servise = rospy.Service("right_gripper_move_to_target", gripper_move, self.move_right_gripper_to_target_server)
+        #self.servise = rospy.Service("left_gripper_move_to_target", gripper_move, self.move_left_gripper_to_target_server)
         self.servise = rospy.Service("right_gripper_open_and_close", gripper_ctrl, self.open_and_close_right_gripper_server)
         self.servise = rospy.Service("left_gripper_open_and_close", gripper_ctrl, self.open_and_close_left_gripper_server)
+        self.servise = rospy.Service("xtion_pan_ctrl", gripper_ctrl, self.head_pan_control_server)
+        self.servise = rospy.Service("xtion_tilt_ctrl", gripper_ctrl, self.head_tilt_control_server)
         self.servise = rospy.Service("motion_ctrl", robot_motion, self.move_to_registered_motion_server)
-        self.servise = rospy.Service("right_hand_grasping_jedgment", grasping_jedgment, self.jedge_right_hand_grasping)
-        self.servise = rospy.Service("left_hand_grasping_jedgment", grasping_jedgment, self.jedge_left_hand_grasping)
+        #self.servise = rospy.Service("right_hand_grasping_jedgment", grasping_jedgment, self.jedge_right_hand_grasping)
+        #self.servise = rospy.Service("left_hand_grasping_jedgment", grasping_jedgment, self.jedge_left_hand_grasping)
         self.listener = tf.TransformListener()
         self.body_control_data = JointTrajectory()
         self.head_control_data = JointTrajectory()
@@ -190,24 +192,30 @@ class JointController:
 
     def open_and_close_right_gripper_server(self, req_msg):
         hand_motor_joint_rad = req_msg.rad
-        time_from_start = 0.1
-        self.move_right_arm_joint('right_hand_motor_joint', hand_motor_joint_rad, 0.3)
-        rospy.sleep(time_from_start)
+        time_from_start_sec = req_msg.sec
+        self.add_right_arm_control_data_to_storage('right_hand_motor_joint', hand_motor_joint_rad)
+        self.publish_right_arm_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
         return gripper_ctrlResponse(True)
 
     def open_and_close_left_gripper_server(self, req_msg):
         hand_motor_joint_rad = req_msg.rad
-        time_from_start = 0.1
-        self.move_left_arm_joint('left_hand_motor_joint', hand_motor_joint_rad, 0.3)
-        rospy.sleep(time_from_start)
+        time_from_start_sec = req_msg.sec
+        self.add_left_arm_control_data_to_storage('left_hand_motor_joint', hand_motor_joint_rad)
+        self.publish_left_arm_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
         return gripper_ctrlResponse(True)
 
     def move_to_registered_motion_server(self, req_msg):
         motion_type = req_msg.motion_type
         if motion_type == "INITIAL_POSE":
             self.move_to_initial_pose()
-        elif motion_type == "HOLDING_POSE":
-            self.move_to_holding_pose()
+        elif motion_type == "ATTENTION_POSE":
+            self.move_to_attention_pose()
+        elif motion_type == "RECEIVE_POSE":
+            self.move_to_receive_pose()
+        elif motion_type == "FOLLOW_POSE":
+            self.move_to_follow_pose()
         elif motion_type == "DETECTING_POSE":
             self.move_to_detecting_pose()
         elif motion_type == "CAMERA_PAN_LEFT":
@@ -290,8 +298,7 @@ class JointController:
             print "Service call failed: %s" % e
 
     def move_to_initial_pose(self):
-        time_from_start_sec = 0.3
-        self.add_body_control_data_to_storage('body_lift_joint', 0.0)
+        time_from_start_sec = 4.0
         self.add_body_control_data_to_storage('body_roll_joint', 0)
         self.add_head_control_data_to_storage('head_tilt_joint', 0.0)
         self.add_head_control_data_to_storage('head_pan_joint', 0)
@@ -309,33 +316,98 @@ class JointController:
         self.publish_right_arm_control_data(time_from_start_sec)
         rospy.sleep(time_from_start_sec)
 
-    def move_to_holding_pose(self):
-        time_from_start = 0.1
-        """
-            self.move_arm_joint("arm_roll_joint", 0.00, time_from_start)
-            rospy.sleep(time_from_start)
-            self.move_arm_joint("arm_flex_joint", 0.00, time_from_start)
-            rospy.sleep(time_from_start)
-            self.move_arm_joint("elbow_flex_joint", 1.31, time_from_start)
-            rospy.sleep(time_from_start)
-            self.move_arm_joint("elbow_roll_joint", -1.31, time_from_start)
-            rospy.sleep(time_from_start)
-            self.move_arm_joint("hand_motor_joint", 0.00, time_from_start)
-            rospy.sleep(time_from_start)
-            self.move_xtion_joint("xtion_tilt_joint", 0.00, time_from_start)
-        """
-        rospy.sleep(time_from_start)
+    def move_to_attention_pose(self):
+        time_from_start_sec = 4.0
+        self.add_body_control_data_to_storage('body_roll_joint', 0.0)
+        self.add_head_control_data_to_storage('head_tilt_joint', 0.0)
+        self.add_head_control_data_to_storage('head_pan_joint', 0.0)
+        self.add_right_arm_control_data_to_storage('right_shoulder_roll_joint', 0)
+        self.add_right_arm_control_data_to_storage('right_shoulder_flex_joint', -1.30)
+        self.add_right_arm_control_data_to_storage('right_elbow_roll_joint', 0.00)
+        self.add_right_arm_control_data_to_storage('right_hand_motor_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_flex_joint', -1.30)
+        self.add_left_arm_control_data_to_storage('left_elbow_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_hand_motor_joint', 0)
+        self.publish_body_control_data(time_from_start_sec)
+        self.publish_head_control_data(time_from_start_sec)
+        self.publish_left_arm_control_data(time_from_start_sec)
+        self.publish_right_arm_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
+
+    def move_to_receive_pose(self):
+        time_from_start_sec = 4.0
+        self.add_body_control_data_to_storage('body_roll_joint', 0.0)
+        self.add_head_control_data_to_storage('head_tilt_joint', -0.2)
+        self.add_head_control_data_to_storage('head_pan_joint', 0.0)
+        self.add_right_arm_control_data_to_storage('right_shoulder_roll_joint', 0.0)
+        self.add_right_arm_control_data_to_storage('right_shoulder_flex_joint', -1.30)
+        self.add_right_arm_control_data_to_storage('right_elbow_roll_joint', 1.57)
+        self.add_right_arm_control_data_to_storage('right_hand_motor_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_flex_joint', -1.30)
+        self.add_left_arm_control_data_to_storage('left_elbow_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_hand_motor_joint', 0)
+        self.publish_body_control_data(time_from_start_sec)
+        self.publish_head_control_data(time_from_start_sec)
+        self.publish_left_arm_control_data(time_from_start_sec)
+        self.publish_right_arm_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
+
+    def move_to_follow_pose(self):
+        time_from_start_sec = 4.0
+        self.add_body_control_data_to_storage('body_roll_joint', -0.6)
+        self.add_head_control_data_to_storage('head_tilt_joint', -0.2)
+        self.add_head_control_data_to_storage('head_pan_joint', 0.0)
+        self.add_right_arm_control_data_to_storage('right_shoulder_roll_joint', 0.75)
+        self.add_right_arm_control_data_to_storage('right_shoulder_flex_joint', -1.30)
+        self.add_right_arm_control_data_to_storage('right_elbow_roll_joint', 1.57)
+        self.add_right_arm_control_data_to_storage('right_hand_motor_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_shoulder_flex_joint', -1.30)
+        self.add_left_arm_control_data_to_storage('left_elbow_roll_joint', 0)
+        self.add_left_arm_control_data_to_storage('left_hand_motor_joint', 0)
+        self.publish_body_control_data(time_from_start_sec)
+        self.publish_head_control_data(time_from_start_sec)
+        self.publish_left_arm_control_data(time_from_start_sec)
+        self.publish_right_arm_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
 
     def move_to_detecting_pose(self):
-        time_from_start = 0.1
-        self.move_head_joint('head_tilt_joint', 0.28, 0.1)
-        rospy.sleep(time_from_start)
+        time_from_start_sec = 2.0
+        self.add_head_control_data_to_storage('head_tilt_joint', 0.28)
+        self.publish_head_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
 
     def move_camera_pan_left(self):
-        self.move_head_joint('head_pan_joint', 1.57, 4.0)
+        time_from_start_sec = 4.0
+        self.add_head_control_data_to_storage('head_pan_joint', 1.57)
+        self.publish_head_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
 
     def move_camera_pan_right(self):
-        self.move_head_joint('head_pan_joint', -1.57, 8.0)
+        time_from_start_sec = 4.0
+        self.add_head_control_data_to_storage('head_pan_joint', -1.57)
+        self.publish_head_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
+
+    def head_pan_control_server(self, req_msg):
+        xtion_pan_rad = req_msg.rad
+        time_from_start_sec = req_msg.sec
+        self.add_head_control_data_to_storage('head_pan_joint', xtion_pan_rad)
+        self.publish_head_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
+
+        return gripper_ctrlResponse(True)
+    
+    def head_tilt_control_server(self, req_msg):
+        xtion_tilt_rad = req_msg.rad
+        time_from_start_sec = req_msg.sec
+        self.add_head_control_data_to_storage('head_tilt_joint', xtion_tilt_rad)
+        self.publish_head_control_data(time_from_start_sec)
+        rospy.sleep(time_from_start_sec)
+
+        return gripper_ctrlResponse(True)
 
 
 if __name__ == "__main__":
