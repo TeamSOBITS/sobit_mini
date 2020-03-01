@@ -358,7 +358,7 @@ class JointController:
         time_from_start_sec = 4.0
         self.add_body_control_data_to_storage('body_roll_joint', -0.6)
         self.add_head_control_data_to_storage('head_tilt_joint', -0.2)
-        self.add_head_control_data_to_storage('head_pan_joint', 0.0)
+        self.add_head_control_data_to_storage('head_pan_joint', 0.6)
         self.add_right_arm_control_data_to_storage('right_shoulder_roll_joint', 0.75)
         self.add_right_arm_control_data_to_storage('right_shoulder_flex_joint', -1.30)
         self.add_right_arm_control_data_to_storage('right_elbow_roll_joint', 1.57)
