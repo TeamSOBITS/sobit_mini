@@ -17,10 +17,6 @@
         <arg name="serialport" value="$(arg serialport)" />
     </include>
     <include file="$(find sobit_mini_control)/launch/sobit_mini_control.launch"/>
-    <!-- kobuki_controller -->
-    <group ns = "robot_ctrl">
-        <node pkg="sobit_mini_bringup" type="wheel_controller.py" name="wheel_controll" output="screen"/>
-        <node pkg="sobit_mini_bringup" type="joint_controller.py" name="joint_controller" output="screen"/>
-    </group>
+    <include file="$(find sobit_mini_library)/launch/load_sobit_mini_pose.launch"/>
 
 </launch>
