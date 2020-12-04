@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(sobit_mini_library)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  nav_msgs
-  pybind11_catkin
   roscpp
   rospy
   std_msgs
   trajectory_msgs
+  geometry_msgs
+  nav_msgs
+  pybind11_catkin
 )
 
 catkin_package(
