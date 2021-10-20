@@ -50,7 +50,7 @@ left_arm_trajectory_controller:
   allow_partial_joints_goal: true
 
 dynamixel_port:
-  port_name: "/dev/input/dynamixel"
+  port_name: "/dev/input/dynamixel1"
   baud_rate: 1000000
   joints:
     #- body_lift_joint
@@ -66,14 +66,14 @@ dynamixel_port:
     - left_elbow_roll_joint
     - left_hand_motor_joint
   #body_lift_joint: {id: 16, center: 2048, home: 2048, mode: 3, vel: 0, acc: 0, pos_i_gain: 300}
-  body_roll_joint: {id: 2, center: 2560, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 5.2727 }
+  body_roll_joint: {id: 2, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 5.2727 }
   head_tilt_joint: {id: 3, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 2.04348 }
   head_pan_joint: {id: 4, center: 2560, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
   right_shoulder_roll_joint: {id: 10, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
-  right_shoulder_flex_joint: {id: 11, center: 2048, home: -0.8, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
+  right_shoulder_flex_joint: {id: 11, center: 2048, home: -1.25, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
   right_elbow_roll_joint: {id: 12, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
   right_hand_motor_joint: {id: 13, center: 1410, home: 0.0, mode: 5, vel: 0, acc: 0, pos_i_gain: 0, lim: 200, gear_ratio: 1 }
   left_shoulder_roll_joint: {id: 20, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
-  left_shoulder_flex_joint: {id: 21, center: 3584, home: -0.8, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
+  left_shoulder_flex_joint: {id: 21, center: 3584, home: -1.25, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
   left_elbow_roll_joint: {id: 22, center: 2560, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 1 }
   left_hand_motor_joint: {id: 23, center: 1410, home: 0.0, mode: 5, vel: 0, acc: 0, pos_i_gain: 0, lim: 200, gear_ratio: 1 }
