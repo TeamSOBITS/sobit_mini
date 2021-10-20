@@ -3,7 +3,7 @@
 
 #include <sobit_mini_library/sobit_turtlebot_controller.hpp>
 
-namespace sobit {
+namespace sobit_mini {
     enum Joint { 
                     HEAD_PAN_JOINT = 0,
                     HEAD_TILT_JOINT,
