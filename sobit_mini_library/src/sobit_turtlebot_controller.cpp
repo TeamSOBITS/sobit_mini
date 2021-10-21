@@ -1,6 +1,6 @@
 #include <sobit_mini_library/sobit_turtlebot_controller.hpp>
 
-using namespace sobit;
+using namespace sobit_mini;
 
 SobitTurtlebotController::SobitTurtlebotController ( const std::string &name ) : ROSCommonNode( name ), nh_(), pnh_("~") {
     sub_odom_ = nh_.subscribe( "/odom", 1, &SobitTurtlebotController::callbackOdometry, this );

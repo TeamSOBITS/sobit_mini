@@ -1,6 +1,6 @@
 #include <sobit_mini_library/sobit_mini_controller.hpp>
 
-using namespace sobit;
+using namespace sobit_mini;
 namespace py = pybind11;
 
 PYBIND11_MODULE(sobit_mini_module, m) {

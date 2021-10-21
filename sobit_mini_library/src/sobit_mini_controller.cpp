@@ -1,6 +1,6 @@
 #include <sobit_mini_library/sobit_mini_controller.hpp>
 
-using namespace sobit;
+using namespace sobit_mini;
 
 SobitMiniController::SobitMiniController( const std::string &name ) : SobitTurtlebotController( name ) {
     pub_body_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/body_trajectory_controller/command", 1);
