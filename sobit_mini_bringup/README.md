@@ -1,6 +1,6 @@
 # sobit_mini_bringup
 
-sobit_miniの基本機能ノード起動用のパッケージ．
+sobit_miniリポジトリの基本機能ノード起動用のパッケージ．
 
 ### How to use
 以下のコマンドを入力することで，SOBIT MINIを起動することができます．
