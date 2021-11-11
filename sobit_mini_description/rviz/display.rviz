@@ -78,6 +78,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_urg_sup_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         body_back_pole_link:
           Alpha: 1
           Show Axes: false
@@ -340,6 +345,8 @@ Visualization Manager:
           Value: false
         base_link:
           Value: false
+        base_urg_sup_link:
+          Value: false
         body_back_pole_link:
           Value: false
         body_big_gear_link:
@@ -453,6 +460,8 @@ Visualization Manager:
         base_footprint:
           base_link:
             base_laser_link:
+              {}
+            base_urg_sup_link:
               {}
             caster_back_link:
               {}
