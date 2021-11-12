@@ -2,7 +2,7 @@
 <robot name="urg" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="urg" params="parent">
     <joint name="laser" type="fixed">
-      <origin xyz="0.205 0.0 0.01" rpy="0 0 0" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <parent link="${parent}" />
       <child link="base_laser_link" />
     </joint>
