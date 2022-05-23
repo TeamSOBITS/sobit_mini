@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<robot name="urg_sup"
-  xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="urg_sup" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="urg_sup" params="parent">
 
     <joint name="base_urg_sup_joint" type="fixed">

@@ -11,7 +11,7 @@
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/UST-20LX.dae" />
         </geometry>
-        <material name="Black" />
+        <material name="black" />
       </visual>
       <inertial>
         <mass value="0.000001" />

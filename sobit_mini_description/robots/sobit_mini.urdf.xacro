@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="sobit_mini" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" xmlns:xacro="http://www.ros.org/wiki.xacro">
+<robot name="sobit_mini" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- common xacro -->
   <xacro:include filename="$(find sobit_mini_description)/urdf/common.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/materials.urdf.xacro" />
@@ -17,7 +17,7 @@
   <xacro:include filename="$(find sobit_mini_description)/urdf/stacks/stacks.urdf.xacro" />
   <xacro:include filename="$(find sobit_education_description)/urdf/urg_sup/urg_sup.urdf.xacro" />
   <xacro:base/>
-  <stack_hexagons parent="base_link" />
+  <xacro:stack_hexagons parent="base_link" />
   <xacro:urg_sup parent="plate_bottom_link"/>
   <xacro:urg parent="base_urg_sup_link"/>
   <xacro:body prefix="body" parent="plate_middle_link"/>
