@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import rospy
 import tf
@@ -42,52 +42,52 @@ class PS3_control:
         self.right_joystick_ud = msg.axes[4] * self.magnifications
 
     def check_publishers_connection(self, publisher):
-		loop_rate_to_check_connection = rospy.Rate(1)
-		while (publisher.get_num_connections() == 0 and not rospy.is_shutdown()):
-			try:
-				loop_rate_to_check_connection.sleep()
-			except rospy.ROSInterruptException:
-				pass
+        loop_rate_to_check_connection = rospy.Rate(1)
+        while (publisher.get_num_connections() == 0 and not rospy.is_shutdown()):
+            try:
+                loop_rate_to_check_connection.sleep()
+            except rospy.ROSInterruptException:
+                pass
 
     def move_body_joint(self, joint_name, rad, time_from_start):
-		point = trajectory_msgs.msg.JointTrajectoryPoint()
-		point.positions.append(rad)
-		point.time_from_start = rospy.Duration(time_from_start)
-		traj = trajectory_msgs.msg.JointTrajectory()
-		traj.joint_names.append(joint_name)
-		traj.points.append(point)
-		self.check_publishers_connection(self.pub_body_control)
-		self.pub_body_control.publish(traj)
+        point = trajectory_msgs.msg.JointTrajectoryPoint()
+        point.positions.append(rad)
+        point.time_from_start = rospy.Duration(time_from_start)
+        traj = trajectory_msgs.msg.JointTrajectory()
+        traj.joint_names.append(joint_name)
+        traj.points.append(point)
+        self.check_publishers_connection(self.pub_body_control)
+        self.pub_body_control.publish(traj)
     
     def move_head_joint(self, joint_name, rad, time_from_start):
-		point = trajectory_msgs.msg.JointTrajectoryPoint()
-		point.positions.append(rad)
-		point.time_from_start = rospy.Duration(time_from_start)
-		traj = trajectory_msgs.msg.JointTrajectory()
-		traj.joint_names.append(joint_name)
-		traj.points.append(point)
-		self.check_publishers_connection(self.pub_head_control)
-		self.pub_head_control.publish(traj)
+        point = trajectory_msgs.msg.JointTrajectoryPoint()
+        point.positions.append(rad)
+        point.time_from_start = rospy.Duration(time_from_start)
+        traj = trajectory_msgs.msg.JointTrajectory()
+        traj.joint_names.append(joint_name)
+        traj.points.append(point)
+        self.check_publishers_connection(self.pub_head_control)
+        self.pub_head_control.publish(traj)
 
     def move_left_arm_joint(self, joint_name, rad, time_from_start):
-		point = trajectory_msgs.msg.JointTrajectoryPoint()
-		point.positions.append(rad)
-		point.time_from_start = rospy.Duration(time_from_start)
-		traj = trajectory_msgs.msg.JointTrajectory()
-		traj.joint_names.append(joint_name)
-		traj.points.append(point)
-		self.check_publishers_connection(self.pub_left_arm_control)
-		self.pub_left_arm_control.publish(traj)
+        point = trajectory_msgs.msg.JointTrajectoryPoint()
+        point.positions.append(rad)
+        point.time_from_start = rospy.Duration(time_from_start)
+        traj = trajectory_msgs.msg.JointTrajectory()
+        traj.joint_names.append(joint_name)
+        traj.points.append(point)
+        self.check_publishers_connection(self.pub_left_arm_control)
+        self.pub_left_arm_control.publish(traj)
 
     def move_right_arm_joint(self, joint_name, rad, time_from_start):
-		point = trajectory_msgs.msg.JointTrajectoryPoint()
-		point.positions.append(rad)
-		point.time_from_start = rospy.Duration(time_from_start)
-		traj = trajectory_msgs.msg.JointTrajectory()
-		traj.joint_names.append(joint_name)
-		traj.points.append(point)
-		self.check_publishers_connection(self.pub_right_arm_control)
-		self.pub_right_arm_control.publish(traj)
+        point = trajectory_msgs.msg.JointTrajectoryPoint()
+        point.positions.append(rad)
+        point.time_from_start = rospy.Duration(time_from_start)
+        traj = trajectory_msgs.msg.JointTrajectory()
+        traj.joint_names.append(joint_name)
+        traj.points.append(point)
+        self.check_publishers_connection(self.pub_right_arm_control)
+        self.pub_right_arm_control.publish(traj)
     
     def move_wheel(self, liner, angular):
         twist = geometry_msgs.msg.Twist()
@@ -135,21 +135,21 @@ class PS3_control:
             elif self.joy_button[11] == True:#R1ボタンが押される
                 if self.joy_button[14] == True:#×ボタンが押される
                     rospy.loginfo("右指を動かすモード")
-                    #print "right_hand_motor_joint :  ", self.left_joystick_ud," + " ,self.joint_state_msg.position[8], " = ", self.left_joystick_ud + self.joint_state_msg.position[8]
+                    #print("right_hand_motor_joint :  ", self.left_joystick_ud," + " ,self.joint_state_msg.position[8], " = ", self.left_joystick_ud + self.joint_state_msg.position[8])
                     self.move_right_arm_joint("right_hand_motor_joint", self.left_joystick_ud + self.joint_state_msg.position[8], self.joint_pub_time)
                 elif self.joy_button[13] == True:#○ボタンが押される
-                    #print "joint9 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[6], " = ", self.left_joystick_ud + self.joint_state_msg.position[6]
+                    #print("joint9 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[6], " = ", self.left_joystick_ud + self.joint_state_msg.position[6])
                     self.move_right_arm_joint("right_wrist_flex_joint", self.left_joystick_ud + self.joint_state_msg.position[11], self.joint_pub_time)
                 elif self.joy_button[12] == True:#△ボタンが押される
-                    #print "joint8 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[5], " = ", self.left_joystick_ud + self.joint_state_msg.position[5]
+                    #print("joint8 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[5], " = ", self.left_joystick_ud + self.joint_state_msg.position[5])
                     self.move_right_arm_joint("right_shoulder_flex_joint", self.left_joystick_ud + self.joint_state_msg.position[9], self.joint_pub_time)
                 elif self.joy_button[15] == True:#□ボタンが押される
-                    #print "joint7 :  ",  self.left_joystick_ud," + ", self.joint_state_msg.position[4], " = ", self.left_joystick_ud + self.joint_state_msg.position[4]
+                    #print("joint7 :  ",  self.left_joystick_ud," + ", self.joint_state_msg.position[4], " = ", self.left_joystick_ud + self.joint_state_msg.position[4])
                     self.move_right_arm_joint("right_shoulder_roll_joint", self.left_joystick_ud + self.joint_state_msg.position[10], self.joint_pub_time)
             elif self.joy_button[16]:
                 self.reset_joint()
             elif self.left_joystick_lr == 0 and self.left_joystick_ud == 0 and self.right_joystick_lr == 0 and self.right_joystick_ud == 0:
-                #print "not publish"
+                #print("not publish")
                 pass
             #足を動かすモード
             else:
