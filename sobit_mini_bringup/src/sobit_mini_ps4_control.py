@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import rospy
 import tf
@@ -35,7 +35,7 @@ class PS4_control:
 
 	def subscribe_joy(self, msg):
 		self.joy_button = msg.buttons
-		#print self.joy_button
+		#print(self.joy_button)
 		self.left_joystick_lr = msg.axes[0] * self.magnifications
 		self.left_joystick_ud = msg.axes[1] * self.magnifications
 		self.right_joystick_lr = msg.axes[3] * self.magnifications
@@ -65,21 +65,21 @@ class PS4_control:
 		elif self.joy_button[5] == True:#R1ボタンが押される
 			rospy.loginfo("右指を動かすモード")
 			if self.joy_button[1] == True:#×ボタンが押される
-				#print "right_hand_motor_joint :  ", self.left_joystick_ud," + " ,self.joint_state_msg.position[8], " = ", self.left_joystick_ud + self.joint_state_msg.position[8]
+				#print("right_hand_motor_joint :  ", self.left_joystick_ud," + " ,self.joint_state_msg.position[8], " = ", self.left_joystick_ud + self.joint_state_msg.position[8])
 				self.move_right_arm_joint("right_hand_motor_joint", self.left_joystick_ud + self.joint_state_msg.position[8], self.joint_pub_time)
 			elif self.joy_button[2] == True:#○ボタンが押される
-				#print "joint9 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[6], " = ", self.left_joystick_ud + self.joint_state_msg.position[6]
+				#print("joint9 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[6], " = ", self.left_joystick_ud + self.joint_state_msg.position[6])
 				self.move_right_arm_joint("right_wrist_flex_joint", self.left_joystick_ud + self.joint_state_msg.position[11], self.joint_pub_time)
 			elif self.joy_button[3] == True:#△ボタンが押される
-				#print "joint8 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[5], " = ", self.left_joystick_ud + self.joint_state_msg.position[5]
+				#print("joint8 :  ", self.left_joystick_ud," + ", self.joint_state_msg.position[5], " = ", self.left_joystick_ud + self.joint_state_msg.position[5])
 				self.move_right_arm_joint("right_shoulder_flex_joint", self.left_joystick_ud + self.joint_state_msg.position[9], self.joint_pub_time)
 			elif self.joy_button[0] == True:#□ボタンが押される
-				#print "joint7 :  ",  self.left_joystick_ud," + ", self.joint_state_msg.position[4], " = ", self.left_joystick_ud + self.joint_state_msg.position[4]
+				#print("joint7 :  ",  self.left_joystick_ud," + ", self.joint_state_msg.position[4], " = ", self.left_joystick_ud + self.joint_state_msg.position[4])
 				self.move_right_arm_joint("right_shoulder_roll_joint", self.left_joystick_ud + self.joint_state_msg.position[10], self.joint_pub_time)
 		elif self.joy_button[12]: # スタートボタンが押される
 			self.reset_joint()
 		elif self.left_joystick_lr == 0 and self.left_joystick_ud == 0 and self.right_joystick_lr == 0 and self.right_joystick_ud == 0:
-			#print "not publish"
+			#print("not publish")
 			pass
 		#足を動かすモード
 		else:
