@@ -15,7 +15,7 @@
   <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/urg.urdf.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/xtion.urdf.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/stacks/stacks.urdf.xacro" />
-  <xacro:include filename="$(find sobit_education_description)/urdf/urg_sup/urg_sup.urdf.xacro" />
+  <xacro:include filename="$(find sobit_mini_description)/urdf/urg_sup/urg_sup.urdf.xacro" />
   <xacro:base/>
   <xacro:stack_hexagons parent="base_link" />
   <xacro:urg_sup parent="plate_bottom_link"/>
