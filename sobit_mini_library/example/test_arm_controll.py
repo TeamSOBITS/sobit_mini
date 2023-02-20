@@ -16,12 +16,16 @@ def test():
     ### shoulder_flex =  0.00 ###
     ### elbow_roll    =  1.57 ###
     ### hand_motor    =  0.00 ###
-    mini_ctr.moveRightArm( 0.0, 0.0, 1.57, 0.0)
+    # mini_ctr.moveRightArm( 0.0, 0.0, 0.0, 0.0, 1.0)
 
+    # mini_ctr.moveLeftArm( 0.0, 0.0, 0.0, 0.0, 1.0)
+    mini_ctr.moveJoint( Joint.BODY_ROLL_JOINT, 1.0, 3.0, False)
+    
     rospy.sleep(2.0)
 
     # 決められたポーズをする
-    mini_ctr.movePose( "initial_pose" )
+    # mini_ctr.movePose( "initial_pose" )
+    mini_ctr.moveToPose( "initial_pose" )
 
 if __name__ == '__main__':
     try:

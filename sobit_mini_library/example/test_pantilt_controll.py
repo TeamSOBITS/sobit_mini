@@ -6,17 +6,20 @@ import sys
 
 def test():
     rospy.init_node('test')
-    r = rospy.Rate(1) # 10hz
+    # r = rospy.Rate(1) # 10hz
     ang = 0.8
     args = sys.argv
     mini_pantilt_ctr = SobitMiniController(args[0]) # args[0] : C++上でros::init()を行うための引数
 
-    while not rospy.is_shutdown():
-        ang = -1.0 * ang
+    # while not rospy.is_shutdown():
+    # ang = -1.0 * ang
 
-        # カメラパンチルトを動かす
-        mini_pantilt_ctr.moveJoint( Joint.HEAD_PAN_JOINT, ang, 2.0, False )
-        r.sleep()
+    ang = -0.45
+    # カメラパンチルトを動かす
+    mini_pantilt_ctr.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
+    # r.sleep()
+
+    mini_pantilt_ctr.moveToPose( "initial_pose" )
 
 if __name__ == '__main__':
     try:
