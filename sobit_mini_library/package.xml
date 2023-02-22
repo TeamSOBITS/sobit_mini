@@ -50,29 +50,20 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>nav_msgs</build_depend>
-  <build_depend>pybind11_catkin</build_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>rospy</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>trajectory_msgs</build_depend>
 
-  <build_export_depend>geometry_msgs</build_export_depend>
-  <build_export_depend>nav_msgs</build_export_depend>
-  <build_export_depend>pybind11_catkin</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>rospy</build_export_depend>
-  <build_export_depend>std_msgs</build_export_depend>
-  <build_export_depend>trajectory_msgs</build_export_depend>
+  <depend>controller_manager</depend>
+  <depend>dynamixel_sdk</depend>
+  <depend>hardware_interface</depend>
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>sobit_common_msg</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>pybind11_catkin</depend>
   
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>pybind11_catkin</exec_depend>
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>rospy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>trajectory_msgs</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

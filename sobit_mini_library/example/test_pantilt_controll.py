@@ -16,10 +16,10 @@ def test():
 
     ang = -0.45
     # カメラパンチルトを動かす
-    mini_pantilt_ctr.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
+    mini_pantilt_ctr.moveJoint( Joint.HEAD_PAN_JOINT, ang, 2.0, True )
     # r.sleep()
 
-    mini_pantilt_ctr.moveToPose( "initial_pose" )
+    # mini_pantilt_ctr.moveToPose( "initial_pose" )
 
 if __name__ == '__main__':
     try:

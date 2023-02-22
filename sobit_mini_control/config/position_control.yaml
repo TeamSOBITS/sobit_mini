@@ -92,19 +92,19 @@ dynamixel_port:
     # - left_shoulder_flex_joint
     # - left_elbow_roll_joint
     # - left_hand_motor_joint
-  l_arm_shoulder_roll_joint:  {id: 11, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  l_arm_shoulder_pan_joint:   {id: 12, center: 2048, home: -1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  l_arm_elbow_tilt_joint:     {id: 13, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  l_arm_wrist_tilt_joint:     {id: 14, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  l_hand_joint:               {id: 15, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 0, lim: 150, gear_ratio: 1 }
-  r_arm_shoulder_roll_joint:  {id: 21, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  r_arm_shoulder_pan_joint:   {id: 22, center: 2048, home: 1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  r_arm_elbow_tilt_joint:     {id: 23, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  r_arm_wrist_tilt_joint:     {id: 24, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  r_hand_joint:               {id: 25, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 0, lim: 150, gear_ratio: 1 }
-  body_roll_joint:            {id: 2, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 5.2727 }
-  head_pan_joint:             {id: 3, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 1 }
-  head_tilt_joint:            {id: 4, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 300, pos_p_gain: 0, gear_ratio: 2.04348 }
+  l_arm_shoulder_roll_joint:  {id: 11, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_shoulder_pan_joint:   {id: 12, center: 2048, home: -1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_elbow_tilt_joint:     {id: 13, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_wrist_tilt_joint:     {id: 14, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_hand_joint:               {id: 15, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 4700, pos_i_gain: 0, pos_p_gain: 800, lim: 150, gear_ratio: 1 }
+  r_arm_shoulder_roll_joint:  {id: 21, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_shoulder_pan_joint:   {id: 22, center: 2048, home: 1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_elbow_tilt_joint:     {id: 23, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_wrist_tilt_joint:     {id: 24, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_hand_joint:               {id: 25, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 4700, pos_i_gain: 0, pos_p_gain: 800, lim: 150, gear_ratio: 1 }
+  body_roll_joint:            {id: 2, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 5.2727 }
+  head_pan_joint:             {id: 3, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  head_tilt_joint:            {id: 4, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 2.04348 }
   #body_lift_joint: {id: 16, center: 2048, home: 2048, mode: 3, vel: 0, acc: 0, pos_i_gain: 300}
   # body_roll_joint: {id: 2, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 5.2727 }
   # head_tilt_joint: {id: 3, center: 2048, home: 0.0, mode: 3, vel: 0, acc: 0, pos_i_gain: 300, gear_ratio: 2.04348 }
