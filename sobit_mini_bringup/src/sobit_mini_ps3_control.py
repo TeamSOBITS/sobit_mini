@@ -8,13 +8,15 @@ import geometry_msgs.msg
 
 class PS3_control:
     def __init__(self):
+        # self.pub_joy = rospy.Publisher('/joy', sensor_msgs.msg.Joy, self.publisher_joy, queue_size=10)
+        
         self.sub_joy = rospy.Subscriber('/joy', sensor_msgs.msg.Joy, self.subscribe_joy, queue_size=10)
         self.sub_joint_state = rospy.Subscriber('/joint_states', sensor_msgs.msg.JointState, self.subscribe_joint_state, queue_size=10)
         self.pub_body_control = rospy.Publisher('/body_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
         self.pub_head_control = rospy.Publisher('/head_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
-        self.pub_left_arm_control = rospy.Publisher('/left_arm_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
-        self.pub_right_arm_control = rospy.Publisher('/right_arm_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
-        self.pub_wheel_control = rospy.Publisher('/cmd_vel_mux/input/navi',geometry_msgs.msg.Twist,queue_size=10)
+        self.pub_left_arm_control = rospy.Publisher('/l_arm_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
+        self.pub_right_arm_control = rospy.Publisher('/r_arm_trajectory_controller/command', trajectory_msgs.msg.JointTrajectory, queue_size=10)
+        self.pub_wheel_control = rospy.Publisher('/mobile_base/commands/velocity',geometry_msgs.msg.Twist,queue_size=10)
         #rate
         self.rate = rospy.Rate(10)
         #subscriberのメッセージを受け取る変数
