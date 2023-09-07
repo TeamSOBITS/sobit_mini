@@ -3,6 +3,7 @@ import rospy
 from sobit_mini_module import SobitMiniController
 from sobit_mini_module import Joint
 import sys
+import math
 
 def test():
     rospy.init_node('test')
@@ -14,12 +15,13 @@ def test():
     # while not rospy.is_shutdown():
     # ang = -1.0 * ang
 
-    ang = 0.45
+    ang = -0.45
     # カメラパンチルトを動かす
     mini_pantilt_ctr.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
+    # mini_pantilt_ctr.moveJoint( Joint.BODY_ROLL_JOINT, math.radians(-17), 2.0, True )
     # r.sleep()
 
-    mini_pantilt_ctr.moveToPose( "initial_pose" )
+    # mini_pantilt_ctr.moveToPose( "initial_pose" )
 
 if __name__ == '__main__':
     try:

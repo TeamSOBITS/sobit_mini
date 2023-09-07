@@ -41,11 +41,45 @@ PYBIND11_MODULE(sobit_mini_module, m) {
     py::class_<SobitMiniController, SobitTurtlebotController>(m, "SobitMiniController")
         .def( py::init< const std::string& >() )
         .def( "moveJoint", &SobitMiniController::moveJoint, "move Joint", 
-            py::arg("joint_num"), py::arg("rad"), py::arg("sec"), py::arg("is_sleep") = true )
+            py::arg("joint_num"), 
+            py::arg("rad"), 
+            py::arg("sec"), 
+            py::arg("is_sleep") = true )
         .def( "moveHeadPanTilt", &SobitMiniController::moveHeadPanTilt, "move Head PanTilt", 
-            py::arg("pan_rad"), py::arg("tilt_rad"), py::arg("sec"), py::arg("is_sleep") = true )
+            py::arg("pan_rad"), 
+            py::arg("tilt_rad"), 
+            py::arg("sec"), 
+            py::arg("is_sleep") = true )
         // .def( "movePose", &SobitMiniController::movePose, "move Pose" )
         .def( "moveToPose", &SobitMiniController::moveToPose, "move Pose" )
-        .def( "moveRightArm", &SobitMiniController::moveRightArm, "move Right Arm" )
-        .def( "moveLeftArm", &SobitMiniController::moveLeftArm, "move Left Arm" );
+        .def( "moveRightArm", &SobitMiniController::moveRightArm, "move Right Arm",
+            py::arg( "shoulder_roll" ),
+            py::arg( "shoulder_pan" ),
+            py::arg( "elbow_tilt" ),
+            py::arg( "wrist_tilt" ),
+            py::arg( "hand_motor"),
+            py::arg( "sec" ) = 5.0,
+            py::arg( "is_sleep" ) = true )
+        .def( "moveLeftArm", &SobitMiniController::moveLeftArm, "move Left Arm",
+            py::arg( "shoulder_roll" ),
+            py::arg( "shoulder_pan" ),
+            py::arg( "elbow_tilt" ),
+            py::arg( "wrist_tilt" ),
+            py::arg( "hand_motor"),
+            py::arg( "sec" ) = 5.0,
+            py::arg( "is_sleep" ) = true )
+        .def( "moveGripperToTargetCoord", &SobitMiniController::moveGripperToTargetCoord, "moveGripperToTargetCoord",
+            py::arg( "arm_mode" ),
+            py::arg( "goal_position_x" ),
+            py::arg( "goal_position_y" ),
+            py::arg( "goal_position_z" ),
+            py::arg( "diff_goal_position_x" ),
+            py::arg( "diff_goal_position_y" ),
+            py::arg( "diff_goal_position_z" ) )
+        .def( "moveGripperToTargetTF", &SobitMiniController::moveGripperToTargetTF, "moveGripperToTargetTF",
+            py::arg( "arm_mode"),
+            py::arg( "target_name" ),
+            py::arg( "diff_goal_position_x" ),
+            py::arg( "diff_goal_position_y" ),
+            py::arg( "diff_goal_position_z" ) );
 }

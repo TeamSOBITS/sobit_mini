@@ -5,17 +5,19 @@
 
   <xacro:macro name="left_hand" params="prefix parent">
 
-    <joint name="${prefix}_motor_dummy_joint" type="fixed">
+    <joint name="${prefix}_base_joint" type="fixed">
       <parent link="${parent}" />
-      <child link="${prefix}_motor_dummy_link" />
-      <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 0.0" />
+      <child link="${prefix}_base_link" />
+      <!-- <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 0.0" /> -->
+      <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.0 0.0" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="${M_PI/2.0}" effort="1" velocity="1" />
     </joint>
 
-    <link name="${prefix}_motor_dummy_link">
+    <link name="${prefix}_base_link">
       <visual>
-        <origin xyz="0.0 0.0 0.04725" rpy="${M_PI/2.0} 0.0 0.0" />
+        <!-- <origin xyz="0.0 0.0 0.04725" rpy="${M_PI/2.0} 0.0 0.0" /> -->
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/L_hand/L_hand_JOINT.stl"/>
         </geometry>
@@ -23,7 +25,8 @@
       </visual>
 
       <collision>
-        <origin xyz="0.0 0.0 0.04725" rpy="${M_PI/2.0} 0.0 0.0" />
+        <!-- <origin xyz="0.0 0.0 0.04725" rpy="${M_PI/2.0} 0.0 0.0" /> -->
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/L_hand/L_hand_JOINT.stl"/>
         </geometry>
@@ -39,9 +42,11 @@
     </link>
     
     <joint name="${prefix}_joint" type="revolute">
-      <parent link="${prefix}_motor_dummy_link" />
+      <parent link="${prefix}_base_link" />
+      <!-- <parent link="${parent}" /> -->
       <child link="${prefix}_motor_link" />
-      <origin rpy="0 0 0" xyz="0 0 0" />
+      <!-- <origin rpy="0 0 0" xyz="0 0 0" /> -->
+      <origin rpy="0 0 0" xyz="-0.015855 0.0 -0.04725" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="${M_PI/2.0}" effort="1" velocity="1" />
     </joint>
@@ -49,9 +54,12 @@
     <link name="${prefix}_motor_link" />
 
     <joint name="${prefix}_right_finger_joint" type="revolute">
-      <parent link="${prefix}_motor_dummy_link" />
+      <parent link="${prefix}_base_link" />
+      <!-- <parent link="${parent}" /> -->
       <child link="${prefix}_right_finger_link" />
-      <origin rpy="0 0 0" xyz="-0.015855 0.0 0.0" />
+      <!-- <origin rpy="0 0 0" xyz="-0.015855 0.0 0.0" /> -->
+      <!-- <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 -0.015855" /> -->
+      <origin rpy="0 0 0" xyz="-0.015855 0.0 -0.04725" />
       <axis xyz="0 -1 0" />
       <limit lower="-1.0" upper="0.0" effort="1" velocity="1" />
       <mimic joint="${prefix}_joint" multiplier="1.0" />
@@ -83,9 +91,12 @@
     </link>
 
     <joint name="${prefix}_left_finger_joint" type="revolute">
-      <parent link="${prefix}_motor_dummy_link" />
+      <parent link="${prefix}_base_link" />
+      <!-- <parent link="${parent}" /> -->
       <child link="${prefix}_left_finger_link" />
-      <origin rpy="0 0 0" xyz="0.015855 0.0 0.0" />
+      <!-- <origin rpy="0 0 0" xyz="0.015855 0.0 0.0" /> -->
+      <!-- <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 0.015855" /> -->
+      <origin rpy="0 0 0" xyz="0.015855 0.0 -0.04725" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="1.0" effort="1" velocity="1" />
       <mimic joint="${prefix}_joint" multiplier="1.0" />

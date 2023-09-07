@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="right_arm_transmission" params="prefix">
-    <position_joint_transmission joint="${prefix}_shoulder_flex_joint" reduction="1" />
     <position_joint_transmission joint="${prefix}_shoulder_roll_joint" reduction="1" />
-    <position_joint_transmission joint="${prefix}_wrist_flex_joint" reduction="1" />
+    <position_joint_transmission joint="${prefix}_shoulder_pan_joint" reduction="1" />
+    <position_joint_transmission joint="${prefix}_elbow_tilt_joint" reduction="1" />
+    <position_joint_transmission joint="${prefix}_wrist_tilt_joint" reduction="1" />
   </xacro:macro>
 </robot>

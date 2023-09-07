@@ -42,7 +42,7 @@
       <child link="${prefix}_shoulder_roll_link" />
       <origin rpy="0 0 0" xyz="0.0 0.1415 0.015161" />
       <axis xyz="0 -1 0" />
-      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI}" />
+      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI}" velocity="${M_PI}" />
     </joint>
 
     <link name="${prefix}_shoulder_roll_link">

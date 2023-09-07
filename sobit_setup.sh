@@ -8,7 +8,8 @@ ros_packages=(
     "sobit_common" \
     "text_to_speech" \
     "web_speech_recognition" \
-    "urg_node"
+    "urg_node"\
+    "realsense_ros"
 )
 
 for ((i = 0; i < ${#ros_packages[@]}; i++)) {
