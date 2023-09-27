@@ -44,7 +44,7 @@ joint_limits:
   # right_elbow_roll_joint:
   r_arm_elbow_tilt_joint:
     has_position_limits: true
-    min_position: -1.57
+    min_position: 0.0
     max_position: 1.57
     has_velocity_limits: true
     max_velocity: 1.0
@@ -89,7 +89,7 @@ joint_limits:
   l_arm_elbow_tilt_joint:
     has_position_limits: true
     min_position: -1.57
-    max_position: 1.57
+    max_position: 0.0
     has_velocity_limits: true
     max_velocity: 1.0
     has_acceleration_limits: true
