@@ -2,14 +2,14 @@
 
 cd $(pwd)/..
 
-# git cloneしたいTeamSOBITSのROSパッケージを記述
-# "azure_kinect_ros", "sobit_navigation_stack", "pytorch_yolo", "placeable_position_estimator"
+# git cloneしたいTeamSOBITSのROSパッケージを以下に記述
 ros_packages=(
     "sobit_common" \
     "text_to_speech" \
     "web_speech_recognition" \
     "urg_node"\
-    "realsense_ros"
+    "realsense_ros" \
+    "azure_kinect_ros_driver"
 )
 
 for ((i = 0; i < ${#ros_packages[@]}; i++)) {
@@ -19,7 +19,7 @@ for ((i = 0; i < ${#ros_packages[@]}; i++)) {
 }
 
 # オープンソースのROSパッケージのgit clone
-git clone https://github.com/ros/executive_smach.git
+git clone -b noetic-devel https://github.com/ros/executive_smach.git
 
 cd 
 
