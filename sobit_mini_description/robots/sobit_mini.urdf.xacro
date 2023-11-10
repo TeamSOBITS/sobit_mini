@@ -12,19 +12,24 @@
   <xacro:include filename="$(find sobit_mini_description)/urdf/ribs/ribs.urdf.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/right_arm/right_arm.urdf.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/right_hand/right_hand.urdf.xacro" />
-  <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/urg.urdf.xacro" />
-  <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/xtion.urdf.xacro" />
+  <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/lidar.urdf.xacro" />
   <xacro:include filename="$(find sobit_mini_description)/urdf/stacks/stacks.urdf.xacro" />
-  <xacro:include filename="$(find sobit_education_description)/urdf/urg_sup/urg_sup.urdf.xacro" />
+  <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/mic.urdf.xacro" />
+  <xacro:include filename="$(find sobit_mini_description)/urdf/sensor/realsense_d435.urdf.xacro" />
+  
+  <xacro:include filename="$(find urg_node)/urdf/hokuyo_ust.urdf.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
   <xacro:base/>
   <xacro:stack_hexagons parent="base_link" />
-  <xacro:urg_sup parent="plate_bottom_link"/>
-  <xacro:urg parent="base_urg_sup_link"/>
+  <xacro:lidar prefix="lidar" parent="plate_bottom_link" />
   <xacro:body prefix="body" parent="plate_middle_link"/>
-  <xacro:left_arm prefix="left" parent="body_lift_link"/>
-  <xacro:right_arm prefix="right" parent="body_lift_link"/>
-  <xacro:left_hand prefix="left_hand" parent="left_elbow_roll_link"/>
-  <xacro:right_hand prefix="right_hand" parent="right_elbow_roll_link"/>
-  <xacro:head prefix="head" parent="body_lift_link"/>
-  <xacro:sensor_asus_xtion_pro parent="head_tilt_link"/>
+  <xacro:left_arm prefix="l_arm" parent="body_front_pole_link"/>
+  <xacro:right_arm prefix="r_arm" parent="body_front_pole_link"/>
+  <xacro:left_hand prefix="l_hand" parent="l_arm_wrist_tilt_link"/>
+  <xacro:right_hand prefix="r_hand" parent="r_arm_wrist_tilt_link"/>
+  <xacro:head prefix="head" parent="body_front_pole_link"/>
+  <xacro:realsense_d435 prefix="head_camera" parent="head_tilt_link" />
+  <xacro:mic prefix="mic" parent="head_tilt_link"/>
+  
 </robot>

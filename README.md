@@ -5,12 +5,12 @@ SOBIT MINIを動かすために必要なリポジトリです．
 ※ 初めてロボットを動かす場合は，必ずロボットを動かしたことのある先輩方に付き添ってもらいながらロボットを動かしましょう．
 
 ## SOBIT MINI
-![](sobit_mini_bringup/img/sobit_mini.png)
+![](sobit_mini_bringup/img/SOBIT_MINI_latest.png)
 
 ## Prerequisites
 以下の環境で動作します．
-- OS: Ubuntu 18.04 
-- ROS distribution: melodic Kame
+- OS: Ubuntu 20.04 
+- ROS distribution: noetic Kame
 
 ### How to use
 まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．

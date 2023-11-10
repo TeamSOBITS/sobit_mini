@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot name="lidar" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="lidar" params="prefix parent">
+
+    <joint name="${prefix}_base_joint" type="fixed">
+      <origin xyz="0.194084 0.0 0.0085" rpy="0 0 0" />
+      <parent link="${parent}" />
+      <child link="${prefix}_base_link" />
+    </joint>
+
+    <link name="${prefix}_base_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${3.0*M_PI/2.0}"/>
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_urg_sup.dae"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${3.0*M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_urg_sup.dae"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0 0.0"/>
+        <mass value="0.000001" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+      </inertial>
+    </link>
+
+    <xacro:hokuyo_ust_mount prefix="${prefix}" parent="${prefix}_base_link" topic="scan" >
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:hokuyo_ust_mount>
+
+  </xacro:macro>
+</robot>

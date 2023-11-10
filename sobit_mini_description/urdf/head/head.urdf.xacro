@@ -8,56 +8,65 @@
     <joint name="${prefix}_pan_joint" type="revolute">
       <parent link="${parent}" />
       <child link="${prefix}_pan_link" />
-      <origin rpy="0 0 0" xyz="0 0 0.51217" />
+      <origin xyz="0.0 0.0 0.516" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
       <limit effort="30" lower="-2.617" upper="2.617" velocity="${M_PI/2.0}" />
     </joint>
 
     <link name="${prefix}_pan_link">
-      <collision>
-        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 0.0135" />
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_head_neck.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_PAN_JOINT.stl" />
+        </geometry>
+        <material name="black" />
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_PAN_JOINT.stl" />
         </geometry>
       </collision>
-      <visual>
-        <origin rpy="${M_PI/2.0} 0 ${-M_PI/2.0}" xyz="0 -0.01437 0" />
-        <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_head_neck.dae" />
-        </geometry>
-      </visual>
+
       <inertial>
-        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 0.0135" />
+        <origin xyz="0 0 0.0135" rpy="${M_PI/2.0} 0 0" />
         <mass value="0.6" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
 
     <joint name="${prefix}_tilt_joint" type="revolute">
       <parent link="${prefix}_pan_link" />
       <child link="${prefix}_tilt_link" />
-      <origin rpy="0 0 0" xyz="0 0 0.01273" />
-      <axis xyz="0 1 0" />
+      <origin xyz="0.0 0.0 0.017" rpy="0.0 0.0 0.0" />
+      <axis xyz="0 -1 0" />
       <limit effort="30" lower="-1" upper="1" velocity="${M_PI/2.0}" />
     </joint>
 
     <link name="${prefix}_tilt_link">
-      <collision>
-        <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 -0.012" />
-        <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_head_top.dae" />
-        </geometry>
-      </collision>
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${-M_PI/2.0}" xyz="0 -0.01435 -0.0157" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_head_top.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_TILT_JOINT.dae" />
         </geometry>
       </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_TILT_JOINT.dae" />
+        </geometry>
+      </collision>
+
       <inertial>
         <origin rpy="${M_PI/2.0} 0 0" xyz="0 0 -0.031" />
         <mass value="0.3" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
 

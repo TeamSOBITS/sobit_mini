@@ -4,154 +4,213 @@
 
   <xacro:macro name="body" params="prefix parent">
 
-    <joint name="${prefix}_square_bottom_joint" type="fixed">
-      <parent link="${parent}" />
-      <child link="${prefix}_square_bottom_link" />
-      <origin rpy="0 0 0" xyz="0.017 0 0.0" />
-      <axis xyz="0 0 1" />
-    </joint>
-
-    <link name="${prefix}_square_bottom_link">
-      <visual>
-        <origin rpy="0 0 0" xyz="0 0 0.003" />
-        <geometry>
-          <box size="0.16 0.16 0.003" />
-        </geometry>
-        <material name="silver" />
-      </visual>
-      <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0.0" />
-        <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
-      </inertial>
-    </link>
-
     <joint name="${prefix}_small_gear_joint" type="fixed">
       <parent link="${parent}" />
       <child link="${prefix}_small_gear_link" />
-      <origin rpy="0 0 0" xyz="0.0 0.14 0.0" />
+      <origin xyz="0.0 -0.14 0.0" rpy="0 0 0" />
       <axis xyz="0 0 1" />
     </joint>
 
     <link name="${prefix}_small_gear_link">
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="0 0 0.034" />
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI} ${M_PI} ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_small_gear.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
         </geometry>
+        <material name="black" />
       </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI} ${M_PI} ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
+        </geometry>
+      </collision>
+      
       <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0.0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
 
+    <joint name="${prefix}_big_gear_base" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_big_gear_base_link"/>
+      <origin xyz="0.0 0.0 0.0031" rpy="0.0 0.0 0.0" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}_big_gear_base_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/big_gear_base.stl" />
+        </geometry>
+        <material name="silver" />
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <mass value="1" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
+      </inertial>
+    </link>
+
+
     <joint name="${prefix}_roll_joint" type="revolute">
-      <parent link="${parent}" />
+      <parent link="${prefix}_big_gear_base_link" />
       <child link="${prefix}_roll_link" />
-      <origin rpy="0 0 0" xyz="0 0 0.0" />
+      <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> -->
+      <origin xyz="0.0 0.0 0.0325" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2}" velocity="${M_PI/2.0}" />
     </joint>
 
-    <link name="${prefix}_roll_link"/>
-
-    <joint name="${prefix}_square_top_joint" type="fixed">
-      <parent link="${prefix}_roll_link" />
-      <child link="${prefix}_square_top_link" />
-      <origin rpy="0 0 ${M_PI/4.0}" xyz="0.0 0 0.0135" />
-      <axis xyz="0 0 1" />
-    </joint>
-
-    <link name="${prefix}_square_top_link">
+    <link name="${prefix}_roll_link">
       <visual>
-        <origin rpy="0 0 0" xyz="0 0 0.0015" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <box size="0.16 0.16 0.003" />
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_big_gear.stl" />
         </geometry>
-        <material name="silver" />
+        <material name="black" />
       </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_big_gear.stl" />
+        </geometry>
+      </collision>
+
       <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0.0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
+
 
     <joint name="${prefix}_big_gear_joint" type="fixed">
       <parent link="${prefix}_roll_link" />
       <child link="${prefix}_big_gear_link" />
-      <origin rpy="0 0 0" xyz="0 0 0.015" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
     </joint>
 
-    <link name="${prefix}_big_gear_link">
-      <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="0 0 0.02" />
-        <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_big_gear.dae" />
-        </geometry>
-      </visual>
-      <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0.0" />
-        <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
-      </inertial>
-    </link>
+    <link name="${prefix}_big_gear_link"/>
 
     <joint name="${prefix}_back_pole_joint" type="fixed">
-      <parent link="${prefix}_big_gear_link" />
+      <!-- <parent link="${prefix}_big_gear_link" /> -->
+      <parent link="${prefix}_roll_link" />
       <child link="${prefix}_back_pole_link" />
-      <origin rpy="0 0 0" xyz="-0.03 0 0.019" />
+      <origin xyz="-0.01 0.0 0.058" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
     </joint>
 
     <link name="${prefix}_back_pole_link">
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="-0.01 -0.01 0.0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_center_back.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_center_back.stl" />
         </geometry>
+        <material name="black" />
       </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_center_back.stl" />
+        </geometry>
+      </collision>
+
       <inertial>
         <origin rpy="0 0 0" xyz="0 0 0.0" />
         <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
 
-    <joint name="${prefix}_lift_joint" type="fixed">
-      <parent link="${prefix}_back_pole_link" />
-      <child link="${prefix}_lift_link" />
-      <origin rpy="0 0.0 0" xyz="0.03 0.0 0.03" />
-      <axis xyz="0 0 1" />
-      <limit effort="30" lower="0" upper="0.17" velocity="0.2" />
-      <dynamics damping="1.0" />
-    </joint>
-
-    <link name="${prefix}_lift_link"/>
-
     <joint name="${prefix}_front_pole_joint" type="fixed">
-      <parent link="${prefix}_lift_link" />
+      <!-- <parent link="${prefix}_big_gear_link" /> -->
+      <parent link="${prefix}_roll_link" />
       <child link="${prefix}_front_pole_link" />
-      <origin rpy="0 0 0" xyz="0.00 0 0.00" />
+      <origin xyz="0.0 0.0 0.0005" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
     </joint>
 
     <link name="${prefix}_front_pole_link">
       <visual>
-        <origin rpy="${M_PI/2.0} 0 ${M_PI/2.0}" xyz="0.0 0.015 0.513" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/sobit_mini_center_front.dae" />
+          <mesh filename="package://sobit_mini_description/meshes/body/spine.stl" />
+        </geometry>
+        <material name="black" />
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/spine.stl" />
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <mass value="1" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
+      </inertial>
+    </link>
+
+    <joint name="${prefix}_sobit_mini_cover" type="fixed">
+      <!-- <parent link="${prefix}_big_gear_link" /> -->
+      <parent link="${prefix}_roll_link" />
+      <child link="${prefix}_sobit_mini_cover" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}_sobit_mini_cover">
+      <visual>
+        <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_body_cover.dae" />
         </geometry>
       </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_body_cover.dae" />
+        </geometry>
+      </collision>
+
       <inertial>
         <origin rpy="0 0 0" xyz="0 0 0.0" />
         <mass value="1" />
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
       </inertial>
     </link>
+
     
     <xacro:body_transmission prefix="${prefix}"/>
   </xacro:macro>
