@@ -41,8 +41,8 @@
       <parent link="${prefix}_shoulder_fixed_link" />
       <child link="${prefix}_shoulder_roll_link" />
       <origin rpy="0 0 0" xyz="0.0 0.1415 0.015161" />
-      <axis xyz="0 -1 0" />
-      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI}" velocity="${M_PI}" />
+      <axis xyz="0 1 0" />
+      <limit effort="30" lower="${-M_PI}" upper="${M_PI/2.0}" velocity="${M_PI}" />
     </joint>
 
     <link name="${prefix}_shoulder_roll_link">
@@ -108,7 +108,7 @@
       <child link="${prefix}_elbow_tilt_link" />
       <origin rpy="0 0 0" xyz="0 0.11125 0" />
       <axis xyz="0 0 1" />
-      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
+      <limit effort="30" lower="${-M_PI/2.0}" upper="0.0" velocity="${M_PI/2.0}" />
     </joint>
 
     <link name="${prefix}_elbow_tilt_link">
@@ -145,7 +145,30 @@
       <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2.0}" velocity="${M_PI/2.0}" />
     </joint>
 
-    <link name="${prefix}_wrist_tilt_link"/>
+    <link name="${prefix}_wrist_tilt_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 ${-M_PI/2.0} ${M_PI}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/L_hand/L_hand_JOINT.stl"/>
+        </geometry>
+        <material name="black" />
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 ${-M_PI/2.0} ${M_PI}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/L_hand/L_hand_JOINT.stl"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <mass value="0.08" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
+      </inertial>
+    </link>
 
     <xacro:left_arm_transmission prefix="${prefix}"/>
   </xacro:macro>

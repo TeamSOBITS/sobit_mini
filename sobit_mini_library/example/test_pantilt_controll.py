@@ -15,7 +15,8 @@ def test():
     # while not rospy.is_shutdown():
     # ang = -1.0 * ang
 
-    ang = -0.45
+    # ang = -0.45
+    ang = math.radians(-10)
     # カメラパンチルトを動かす
     mini_pantilt_ctr.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
     # mini_pantilt_ctr.moveJoint( Joint.BODY_ROLL_JOINT, math.radians(-17), 2.0, True )

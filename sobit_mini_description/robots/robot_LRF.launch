@@ -1,0 +1,38 @@
+<launch>
+
+    <!-- 引数 -->
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="model" default="$(find diff_drive_pkg)/urdf/robot_v04.urdf"/>
+    <!-- <arg name="model" default="$(find diff_drive_pkg)/urdf/robot_with_lidar.urdf"/> -->
+    <arg name="x" default="2.0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+
+    <!-- Gazeboの起動 -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world"/>
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <!--ロボットのURDFモデルをパラメータサーバにロードする-->
+    <param name = "robot_description" textfile = "$(arg model)"/>
+
+    <!--Gazeboでロボットを生成し，パラメータサーバからのその記述を受ける-->
+    <node name = "spawn_urdf" pkg = "gazebo_ros" type = "spawn_model" args = "-param robot_description -urdf -model diff_drive_robot -x $(arg x) -y $(arg y) -z $(arg z)"/>
+
+    <!-- robot_state_publisherの起動 -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="30.0" />
+    </node>
+
+    <!-- Rvizを起動 -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_drive_pkg)/rviz/robot.rviz"/>
+</launch>

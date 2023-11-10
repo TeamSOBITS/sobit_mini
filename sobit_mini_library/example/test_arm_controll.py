@@ -22,10 +22,10 @@ def test():
     #mini_ctr.moveRightArm( shoulder_roll, shoulder_flex, elbow_roll, wrist_tilt, hand_motor, sec, bool)
     #secはジョイントを動かす速度を決定する。最大1.0sec。それ以上は制御が難しい。
     #boolは基本True
-    mini_ctr.moveRightArm( 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, True)
+    # mini_ctr.moveRightArm( 0.0, 0.0, 0.0, 0.0, 1.0, 2.0, True)
 
     #左腕を動かす
-    # mini_ctr.moveLeftArm( 0.0, 0.0, 0.0, 0.0, 1.0, 2.0, True)
+    mini_ctr.moveLeftArm( 0.0, -1.25, 0.0, 0.0, 0.5, 2.0, True)
 
     #腰を動かす
     # mini_ctr.moveJoint( Joint.BODY_ROLL_JOINT, 1.0, 3.0, False)

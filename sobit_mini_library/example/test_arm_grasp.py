@@ -12,6 +12,7 @@ def test():
     args = sys.argv
     mini_ctr = SobitMiniController(args[0]) # args[0] : C++上でros::init()を行うための引数
 
+    ang = math.radians(-10)
     ###     arm controll      ###
     ### shoulder_roll =  0.00 ###
     ### shoulder_flex =  0.00 ###
@@ -21,6 +22,8 @@ def test():
     #逆運動学による物体の把持。
     #mini_ctr.moveGripperToTargetTF(arm_mode(0:left_arm,1:right_arm), 把持したい物体のtf名, 追加パラメータx, 追加パラメータy, 追加パラメータz)
     #追加パラメータは基本的に0.0。細かい調整で使用
+    mini_ctr.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
+    rospy.sleep(2.0)
     mini_ctr.moveGripperToTargetTF(0, "object_0", 0.0, 0.0, 0.0)
     rospy.sleep(2.0)
 

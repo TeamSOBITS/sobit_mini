@@ -64,55 +64,7 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        L_elbow_roll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        L_shoulder_fixed_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        L_shoulder_flex_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        L_shoulder_roll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        L_wrist_tilt_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
-        R_elbow_roll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        R_shoulder_fixed_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        R_shoulder_flex_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        R_shoulder_roll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        R_wrist_tilt_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         base_footprint:
           Alpha: 1
           Show Axes: false
@@ -136,7 +88,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         body_front_pole_link:
           Alpha: 1
           Show Axes: false
@@ -146,6 +97,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         body_small_gear_link:
           Alpha: 1
           Show Axes: false
@@ -237,21 +189,41 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        left_hand_left_finger_link:
+        l_arm_elbow_tilt_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_hand_motor_dummy_link:
+        l_arm_shoulder_fixed_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_hand_motor_link:
+        l_arm_shoulder_pan_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        left_hand_right_finger_link:
+          Value: true
+        l_arm_shoulder_roll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_arm_wrist_tilt_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        l_hand_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_hand_left_finger_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_hand_right_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -285,31 +257,51 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        right_hand_left_finger_link:
+        r_arm_elbow_tilt_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_hand_motor_dummylink:
+        r_arm_shoulder_fixed_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_hand_motor_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        right_hand_right_finger_link:
+        r_arm_shoulder_pan_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wheel_left_link:
+        r_arm_shoulder_roll_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        wheel_right_link:
+        r_arm_wrist_tilt_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        r_hand_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_hand_left_finger_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_hand_right_finger_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_l_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_r_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -325,26 +317,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        L_elbow_roll_link:
-          Value: true
-        L_shoulder_fixed_link:
-          Value: true
-        L_shoulder_flex_link:
-          Value: true
-        L_shoulder_roll_link:
-          Value: true
-        L_wrist_tilt_link:
-          Value: true
-        R_elbow_roll_link:
-          Value: true
-        R_shoulder_fixed_link:
-          Value: true
-        R_shoulder_flex_link:
-          Value: true
-        R_shoulder_roll_link:
-          Value: true
-        R_wrist_tilt_link:
-          Value: true
         base_footprint:
           Value: true
         base_link:
@@ -401,13 +373,21 @@ Visualization Manager:
           Value: true
         head_tilt_link:
           Value: true
-        left_hand_left_finger_link:
+        l_arm_elbow_tilt_link:
           Value: true
-        left_hand_motor_dummy_link:
+        l_arm_shoulder_fixed_link:
           Value: true
-        left_hand_motor_link:
+        l_arm_shoulder_pan_link:
           Value: true
-        left_hand_right_finger_link:
+        l_arm_shoulder_roll_link:
+          Value: true
+        l_arm_wrist_tilt_link:
+          Value: true
+        l_hand_base_link:
+          Value: true
+        l_hand_left_finger_link:
+          Value: true
+        l_hand_right_finger_link:
           Value: true
         lidar_base_link:
           Value: true
@@ -421,17 +401,25 @@ Visualization Manager:
           Value: true
         plate_middle_link:
           Value: true
-        right_hand_left_finger_link:
+        r_arm_elbow_tilt_link:
           Value: true
-        right_hand_motor_dummylink:
+        r_arm_shoulder_fixed_link:
           Value: true
-        right_hand_motor_link:
+        r_arm_shoulder_pan_link:
           Value: true
-        right_hand_right_finger_link:
+        r_arm_shoulder_roll_link:
           Value: true
-        wheel_left_link:
+        r_arm_wrist_tilt_link:
           Value: true
-        wheel_right_link:
+        r_hand_base_link:
+          Value: true
+        r_hand_left_finger_link:
+          Value: true
+        r_hand_right_finger_link:
+          Value: true
+        wheel_l_link:
+          Value: true
+        wheel_r_link:
           Value: true
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
@@ -462,60 +450,57 @@ Visualization Manager:
             plate_middle_link:
               body_big_gear_base_link:
                 body_roll_link:
+                  body_back_pole_link:
+                    {}
                   body_big_gear_link:
-                    body_back_pole_link:
-                      {}
-                    body_front_pole_link:
-                      L_shoulder_fixed_link:
-                        L_shoulder_roll_link:
-                          L_shoulder_flex_link:
-                            L_elbow_roll_link:
-                              L_wrist_tilt_link:
-                                left_hand_motor_dummy_link:
-                                  left_hand_left_finger_link:
-                                    {}
-                                  left_hand_motor_link:
-                                    {}
-                                  left_hand_right_finger_link:
-                                    {}
-                      R_shoulder_fixed_link:
-                        R_shoulder_roll_link:
-                          R_shoulder_flex_link:
-                            R_elbow_roll_link:
-                              R_wrist_tilt_link:
-                                right_hand_motor_dummylink:
-                                  right_hand_left_finger_link:
-                                    {}
-                                  right_hand_motor_link:
-                                    {}
-                                  right_hand_right_finger_link:
-                                    {}
-                      head_pan_link:
-                        head_tilt_link:
-                          head_camera_base_link:
-                            head_camera_bottom_screw_frame:
-                              head_camera_link:
-                                head_camera_color_frame:
-                                  head_camera_color_optical_frame:
-                                    {}
-                                head_camera_depth_frame:
-                                  head_camera_depth_optical_frame:
-                                    {}
-                                head_camera_infra1_frame:
-                                  head_camera_infra1_optical_frame:
-                                    {}
-                                head_camera_infra2_frame:
-                                  head_camera_infra2_optical_frame:
-                                    {}
-                          mic_base_link:
-                            {}
-                    body_sobit_mini_cover:
-                      {}
+                    {}
+                  body_front_pole_link:
+                    head_pan_link:
+                      head_tilt_link:
+                        head_camera_base_link:
+                          head_camera_bottom_screw_frame:
+                            head_camera_link:
+                              head_camera_color_frame:
+                                head_camera_color_optical_frame:
+                                  {}
+                              head_camera_depth_frame:
+                                head_camera_depth_optical_frame:
+                                  {}
+                              head_camera_infra1_frame:
+                                head_camera_infra1_optical_frame:
+                                  {}
+                              head_camera_infra2_frame:
+                                head_camera_infra2_optical_frame:
+                                  {}
+                        mic_base_link:
+                          {}
+                    l_arm_shoulder_fixed_link:
+                      l_arm_shoulder_roll_link:
+                        l_arm_shoulder_pan_link:
+                          l_arm_elbow_tilt_link:
+                            l_arm_wrist_tilt_link:
+                              l_hand_base_link:
+                                l_hand_left_finger_link:
+                                  {}
+                                l_hand_right_finger_link:
+                                  {}
+                    r_arm_shoulder_fixed_link:
+                      r_arm_shoulder_roll_link:
+                        r_arm_shoulder_pan_link:
+                          r_arm_elbow_tilt_link:
+                            r_arm_wrist_tilt_link:
+                              r_hand_base_link:
+                                r_hand_left_finger_link:
+                                  {}
+                                r_hand_right_finger_link:
+                                  {}
+                  body_sobit_mini_cover:
+                    {}
               body_small_gear_link:
                 {}
-            wheel_left_link:
+            wheel_l_link:
               {}
-            wheel_right_link:
+            wheel_r_link:
               {}
       Update Interval: 0
       Value: true
@@ -547,7 +532,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.1481783390045166
+      Distance: 1.5898791551589966
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -555,17 +540,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.06830666214227676
-        Y: 0.016118207946419716
-        Z: 0.672455370426178
+        X: -0.05446522310376167
+        Y: 0.00981910340487957
+        Z: 0.5529529452323914
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.15979765355587006
+      Pitch: 0.1697976440191269
       Target Frame: <Fixed Frame>
-      Yaw: 0.03138570114970207
+      Yaw: 0.011385688558220863
     Saved: ~
 Window Geometry:
   Displays:
