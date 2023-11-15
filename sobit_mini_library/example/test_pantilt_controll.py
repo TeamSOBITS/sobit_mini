@@ -8,7 +8,6 @@ import math
 def test():
     rospy.init_node('test')
     # r = rospy.Rate(1) # 10hz
-    ang = 0.8
     args = sys.argv
     mini_pantilt_ctr = SobitMiniController(args[0]) # args[0] : C++上でros::init()を行うための引数
 
