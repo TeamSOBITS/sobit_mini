@@ -10,10 +10,16 @@
     </ol>
 </details>
 
+<!--レポジトリの概要-->
 ## 概要
 ![](sobit_mini/img/sobit_mini.png)
 
 SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）を動かすためのライブラリです
+
+> [!WARNING]
+> 初心者の場合，実機のロボットを扱う際に，先輩方に付き添ってもらいながらロボットを動かしましょう．
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 ## Prerequisites
 以下の環境で動作します．
