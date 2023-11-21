@@ -42,7 +42,36 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
 <!-- - OS: Ubuntu 20.04 
 - ROS distribution: noetic Kame -->
 
-### How to use
+### インストール方法
+
+1. ROSの`src`フォルダに移動します．
+   ```sh
+   $ roscd
+   # もしくは，"cd ~/catkin_ws/"へ移動．
+   $ cd src/
+   ```
+2. 本レポジトリをcloneします．
+   ```sh
+   $ git clone https://github.com/TeamSOBITS/sobit_mini
+   ```
+3. レポジトリの中へ移動します．
+   ```sh
+   $ cd sobit_mini/
+   ```
+4. 依存パッケージをインストールします．
+   ```sh
+   $ bash install.sh
+   ```
+5. パッケージをコンパイルします．
+   ```sh
+   $ roscd
+   # もしくは，"cd ~/catkin_ws/"へ移動．
+   $ catkin_make
+   ```
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
 まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
 この設定は，初回のみに行う作業ですので，1度行ったことのある人は飛ばしてください．
 
