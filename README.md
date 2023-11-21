@@ -90,6 +90,24 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
+### Rvizの可視化
+実機を動かす前段階で，Rviz上でSOBIT MINIを可視化し，ロボットの構成を表示することができます．
+
+```sh
+$ roslaunch sobit_mini_description display.launch
+```
+
+正常に動作した場合は，次のようにRvizが表示されます．
+
+![SOBIT MINI Display with Rviz](sobit_mini/img/sobit_mini_display.png)
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+
+
+
+
 
 
 
