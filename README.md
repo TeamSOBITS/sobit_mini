@@ -72,6 +72,27 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
+<!-- 実行・操作方法 -->
+## 実行・操作方法
+
+1. [minimal.launch](sobit_mini_bringup/launch/minimal.launch)というlaunchファイルを起動します．
+   ```sh
+   $ roslaunch sobit_mini_bringup minimal.launch
+   ```
+2. [任意] デモプログラムを実行してみましょう．
+   ```sh
+   $ rosrun sobit_mini_library test_controll_wheel.py
+   ```
+
+> [!NOTE]
+> SOBIT miniの動作方法になれるため，[example](sobit_mini_library/example/)フォルダを確認し，それぞれのサンプルファイルから動作関数を学びましょう．
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+
+
+
 まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
 この設定は，初回のみに行う作業ですので，1度行ったことのある人は飛ばしてください．
 
