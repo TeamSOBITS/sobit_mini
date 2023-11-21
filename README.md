@@ -14,17 +14,33 @@
 ## 概要
 ![](sobit_mini/img/sobit_mini.png)
 
-SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）を動かすためのライブラリです
+SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）を動かすためのライブラリです．
 
 > [!WARNING]
 > 初心者の場合，実機のロボットを扱う際に，先輩方に付き添ってもらいながらロボットを動かしましょう．
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
-## Prerequisites
-以下の環境で動作します．
-- OS: Ubuntu 20.04 
-- ROS distribution: noetic Kame
+<!-- セットアップ -->
+## セットアップ
+
+ここで，本レポジトリのセットアップ方法について説明します．
+
+### 環境条件
+
+まず，以下の環境を整えてから，次のインストール段階に進んでください．
+
+| System  | Version |
+| ------------- | ------------- |
+| Ubuntu | 20.04 (Focal Fossa) |
+| ROS | Noetic Ninjemys |
+| Python | 3.0~ |
+
+> [!NOTE]
+> `Ubuntu`や`ROS`のインストール方法に関しては，[SOBIT Manual](https://github.com/TeamSOBITS/sobits_manual#%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)に参照してください．
+
+<!-- - OS: Ubuntu 20.04 
+- ROS distribution: noetic Kame -->
 
 ### How to use
 まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
