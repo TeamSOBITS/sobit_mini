@@ -1,11 +1,7 @@
-# ROS Package for SOBIT MINI
+# SOBIT MINI
 
-SOBIT MINIを動かすために必要なリポジトリです．
-
-※ 初めてロボットを動かす場合は，必ずロボットを動かしたことのある先輩方に付き添ってもらいながらロボットを動かしましょう．
-
-## SOBIT MINI
-![](sobit_mini_bringup/img/SOBIT_MINI_latest.png)
+## 概要
+![](sobit_mini/img/sobit_mini.png)
 
 ## Prerequisites
 以下の環境で動作します．
