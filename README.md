@@ -1,7 +1,16 @@
 # SOBIT MINI
 
+<!--目次-->
+<details>
+    <summary>目次</summary>
+    <ol>
+    </ol>
+</details>
+
 ## 概要
 ![](sobit_mini/img/sobit_mini.png)
+
+SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）を動かすためのライブラリです
 
 ## Prerequisites
 以下の環境で動作します．
