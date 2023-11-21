@@ -38,11 +38,13 @@ def test():
 
     #20cm後進
     mini_ctr.controlWheelLinear(-0.2)
+    # rospy.sleep(1.0)
+    mini_ctr.moveLeftArm( math.radians(0), math.radians(-90), math.radians(90), math.radians(0), 0.0, 2.0, True)
     
     rospy.sleep(2.0)
 
     # 決められたポーズをする
-    mini_ctr.moveToPose( "initial_pose" )
+    # mini_ctr.moveToPose( "initial_pose" )
 
 if __name__ == '__main__':
     try:
