@@ -8,8 +8,8 @@
 #include <tf/transform_listener.h>
 #include <trajectory_msgs/JointTrajectory.h>
 
-#include <sobit_common_msg/current_state.h>
-#include <sobit_common_msg/current_state_array.h>
+// #include <sobit_common_msg/current_state.h>
+// #include <sobit_common_msg/current_state_array.h>
 
 namespace sobit_mini {
     enum Joint { L_ARM_SHOULDER_ROLL_JOINT = 0,

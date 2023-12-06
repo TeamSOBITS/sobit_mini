@@ -85,7 +85,7 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
    ```
 
 > [!NOTE]
-> SOBIT miniの動作方法になれるため，[example](sobit_mini_library/example/)フォルダを確認し，それぞれのサンプルファイルから動作関数を学びましょう．
+> SOBIT MINIの動作方法になれるため，[example](sobit_mini_library/example/)フォルダを確認し，それぞれのサンプルファイルから動作関数を学びましょう．
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
@@ -104,9 +104,118 @@ $ roslaunch sobit_mini_description display.launch
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
+## ソフトウェア
+<details>
+<summary>SOBIT MINIと関わるソフトの情報まとめ</summary>
 
 
+### ジョイントコントローラ
+SOBIT_MINIのパンチルト機構とマニピュレータを動かすための情報まとめです．
 
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+#### 動作関数
+1.  `moveToPose()` : 決められたポーズに動かします．
+   ```cpp
+   bool moveToPose( const std::string &pose_name //ポーズ名
+   );
+   ```
+
+> [!NOTE]
+> 既存のポーズは[sobit_mini_pose.yaml](sobit_mini_library/config/sobit_mini_pose.yaml)に確認できます．
+
+2. `moveHeadPanTilt` : パンチルト機構を任意の角度に動かします．
+   ```cpp
+   bool moveHeadPanTilt(
+      const double pan_rad,         // 回転角度 [rad]
+      const double tilt_rad,        // 回転角度 [rad]
+      const double sec,             // 回転時間 [s]
+      bool is_sleep                 // 回転後に待機するかどうか
+   )
+   ```
+
+3. `moveRightArm` : 右腕のジョイントを任意の角度に動かします．
+   ```cpp
+   bool moveRightArm(
+      const double shoulder_roll,   // 回転角度 [rad]
+      const double shoulder_pan,    // 回転角度 [rad]
+      const double elbow_tilt,      // 回転角度 [rad]
+      const double wrist_tilt,      // 回転角度 [rad]
+      const double hand_motor,      // 回転角度 [rad]
+      const double sec,             // 回転時間 [s]
+      bool is_sleep                 // 回転後に待機するかどうか
+   )
+   ```
+
+4. `moveLeftArm` : 右腕のジョイントを任意の角度に動かします．
+   ```cpp
+   bool moveLeftArm(
+      const double shoulder_roll,   // 回転角度 [rad]
+      const double shoulder_pan,    // 回転角度 [rad]
+      const double elbow_tilt,      // 回転角度 [rad]
+      const double wrist_tilt,      // 回転角度 [rad]
+      const double hand_motor,      // 回転角度 [rad]
+      const double sec,             // 回転時間 [s]
+      bool is_sleep                 // 回転後に待機するかどうか
+   )
+   ```
+
+5. `moveJoint` : 指定されたジョイントを任意の角度に動かします．
+   ```cpp
+   bool moveJoint(
+      const Joint joint_num,  // ジョイント名 (定数名)
+      const double rad,       // 回転角度 [rad]
+      const double sec,       // 回転時間 [s]
+      bool is_sleep           // 回転後に待機するかどうか
+   )
+   ```
+
+6. `moveAllJoint` : 全てのジョイントを任意の角度に動かします．
+   ```cpp
+   bool moveAllJoint(
+      const double l_arm_shoulder_roll_joint,   // 回転角度 [rad]
+      const double l_arm_shoulder_pan_joint,    // 回転角度 [rad]
+      const double l_arm_elbow_tilt_joint,      // 回転角度 [rad]
+      const double l_hand_joint,                // 回転角度 [rad]
+      const double r_arm_shoulder_roll_joint,   // 回転角度 [rad]
+      const double r_arm_shoulder_pan_joint,    // 回転角度 [rad]
+      const double r_arm_elbow_tilt_joint,      // 回転角度 [rad]
+      const double r_arm_wrist_tilt_joint,      // 回転角度 [rad]
+      const double r_hand_joint,                // 回転角度 [rad]
+      const double body_roll_joint,             // 回転角度 [rad]
+      const double head_pan_joint,              // 回転角度 [rad]
+      const double head_tilt_joint,             // 回転角度 [rad]
+      const double sec,                         // 回転時間 [s]
+      bool is_sleep                             // 回転後に待機するかどうか
+   )
+   ```
+
+7. `moveGripperToTargetCoord` : ハンドをxyz座標に動かします（把持モード）．
+   ```cpp
+   bool moveGripperToTargetCoord(
+      const int arm_mode,                 //使用するアーム(arm_mode=0:左腕,arm_mode=1:左腕)
+      const double goal_position_x,       //把持目的地のx [m]
+      const double goal_position_y,       //把持目的地のy [m]
+      const double goal_position_z,       //把持目的地のz [m]
+      const double diff_goal_position_x,  // xyz座標のx軸をシフトする [m]
+      const double diff_goal_position_y,  // xyz座標のy軸をシフトする [m]
+      const double diff_goal_position_z   // xyz座標のz軸をシフトする [m]
+   )
+   ```
+
+   8. `moveGripperToTargetTF` : ハンドをtf名に動かします（把持モード）．
+   ```cpp
+   bool moveGripperToTargetTF(
+      const int arm_mode,                    //使用するアーム(arm_mode=0:左腕,arm_mode=1:左腕)
+      const std::string &goal_position_name, //把持目的tf名
+      const double diff_goal_position_x,     // xyz座標のx軸をシフトする [m]
+      const double diff_goal_position_y,     // xyz座標のy軸をシフトする [m]
+      const double diff_goal_position_z      // xyz座標のz軸をシフトする [m]
+   )
+   ```
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
 
