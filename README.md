@@ -1,3 +1,5 @@
+<a name="readme-top"></a>
+
 # SOBIT MINI
 
 <!--目次-->
@@ -204,7 +206,7 @@ SOBIT_MINIのパンチルト機構とマニピュレータを動かすための�
    )
    ```
 
-   8. `moveGripperToTargetTF` : ハンドをtf名に動かします（把持モード）．
+8. `moveGripperToTargetTF` : ハンドをtf名に動かします（把持モード）．
    ```cpp
    bool moveGripperToTargetTF(
       const int arm_mode,                    //使用するアーム(arm_mode=0:左腕,arm_mode=1:左腕)
@@ -217,6 +219,27 @@ SOBIT_MINIのパンチルト機構とマニピュレータを動かすための�
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
+#### ジョイント名
+
+SOBIT MINIのジョイント名とその定数名は以下の通りです．
+
+| ジョイント番号 | ジョイント名 | ジョイント定数名 |
+| :---: | --- | --- |
+| 0 | l_arm_shoulder_roll_joint | L_ARM_SHOULDER_ROLL_JOINT |
+| 1 | l_arm_shoulder_pan_joint | L_ARM_SHOULDER_PAN_JOINT |
+| 2 | l_arm_elbow_tilt_joint | L_ARM_ELBOW_TILT_JOINT |
+| 3 | l_arm_wrist_tilt_joint | L_ARM_WRIST_TILT_JOINT |
+| 4 | l_hand_joint | L_HAND_JOINT |
+| 5 | r_arm_shoulder_roll_joint | R_ARM_SHOULDER_ROLL_JOINT |
+| 6 | r_arm_shoulder_pan_joint | R_ARM_SHOULDER_PAN_JOINT |
+| 7 | r_arm_elbow_tilt_joint | R_ARM_ELBOW_ROLL_JOINT |
+| 8 | r_arm_wrist_tilt_joint | R_ARM_WRIST_TILT_JOINT |
+| 9 | r_hand_joint | R_HAND_JOINT |
+| 10 | body_roll_joint | BODY_ROLL_JOINT |
+| 11 | head_pan_joint | HEAD_PAN_JOINT |
+| 12 | head_tilt_joint | HEAD_TILT_JOINT |
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
 
