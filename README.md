@@ -297,6 +297,8 @@ SOBIT MINIの移動機構部を動かすための情報まとめです．
    )
    ```
 
+</details>
+
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 ## ハードウェア
