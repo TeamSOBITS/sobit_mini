@@ -1,5 +1,11 @@
 <a name="readme-top"></a>
 
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![License][license-shield]][license-url]
+
 # SOBIT MINI
 
 <!--目次-->
@@ -242,8 +248,158 @@ SOBIT MINIのジョイント名とその定数名は以下の通りです．
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
+#### ポーズの設定方法
 
-まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
+[sobit_mini_pose.yaml](sobit_mini_library/config/sobit_mini_pose.yaml)というファイルでポーズの追加・編集ができます．以下のようなフォーマットになります．
+
+```yaml
+mini_pose:
+    - { 
+        pose_name: "pose_name",
+        l_arm_shoulder_roll_joint: 0.0,
+        l_arm_shoulder_pan_joint: -1.25,
+        l_arm_elbow_tilt_joint: 0.0,
+        l_arm_wrist_tilt_joint: 0.0,
+        l_hand_joint: 0.0,
+        r_arm_shoulder_roll_joint: 0.0,
+        r_arm_shoulder_pan_joint: -1.25,
+        r_arm_elbow_tilt_joint: 0.0,
+        r_arm_wrist_tilt_joint: 0.0,
+        r_hand_joint: 0.0,
+        body_roll_joint: 0.0,
+        head_pan_joint: 0.0,
+        head_tilt_joint: 0.0
+    }
+```
+
+### ホイルコントローラ
+
+SOBIT MINIの移動機構部を動かすための情報まとめです．
+
+
+#### 動作関数
+
+1. `controlWheelLinear()` : 並進（前進・後進）に移動させます．
+   ```cpp
+   bool controlWheelLinear(const double distance      //x方向への直進移動距離
+   )
+   ```
+
+2. `controlWheelRotateRad()` : 回転運動を行う（弧度法：Radian）
+   ```cpp
+   bool controlWheelRotateRad(const double angle_rad  // 中心回転角度 [rad]
+   )
+   ```
+
+3. `controlWheelRotateDeg()` : 回転運動を行う（度数法：Degree）
+   ```cpp
+   bool controlWheelRotateDeg(const double angle_deg  // 中心回転角度 (deg)
+   )
+   ```
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+## ハードウェア
+
+SOBIT MINIはオープンソースハードウェアとして[Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8)にて公開しております．
+
+![SOBIT MINI in OnShape](sobit_mini/img/sobit_mini_onshape.png)
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+<details>
+<summary>ハードウェアの詳細についてはこちらを確認してください．</summary>
+
+### パーツのダウンロード方法
+
+1. Onshapeにアクセスしましょう．
+
+> [!NOTE]
+> ファイルをダウンロードするために，`OnShape`のアカウントを作成する必要がありません．ただし，本ドキュメント全体をコピーする場合，アカウントの作成を推奨します．
+
+2. `Instance`の中にパーツを右クリックで選択します．
+3. 一覧が表示され，`Export`ボタンを押してください．
+4. 表示されたウィンドウの中に，`Format`という項目があります．`STEP`を選択してください．
+5. 最後に，青色の`Export`ボタンを押してダウンロードが開始されます．
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+### 電子回路図
+
+TBD
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+### ロボットの組み立て
+
+TBD
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+### ロボットの特徴
+
+| 項目 | 詳細 |
+| --- | --- |
+| 最大直進速度 | 0.65[m/s] |
+| 最大回転速度 | 3.1415[rad/s] |
+| 最大ペイロード | 0.35[kg] |
+| サイズ (長さx幅x高さ) | 512x418x1122[mm] |
+| 重量 | 11.6[kg] |
+| リモートコントローラ | PS3/PS4 |
+| LiDAR | UST-10LX |
+| RGB-D | Intel Realsense D435F |
+| スピーカー | モノラルスピーカー |
+| マイク | コンデンサーマイク |
+| アクチュエータ (アーム) | 2 x XM540-W150, 9 x XM430-W320 |
+| 移動機構 | TurtleBot2 |
+| 電源 | 2 x Makita 6.0Ah 18V |
+| PC接続 | USB |
+
+
+### 部品リスト（BOM）
+
+| 部品 | 型番 | 個数 | 購入先 |
+| --- | --- | --- | --- |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+
+
+</details>
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+<!-- マイルストーン -->
+## マイルストーン
+
+- [x] exampleファイルの修正
+- [x] OSS
+    - [x] ドキュメンテーションの充実
+    - [x] コーディングスタイルの統一
+
+現時点のバッグや新規機能の依頼を確認するために[Issueページ][license-url] をご覧ください．
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+
+
+
+
+
+<!-- まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
 この設定は，初回のみに行う作業ですので，1度行ったことのある人は飛ばしてください．
 
 ※ 開発するPCで，SOBIT EDUやSOBIT PROを動かしたことがある場合も，この作業は必要ありません．
@@ -262,4 +418,4 @@ $ bash sobit_setup.sh
 
 ```bash:
 $ roslaunch sobit_mini_bringup minimal.launch
-```
+``` -->
