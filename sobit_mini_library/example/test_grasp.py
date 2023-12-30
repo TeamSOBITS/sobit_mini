@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy
-from sobit_mini_module import SobitMiniController
+from sobit_mini_module import SobitMiniJointController,SobitMiniWheelController
 from sobit_mini_module import Joint
 from geometry_msgs.msg import Point
 import sys
@@ -10,7 +10,8 @@ def test():
     rospy.init_node('test')
     r = rospy.Rate(1) # 10hz
     args = sys.argv
-    mini_ctr = SobitMiniController(args[0]) # args[0] : C++上でros::init()を行うための引数
+    mini_ctr = SobitMiniJointController(args[0]) # args[0] : C++上でros::init()を行うための引数
+    mini_ctr_w = SobitMiniWheelController(args[0])
 
     ang = math.radians(-10)
     ###     arm controll      ###
@@ -37,7 +38,7 @@ def test():
     #mini_ctr.moveRightArm( math.radians(90), -1.57, math.radians(30), math.radians(60), 0.0, 2.0, True)
 
     #20cm後進
-    mini_ctr.controlWheelLinear(-0.2)
+    mini_ctr_w.controlWheelLinear(-0.2)
     # rospy.sleep(1.0)
     mini_ctr.moveLeftArm( math.radians(0), math.radians(-90), math.radians(90), math.radians(0), 0.0, 2.0, True)
     

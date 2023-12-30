@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>sobit_mini_library</name>
   <version>0.0.0</version>
-  <description>The sobit_mini_library package</description>
+  <description>
+    This package allows shared configuration with SOBITS robots
+  </description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="sobits@todo.todo">sobits</maintainer>
+  <maintainer email="sakuyuu2002@gmai.com">Yuusaku Hanajima</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>BSD</license>
 
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
@@ -48,9 +53,13 @@
   <!--   <test_depend>gtest</test_depend> -->
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
+
+  <url type="website">https://home.soka.ac.jp/~choi/index.html</url>
+  <url type="repository">https://github.com/TeamSOBITS/sobit_common</url>
+  <url type="bugtracker">https://github.com/TeamSOBITS/sobit_common/issues</url>
+  <author email="choi.7f@gmail.com">Team SOBITS</author>
+
   <buildtool_depend>catkin</buildtool_depend>
-
-
   <depend>controller_manager</depend>
   <depend>dynamixel_sdk</depend>
   <depend>hardware_interface</depend>
@@ -61,7 +70,9 @@
   <depend>geometry_msgs</depend>
   <depend>trajectory_msgs</depend>
   <depend>nav_msgs</depend>
-  <depend>tf</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
   <depend>pybind11_catkin</depend>
   
 

@@ -89,7 +89,7 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
    ```
 2. [任意] デモプログラムを実行してみましょう．
    ```sh
-   $ rosrun sobit_mini_library test_controll_wheel.py
+   $ rosrun sobit_mini_library test_control_wheel.py
    ```
 
 > [!NOTE]

@@ -13,7 +13,7 @@ $ cm
 
 ---
 
-## SobitMiniController
+## SobitMiniJointController
 sobit miniを動かすクラス
 ### Joint
 * sobit miniのジョイント名とその定数名(Enum : Joint)
@@ -35,19 +35,19 @@ sobit miniを動かすクラス
 #### WheelController
 1.  controlWheelLinear() :   直線移動
     ```bash
-    bool sobit::SobitMiniController::controlWheelLinear( 
+    bool sobit::SobitMiniJointController::controlWheelLinear( 
         const double distance           :   移動距離[m]
     )
     ```  
 2.  controlWheelRotateRad() :   回転移動
     ```bash
-    bool sobit::SobitMiniController::controlWheelRotateRad( 
+    bool sobit::SobitMiniJointController::controlWheelRotateRad( 
         const double angle_rad           :   回転角度[rad]
     )
     ```  
 3.  controlWheelRotateDeg() :   回転移動
     ```bash
-    bool sobit::SobitMiniController::controlWheelRotateDeg( 
+    bool sobit::SobitMiniJointController::controlWheelRotateDeg( 
         const double angle_rad           :   回転角度[deg]
     )
     ```  
@@ -55,7 +55,7 @@ sobit miniを動かすクラス
 #### JointController
 1.  moveJoint() :   1つのジョイントを動かす関数（ジョイントの指定は定数名(Enum)）
     ```bash
-    bool sobit::SobitMiniController::moveJoint (
+    bool sobit::SobitMiniJointController::moveJoint (
         const Joint joint_num,          :   ジョイント番号
         const double rad,               :   移動角度
         const double sec,               :   移動時間
@@ -64,7 +64,7 @@ sobit miniを動かすクラス
     ```  
 2.  moveHeadPanTilt()   :   xtionのパンチルトを任意の角度に動かす
     ```bash
-    bool sobit::SobitMiniController::moveHeadPanTilt (
+    bool sobit::SobitMiniJointController::moveHeadPanTilt (
         const double pan_rad,           :   パン角度
         const double tilt_rad,          :   チルト角度
         const double sec,               :   移動時間
@@ -73,7 +73,7 @@ sobit miniを動かすクラス
     ```  
 3.  moveRightArm()   :   右のアームを任意の角度に動かす
     ```bash
-    bool sobit::SobitMiniController::moveRightArm ( 
+    bool sobit::SobitMiniJointController::moveRightArm ( 
         const double arm_roll,           
         const double arm_flex,             
         const double elbow_flex,                   
@@ -82,7 +82,7 @@ sobit miniを動かすクラス
     ```  
 4.  moveLeftrm()   :   左のアームを任意の角度に動かす
     ```bash
-    bool sobit::SobitMiniController::moveLeftArm ( 
+    bool sobit::SobitMiniJointController::moveLeftArm ( 
         const double arm_roll,           
         const double arm_flex,             
         const double elbow_flex,                   
@@ -91,7 +91,7 @@ sobit miniを動かすクラス
     ```  
 4.  movePose()   :   予め設定したポーズに動かす
     ```bash
-    bool sobit::SobitMiniController::movePose( 
+    bool sobit::SobitMiniJointController::movePose( 
         const std::string &pose_name 
     )
     ```  
@@ -155,10 +155,10 @@ sobit miniを動かすクラス
 ### C++
 
 ```bash:
-#include <sobit_mini_library/sobit_mini_controller.hpp>
+#include <sobit_mini_library/sobit_mini_joint_controller.hpp>
 int main(int argc, char *argv[]) {
     ros::init(argc, argv, "sobit_turtlebot_controller_test");
-    sobit::SobitMiniController sobit_mini_ctr;
+    sobit::SobitMiniJointController sobit_mini_ctr;
     ros::Rate loop_rate(1.0);
     double pan_ang = 0.8;
     while ( ros::ok() ) {
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 ```bash:
 #!/usr/bin/env python
 import rospy
-from sobit_mini_module import SobitMiniController
+from sobit_mini_module import SobitMiniJointController
 from sobit_mini_module import Joint
 import sys
 
@@ -184,7 +184,7 @@ def test():
     r = rospy.Rate(1) # 10hz
     ang = 0.8
     args = sys.argv
-    edu_ctr = SobitMiniController(args[0]) # args[0] : C++上でros::init()を行うための引数
+    edu_ctr = SobitMiniJointController(args[0]) # args[0] : C++上でros::init()を行うための引数
     while not rospy.is_shutdown():
         ang = -1.0 * ang
         edu_ctr.moveJoint( Joint.HEAD_PAN_JOINT, ang, 0.8, false )

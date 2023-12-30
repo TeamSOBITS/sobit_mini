@@ -1,32 +1,26 @@
-#ifndef SOBIT_TURTLEBOT_CONTROLLER
-#define SOBIT_TURTLEBOT_CONTROLLER
+#ifndef SOBIT_MINI_WHEEL_CONTROLLER_H_
+#define SOBIT_MINI_WHEEL_CONTROLLER_H_
 
-#include <ros/ros.h>
 #include <cmath>
 #include <cstring>
-#include <trajectory_msgs/JointTrajectory.h>
+
+#include <ros/ros.h>
+// #include <tf/transform_broadcaster.h>
+
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
-#include <tf/transform_broadcaster.h>
-#include <pybind11/pybind11.h>
 
+#include <trajectory_msgs/JointTrajectory.h>
 
-class ROSCommonNode
-{
-  public:
-    ROSCommonNode( const std::string &name ) {
-        char* cstr = new char[name.size() + 1];
-        std::strcpy(cstr, name.c_str()); 
-        char **argv = &cstr;
-        int argc = 0;
-        delete[] cstr;
-        ros::init( argc, argv, "sobit_turtlebot_controller_node");
-    }
-    ROSCommonNode( ) { }
-};
+#include "sobit_mini_library/sobit_mini_library.h"
+
 
 namespace sobit_mini {
-    class SobitTurtlebotController  : private ROSCommonNode {
+    class SobitMiniWheelController  : private ROSCommonNode {
         protected :
             ros::NodeHandle nh_;
             ros::NodeHandle pnh_;
@@ -42,15 +36,15 @@ namespace sobit_mini {
             double rad2Deg ( const double rad );
             double deg2Rad ( const double deg );
         public :
-            SobitTurtlebotController( const std::string &name );
-            SobitTurtlebotController( );
+            SobitMiniWheelController( const std::string &name );
+            SobitMiniWheelController( );
             bool controlWheelLinear( const double distance );
             bool controlWheelRotateRad( const double angle_rad );
             bool controlWheelRotateDeg( const double angle_deg );
     };
 }
 
-inline void sobit_mini::SobitTurtlebotController::setJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt ) {
+inline void sobit_mini::SobitMiniWheelController::setJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt ) {
     trajectory_msgs::JointTrajectory joint_trajectory;
     trajectory_msgs::JointTrajectoryPoint joint_trajectory_point; 
     joint_trajectory.joint_names.push_back(joint_name); 
@@ -64,7 +58,7 @@ inline void sobit_mini::SobitTurtlebotController::setJointTrajectory( const std:
     return;
 }
 
-inline void sobit_mini::SobitTurtlebotController::addJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt ) {
+inline void sobit_mini::SobitMiniWheelController::addJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt ) {
     trajectory_msgs::JointTrajectory joint_trajectory = *jt;
     joint_trajectory.joint_names.push_back(joint_name); 
     joint_trajectory.points[0].positions.push_back( rad );
@@ -76,7 +70,7 @@ inline void sobit_mini::SobitTurtlebotController::addJointTrajectory( const std:
     return;
 }
 
-inline void sobit_mini::SobitTurtlebotController::checkPublishersConnection ( const ros::Publisher& pub ) {
+inline void sobit_mini::SobitMiniWheelController::checkPublishersConnection ( const ros::Publisher& pub ) {
     ros::Rate loop_rate(10);
     while ( pub.getNumSubscribers()	== 0 && ros::ok() ) {
         try { loop_rate.sleep(); }
@@ -85,19 +79,20 @@ inline void sobit_mini::SobitTurtlebotController::checkPublishersConnection ( co
     return; 
 }
 
-inline void sobit_mini::SobitTurtlebotController::callbackOdometry ( const nav_msgs::OdometryConstPtr &odom_msg ) { curt_odom_ = *odom_msg; }
+inline void sobit_mini::SobitMiniWheelController::callbackOdometry ( const nav_msgs::OdometryConstPtr &odom_msg ) { curt_odom_ = *odom_msg; }
 
-inline double sobit_mini::SobitTurtlebotController::geometryQuat2Yaw( const geometry_msgs::Quaternion& geometry_quat ) {
-    tf::Quaternion quat;
+inline double sobit_mini::SobitMiniWheelController::geometryQuat2Yaw( const geometry_msgs::Quaternion& geometry_quat ) {
+    tf2::Quaternion quat_tf;
     double roll, pitch, yaw;
-    quaternionMsgToTF(geometry_quat, quat);
-    quat.normalize();
-    tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+    // quaternionMsgToTF(geometry_quat, quat_tf);
+    tf2::fromMsg(geometry_quat, quat_tf);
+    quat_tf.normalize();
+    tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, yaw);
     return yaw;    
 }
 
-inline double sobit_mini::SobitTurtlebotController::rad2Deg ( const double rad ) { return rad * 180.0 / M_PI;  }
+inline double sobit_mini::SobitMiniWheelController::rad2Deg ( const double rad ) { return rad * 180.0 / M_PI;  }
 
-inline double sobit_mini::SobitTurtlebotController::deg2Rad ( const double deg ) { return deg * M_PI / 180.0; }
+inline double sobit_mini::SobitMiniWheelController::deg2Rad ( const double deg ) { return deg * M_PI / 180.0; }
 
-#endif
+#endif /*SOBIT_MINI_WHEEL_CONTROLLER_H_*/

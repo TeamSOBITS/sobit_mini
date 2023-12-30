@@ -1,20 +1,29 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.10.2)
 project(sobit_mini_description)
 
-add_compile_options(-std=c++14)
 
-find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  roscpp
-  rospy
-  std_msgs
-  dynamic_reconfigure
-  pcl_conversions
-  pcl_ros
-  tf
-  message_generation
-  sensor_msgs
-)
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
+find_package(catkin REQUIRED)
+catkin_metapackage()
+
+# add_compile_options(-std=c++14)
+
+# find_package(catkin REQUIRED COMPONENTS
+#   geometry_msgs
+#   roscpp
+#   rospy
+#   std_msgs
+#   dynamic_reconfigure
+#   pcl_conversions
+#   pcl_ros
+#   tf2
+#   tf2_ros
+#   tf2_geometry_msgs
+#   message_generation
+#   sensor_msgs
+# )
 
 ##add_message_files(
 ## FILES
@@ -31,20 +40,22 @@ find_package(catkin REQUIRED COMPONENTS
 ## waypoint_nav.srv
 ##)
 
-generate_messages(
- DEPENDENCIES
- std_msgs
- geometry_msgs
-)
+# generate_messages(
+#  DEPENDENCIES
+#  std_msgs
+#  geometry_msgs
+# )
 
-catkin_package(
-  CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs
-)
+# catkin_package(
+#   CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs
+# )
 
-include_directories(
+# include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
-)
+#   ${catkin_INCLUDE_DIRS}
+# )
+
+
 
 ##add_executable(pose_saver_edu src/pose_saver_tf.cpp)
 ##target_link_libraries(pose_saver_edu ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})

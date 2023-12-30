@@ -4,16 +4,53 @@
 
   <xacro:macro name="body" params="prefix parent">
 
-    <joint name="${prefix}_small_gear_joint" type="fixed">
+    <joint name="${prefix}_small_gear_base_joint" type="fixed">
       <parent link="${parent}" />
-      <child link="${prefix}_small_gear_link" />
-      <origin xyz="0.0 -0.14 0.0" rpy="0 0 0" />
+      <child link="${prefix}_small_gear_base_link" />
+      <origin xyz="0.0 -0.13925 0.0031" rpy="0 0 0" />
       <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}_small_gear_base_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.034" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> -->
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear_motor.stl" />
+        </geometry>
+        <material name="black" />
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.034" rpy="0.0 0.0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear_motor.stl" />
+        </geometry>
+      </collision>
+      
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <mass value="1" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0" 
+                 izz="1.0" />
+      </inertial>
+    </link>
+
+    <!-- <joint name="${prefix}_small_gear_joint" type="revolute"> -->
+    <joint name="${prefix}_roll_joint" type="revolute">
+      <parent link="${prefix}_small_gear_base_link" />
+      <child link="${prefix}_small_gear_link" />
+      <origin xyz="0.0 0.0 0.036" rpy="0 0 ${M_PI/2.0}" />
+      <axis xyz="0 0 1" />
+      <limit effort="30" lower="${-1.31825*M_PI}" upper="${1.31825*M_PI}" velocity="${M_PI/2.0}" />
+      <!-- <limit effort="30" lower="${-M_PI/4.0}" upper="${M_PI/4.0}" velocity="${M_PI/2.0}" /> -->
     </joint>
 
     <link name="${prefix}_small_gear_link">
       <visual>
-        <origin xyz="0.0 0.0 0.0" rpy="${M_PI} ${M_PI} ${M_PI/2.0}" />
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
+        <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> -->
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
         </geometry>
@@ -21,7 +58,7 @@
       </visual>
 
       <collision>
-        <origin xyz="0.0 0.0 0.0" rpy="${M_PI} ${M_PI} ${M_PI/2.0}" />
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
           <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
         </geometry>
@@ -35,6 +72,7 @@
                  izz="1.0" />
       </inertial>
     </link>
+
 
     <joint name="${prefix}_big_gear_base" type="fixed">
       <parent link="${parent}"/>
@@ -55,7 +93,7 @@
       <collision>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
+          <mesh filename="package://sobit_mini_description/meshes/body/big_gear_base.stl" />
         </geometry>
       </collision>
 
@@ -69,13 +107,14 @@
     </link>
 
 
-    <joint name="${prefix}_roll_joint" type="revolute">
+    <joint name="${prefix}_big_gear_base_joint" type="revolute">
       <parent link="${prefix}_big_gear_base_link" />
       <child link="${prefix}_roll_link" />
       <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> -->
       <origin xyz="0.0 0.0 0.0325" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
-      <limit effort="30" lower="${-M_PI/2.0}" upper="${M_PI/2}" velocity="${M_PI/2.0}" />
+      <limit effort="30" lower="${M_PI/4.0}" upper="${-M_PI/4.0}" velocity="${M_PI/2.0}" />
+      <mimic joint="${prefix}_roll_joint" multiplier="-0.1896551724" offset="0.0"/>
     </joint>
 
     <link name="${prefix}_roll_link">
@@ -102,7 +141,6 @@
                  izz="1.0" />
       </inertial>
     </link>
-
 
     <joint name="${prefix}_big_gear_joint" type="fixed">
       <parent link="${prefix}_roll_link" />

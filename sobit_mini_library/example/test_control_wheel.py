@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import rospy
-from sobit_mini_module import SobitTurtlebotController
+from sobit_mini_module import SobitMiniWheelController
 import sys
 
 def test():
     rospy.init_node('test')
     args = sys.argv
-    mini_wheel_ctr = SobitTurtlebotController(args[0]) # args[0] : C++上でros::init()を行うための引数
+    mini_wheel_ctr = SobitMiniWheelController(args[0]) # args[0] : C++上でros::init()を行うための引数
     
     # タイヤ車輪をを動かす
     mini_wheel_ctr.controlWheelLinear(1.0)

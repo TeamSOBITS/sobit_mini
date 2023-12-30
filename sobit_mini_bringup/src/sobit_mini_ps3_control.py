@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 import rospy
-import tf
 import sensor_msgs.msg
 import trajectory_msgs.msg
 import geometry_msgs.msg

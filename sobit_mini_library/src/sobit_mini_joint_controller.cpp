@@ -1,14 +1,15 @@
-#include <sobit_mini_library/sobit_mini_controller.hpp>
+#include "sobit_mini_library/sobit_mini_joint_controller.hpp"
+#include "sobit_mini_library/sobit_mini_wheel_controller.hpp"
 
 using namespace sobit_mini;
 
-const double sobit_mini::SobitMiniController::arm_upper_link_cm = 11.125;
-const double sobit_mini::SobitMiniController::arm_forearm_link_cm = 10.275;
-const double sobit_mini::SobitMiniController::arm_hand_link_cm = 15.6856;
-const double sobit_mini::SobitMiniController::grasp_min_z_cm = 22.0;//sobitminiの場合通常のx-yグラフを+90°回転させた状態を基準としているため
-const double sobit_mini::SobitMiniController::grasp_max_z_cm = -22.0;
+const double sobit_mini::SobitMiniJointController::arm_upper_link_cm = 11.125;
+const double sobit_mini::SobitMiniJointController::arm_forearm_link_cm = 10.275;
+const double sobit_mini::SobitMiniJointController::arm_hand_link_cm = 15.6856;
+const double sobit_mini::SobitMiniJointController::grasp_min_z_cm = 22.0;//sobitminiの場合通常のx-yグラフを+90°回転させた状態を基準としているため
+const double sobit_mini::SobitMiniJointController::grasp_max_z_cm = -22.0;
 
-SobitMiniController::SobitMiniController( const std::string &name ) : SobitTurtlebotController( name ) {
+SobitMiniJointController::SobitMiniJointController( const std::string &name ) : ROSCommonNode( name ), nh_(), pnh_("~"), tfBuffer_(), tfListener_(tfBuffer_) {
     pub_body_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/body_trajectory_controller/command", 1);
     pub_head_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/head_trajectory_controller/command", 1);
     pub_l_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/l_arm_trajectory_controller/command", 1);  
@@ -16,7 +17,7 @@ SobitMiniController::SobitMiniController( const std::string &name ) : SobitTurtl
     loadPose();
 }
 
-SobitMiniController::SobitMiniController( ) : SobitTurtlebotController( ) {
+SobitMiniJointController::SobitMiniJointController( ) : ROSCommonNode( ), nh_(), pnh_("~"), tfBuffer_(), tfListener_(tfBuffer_) {
     pub_body_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/body_trajectory_controller/command", 1);
     pub_head_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/head_trajectory_controller/command", 1);
     pub_l_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/l_arm_trajectory_controller/command", 1);  
@@ -24,7 +25,7 @@ SobitMiniController::SobitMiniController( ) : SobitTurtlebotController( ) {
     loadPose();
 }
 
-void SobitMiniController::loadPose() {
+void SobitMiniJointController::loadPose() {
     XmlRpc::XmlRpcValue pose_val;
     if ( !nh_.hasParam("/mini_pose") ) return; 
     nh_.getParam("/mini_pose", pose_val);
@@ -54,7 +55,7 @@ void SobitMiniController::loadPose() {
     return;
 }
 
-bool SobitMiniController::moveAllJoint( const double l_arm_shoulder_roll_joint,
+bool SobitMiniJointController::moveAllJoint( const double l_arm_shoulder_roll_joint,
                                         const double l_arm_shoulder_pan_joint,
                                         const double l_arm_elbow_tilt_joint,
                                         const double l_arm_wrist_tilt_joint,
@@ -85,7 +86,7 @@ bool SobitMiniController::moveAllJoint( const double l_arm_shoulder_roll_joint,
         addJointTrajectory( joint_names_[Joint::R_ARM_ELBOW_ROLL_JOINT], r_arm_elbow_tilt_joint, sec, &r_arm_joint_trajectory );
         addJointTrajectory( joint_names_[Joint::R_ARM_WRIST_TILT_JOINT], r_arm_wrist_tilt_joint, sec, &r_arm_joint_trajectory );
         addJointTrajectory( joint_names_[Joint::R_HAND_JOINT], r_hand_joint, sec, &r_arm_joint_trajectory );
-        setJointTrajectory( joint_names_[Joint::BODY_ROLL_JOINT], -body_roll_joint, sec, &body_joint_trajectory );
+        setJointTrajectory( joint_names_[Joint::BODY_ROLL_JOINT], -body_roll_joint * (116 / 22), sec, &body_joint_trajectory );
         setJointTrajectory( joint_names_[Joint::HEAD_PAN_JOINT], head_pan_joint, sec, &head_joint_trajectory );
         addJointTrajectory( joint_names_[Joint::HEAD_TILT_JOINT], head_tilt_joint, sec, &head_joint_trajectory );
 
@@ -106,11 +107,14 @@ bool SobitMiniController::moveAllJoint( const double l_arm_shoulder_roll_joint,
     }
 }
 
-bool SobitMiniController::moveJoint ( const Joint joint_num, const double rad, const double sec, bool is_sleep ) {
+bool SobitMiniJointController::moveJoint ( const Joint joint_num, const double rad, const double sec, bool is_sleep ) {
     try {
         trajectory_msgs::JointTrajectory joint_trajectory;
-        if(joint_num == Joint::BODY_ROLL_JOINT || joint_num == Joint::L_ARM_SHOULDER_ROLL_JOINT || joint_num == Joint::L_ARM_ELBOW_TILT_JOINT || joint_num == Joint::L_ARM_WRIST_TILT_JOINT || joint_num == Joint::L_HAND_JOINT || joint_num == Joint:: R_ARM_SHOULDER_PAN_JOINT){
+        if(joint_num == Joint::L_ARM_SHOULDER_ROLL_JOINT || joint_num == Joint::L_ARM_ELBOW_TILT_JOINT || joint_num == Joint::L_ARM_WRIST_TILT_JOINT || joint_num == Joint::L_HAND_JOINT || joint_num == Joint:: R_ARM_SHOULDER_PAN_JOINT){
             setJointTrajectory( joint_names_[joint_num], -rad, sec, &joint_trajectory);
+        }else if(joint_num == Joint::BODY_ROLL_JOINT){
+            double body_rad = rad * (116 / 22);
+            setJointTrajectory( joint_names_[joint_num], -body_rad, sec, &joint_trajectory);
         }else{
             setJointTrajectory( joint_names_[joint_num], rad, sec, &joint_trajectory);
         } 
@@ -136,7 +140,7 @@ bool SobitMiniController::moveJoint ( const Joint joint_num, const double rad, c
     }
 }
 
-bool SobitMiniController::moveHeadPanTilt ( const double pan_rad, const double tilt_rad, const double sec, bool is_sleep ) {
+bool SobitMiniJointController::moveHeadPanTilt ( const double pan_rad, const double tilt_rad, const double sec, bool is_sleep ) {
     try {
         trajectory_msgs::JointTrajectory joint_trajectory;
         setJointTrajectory( joint_names_[Joint::HEAD_PAN_JOINT], pan_rad, sec, &joint_trajectory );
@@ -150,7 +154,7 @@ bool SobitMiniController::moveHeadPanTilt ( const double pan_rad, const double t
     }
 }
 
-bool SobitMiniController::moveToPose( const std::string &pose_name ) {
+bool SobitMiniJointController::moveToPose( const std::string &pose_name ) {
     bool is_find = false;
     std::vector<double> joint_val;
     for ( auto& pose : pose_list_ ) {
@@ -182,7 +186,7 @@ bool SobitMiniController::moveToPose( const std::string &pose_name ) {
     } 
 }
 
-bool SobitMiniController::moveRightArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep ) {
+bool SobitMiniJointController::moveRightArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep ) {
     try {
         trajectory_msgs::JointTrajectory joint_trajectory;
         setJointTrajectory( joint_names_[Joint::R_ARM_SHOULDER_ROLL_JOINT], shoulder_roll, sec, &joint_trajectory );
@@ -200,7 +204,7 @@ bool SobitMiniController::moveRightArm ( const double shoulder_roll, const doubl
     }
 }
 
-bool SobitMiniController::moveLeftArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep ) {
+bool SobitMiniJointController::moveLeftArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep ) {
     try {
         trajectory_msgs::JointTrajectory joint_trajectory;
         setJointTrajectory( joint_names_[Joint::L_ARM_SHOULDER_ROLL_JOINT], -shoulder_roll, sec, &joint_trajectory );
@@ -218,8 +222,8 @@ bool SobitMiniController::moveLeftArm ( const double shoulder_roll, const double
     }
 }
 
-bool SobitMiniController::moveGripperToTargetCoord(const int arm_mode, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z ){
-    sobit_mini::SobitTurtlebotController wheel_ctrl;
+bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z ){
+    sobit_mini::SobitMiniWheelController wheel_ctrl;
     geometry_msgs::Point shift;
 
     // Calculate goal_position_pos + difference(gap)
@@ -240,7 +244,7 @@ bool SobitMiniController::moveGripperToTargetCoord(const int arm_mode, const dou
     double goal_object_distance_z_cm = -goal_position_pos_z_cm;
 
     //Determination of grasp direction for objects
-    const double total_radians = 90.0;
+    const double total_degrees = 90.0;
 
     // Check if the object is graspable
     if (goal_object_distance_z_cm <= grasp_max_z_cm) {
@@ -274,8 +278,8 @@ bool SobitMiniController::moveGripperToTargetCoord(const int arm_mode, const dou
     linear_m = linear_m / 100.0;
 
     // Inverse Kinematics Calculations
-    const double x_p = goal_object_distance_z_cm - (arm_hand_link_cm * std::cos(total_radians * M_PI / 180.0));
-    const double y_p = goal_object_distance_x_cm - (arm_hand_link_cm * std::sin(total_radians * M_PI / 180.0));
+    const double x_p = goal_object_distance_z_cm - (arm_hand_link_cm * std::cos(total_degrees * M_PI / 180.0));
+    const double y_p = goal_object_distance_x_cm - (arm_hand_link_cm * std::sin(total_degrees * M_PI / 180.0));
 
     const double o_b = std::sqrt(std::pow(x_p,2) + std::pow(y_p,2));
     double alpha = std::acos(((std::pow(arm_upper_link_cm,2) + std::pow(o_b,2)) - std::pow(arm_forearm_link_cm,2)) / (2 * arm_upper_link_cm * o_b));
@@ -293,7 +297,7 @@ bool SobitMiniController::moveGripperToTargetCoord(const int arm_mode, const dou
     //各ジョイントの角度を決定
     const double arm_shoulder_roll_joint_rad = gamma - alpha;
     const double arm_elbow_tilt_joint_rad = (180.0 * M_PI / 180.0) - beta;
-    const double arm_wrist_tilt_joint_rad = (total_radians * M_PI / 180.0) - arm_shoulder_roll_joint_rad - arm_elbow_tilt_joint_rad;
+    const double arm_wrist_tilt_joint_rad = (total_degrees * M_PI / 180.0) - arm_shoulder_roll_joint_rad - arm_elbow_tilt_joint_rad;
 
     //tan_rad回転
     wheel_ctrl.controlWheelRotateRad(tan_rad);
@@ -324,12 +328,14 @@ bool SobitMiniController::moveGripperToTargetCoord(const int arm_mode, const dou
         return is_reached;
     }
 
-    
+    // return is_reached;
 }
 
-bool SobitMiniController::moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z){
-    sobit_mini::SobitTurtlebotController wheel_ctrl;
-    tf::StampedTransform transform_base_to_target;
+bool SobitMiniJointController::moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z){
+    sobit_mini::SobitMiniWheelController wheel_ctrl;
+    // tf2::StampedTransform transform_base_to_target;
+    geometry_msgs::TransformStamped transform_base_to_target;
+    // tf::StampedTransform transform_base_to_target;
     geometry_msgs::Point shift;
     double goal_position_x = 0.0;
     double goal_position_y = 0.0;
@@ -339,27 +345,36 @@ bool SobitMiniController::moveGripperToTargetTF(const int arm_mode, const std::s
 
     if (arm_mode == 0){//left_arm
         try{
-            listener_.waitForTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
-            listener_.lookupTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0), transform_base_to_target);//transform_base_to_targetで物体のxyz成分を格納している
+            tfBuffer_.canTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
+            transform_base_to_target = tfBuffer_.lookupTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0));//transform_base_to_targetで物体のxyz成分を格納している
             tf_flag = true;
 
-            goal_position_x = transform_base_to_target.getOrigin().x();
-            goal_position_y = transform_base_to_target.getOrigin().y() - 0.05375;
-            goal_position_z = transform_base_to_target.getOrigin().z();
-        }  catch (tf::TransformException ex){
+            // goal_position_x = transform_base_to_target.getOrigin().x();
+            // goal_position_y = transform_base_to_target.getOrigin().y() - 0.05375;
+            // goal_position_z = transform_base_to_target.getOrigin().z();
+
+            goal_position_x = transform_base_to_target.transform.translation.x;
+            goal_position_y = transform_base_to_target.transform.translation.y - 0.05375;
+            goal_position_z = transform_base_to_target.transform.translation.z;
+
+        }  catch (tf2::TransformException ex){
             ROS_ERROR("ERROR: %s", ex.what() );
             return false;
         }
     } else if (arm_mode == 1){//right_arm
         try{
-            listener_.waitForTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
-            listener_.lookupTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0), transform_base_to_target);//transform_base_to_targetで物体のxyz成分を格納している
+            tfBuffer_.canTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
+            transform_base_to_target = tfBuffer_.lookupTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0));//transform_base_to_targetで物体のxyz成分を格納している
             tf_flag = true;
 
-            goal_position_x = transform_base_to_target.getOrigin().x();
-            goal_position_y = transform_base_to_target.getOrigin().y() + 0.05375;
-            goal_position_z = transform_base_to_target.getOrigin().z();
-        }  catch (tf::TransformException ex){
+            // goal_position_x = transform_base_to_target.getOrigin().x();
+            // goal_position_y = transform_base_to_target.getOrigin().y() + 0.05375;
+            // goal_position_z = transform_base_to_target.getOrigin().z();
+
+            goal_position_x = transform_base_to_target.transform.translation.x;
+            goal_position_y = transform_base_to_target.transform.translation.y - 0.05375;
+            goal_position_z = transform_base_to_target.transform.translation.z;
+        }  catch (tf2::TransformException ex){
             ROS_ERROR("ERROR: %s", ex.what() );
             return false;
         }
