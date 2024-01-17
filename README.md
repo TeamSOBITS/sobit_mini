@@ -23,20 +23,20 @@
       </ul>
     </li>
     <li>
-    　<a href="#実行操作方法">実行・操作方法</a>
+    <a href="#実行操作方法">実行・操作方法</a>
       <ul>
         <li><a href="#Rviz上の可視化">Rviz上の可視化</a></li>
       </ul>
     </li>
     <li>
-    　<a href="#ソフトウェア">ソフトウェア</a>
+    <a href="#ソフトウェア">ソフトウェア</a>
       <ul>
         <li><a href="#ジョイントコントローラ">ジョイントコントローラ</a></li>
         <li><a href="#ホイールコントローラ">ホイールコントローラ</a></li>
       </ul>
     </li>
     <li>
-    　<a href="#ハードウェア">ハードウェア</a>
+    <a href="#ハードウェア">ハードウェア</a>
       <ul>
         <li><a href="#パーツのダウンロード方法">パーツのダウンロード方法</a></li>
         <li><a href="#電子回路図">電子回路図</a></li>
@@ -428,6 +428,13 @@ TBD
 現時点のバッグや新規機能の依頼を確認するために[Issueページ][license-url] をご覧ください．
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
+
+<!-- 参考文献 -->
+## 参考文献
+
+* [Dynamixel SDK](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/overview/)
+* [ROS Noetic](http://wiki.ros.org/noetic)
+* [ROS Control](http://wiki.ros.org/ros_control)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
