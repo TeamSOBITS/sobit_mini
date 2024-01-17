@@ -8,30 +8,10 @@ add_compile_options(-std=c++14)
 ## is used, also find other catkin packages
 
 find_package(catkin REQUIRED COMPONENTS
-  # この塊はsobit_commonの命名が書き換えられたら消す
-  controller_manager
-  dynamic_reconfigure
   dynamixel_sdk
-  hardware_interface
-  roscpp
-  rospy
-  sobit_common_msg
-
-  # 消したらコメントアウト消す
-  # dynamixel_sdk
-  # sobits_msgs
-  # sobits_common
+  sobits_msgs
+  sobits_common
 )
-
-# この塊はsobit_commonの命名が書き換えられたら消す
-catkin_package()
-
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
-
-# 消したらコメントアウト消す
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -41,11 +21,11 @@ include_directories(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-# catkin_package(
-#   # INCLUDE_DIRS include
-#   LIBRARIES ${PROJECT_NAME}
-#   CATKIN_DEPENDS
-#   dynamixel_sdk
-#   sobits_msgs
-#   sobits_common
-# )
+catkin_package(
+  # INCLUDE_DIRS include
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS
+  dynamixel_sdk
+  sobits_msgs
+  sobits_common
+)

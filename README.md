@@ -1,5 +1,7 @@
 <a name="readme-top"></a>
 
+[JA](README.md) | [EN](README.en.md)
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -10,12 +12,43 @@
 
 <!--目次-->
 <details>
-    <summary>目次</summary>
-    <ol>
-        <li>
-            <a href="#概要">概要</a>
-        </li>
-    </ol>
+    <li>
+      <a href="#概要">概要</a>
+    </li>
+    <li>
+      <a href="#環境構築">環境構築</a>
+      <ul>
+        <li><a href="#環境条件">環境条件</a></li>
+        <li><a href="#インストール方法">インストール方法</a></li>
+      </ul>
+    </li>
+    <li>
+    　<a href="#実行操作方法">実行・操作方法</a>
+      <ul>
+        <li><a href="#Rviz上の可視化">Rviz上の可視化</a></li>
+      </ul>
+    </li>
+    <li>
+    　<a href="#ソフトウェア">ソフトウェア</a>
+      <ul>
+        <li><a href="#ジョイントコントローラ">ジョイントコントローラ</a></li>
+        <li><a href="#ホイールコントローラ">ホイールコントローラ</a></li>
+      </ul>
+    </li>
+    <li>
+    　<a href="#ハードウェア">ハードウェア</a>
+      <ul>
+        <li><a href="#パーツのダウンロード方法">パーツのダウンロード方法</a></li>
+        <li><a href="#電子回路図">電子回路図</a></li>
+        <li><a href="#ロボットの組み立て">ロボットの組み立て</a></li>
+        <li><a href="#ロボットの特徴">ロボットの特徴</a></li>
+        <li><a href="#部品リストBOM">部品リスト（BOM）</a></li>
+      </ul>
+    </li>
+    <li><a href="#マイルストーン">マイルストーン</a></li>
+    <!-- <li><a href="#contributing">Contributing</a></li> -->
+    <!-- <li><a href="#license">License</a></li> -->
+    <li><a href="#参考文献">参考文献</a></li>
 </details>
 
 <!--レポジトリの概要-->
@@ -98,7 +131,7 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
 
-### Rvizの可視化
+### Rviz上の可視化
 実機を動かす前段階で，Rviz上でSOBIT MINIを可視化し，ロボットの構成を表示することができます．
 
 ```sh
@@ -272,7 +305,7 @@ mini_pose:
     }
 ```
 
-### ホイルコントローラ
+### ホイールコントローラ
 
 SOBIT MINIの移動機構部を動かすための情報まとめです．
 

@@ -8,9 +8,10 @@ def test():
     args = sys.argv
     mini_wheel_ctr = SobitMiniWheelController(args[0]) # args[0] : C++上でros::init()を行うための引数
     
-    # タイヤ車輪をを動かす
+    # タイヤ車輪を動かす
     mini_wheel_ctr.controlWheelLinear(1.0)
     mini_wheel_ctr.controlWheelRotateRad(1.57)
+    rospy.sleep(2.0)
     mini_wheel_ctr.controlWheelRotateDeg(-90)
 
     mini_wheel_ctr.controlWheelLinear(-1.0)

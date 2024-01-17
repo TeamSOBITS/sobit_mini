@@ -5,8 +5,10 @@ cd $(pwd)/..
 # git cloneしたいTeamSOBITSのROSパッケージを以下に記述
 ros_packages=(
     "sobit_common" \
+    "sobits_msgs" \
     "urg_node"\
-    "realsense_ros"
+    "realsense_ros"\
+    "turtlebot2_on_noetic"
 )
 
 for ((i = 0; i < ${#ros_packages[@]}; i++)) {

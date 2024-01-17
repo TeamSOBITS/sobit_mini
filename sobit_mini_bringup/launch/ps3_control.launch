@@ -3,6 +3,9 @@
     <!--joy_node-->
     <node name="joy_node" pkg="joy" type="joy_node"/>
 
+    <!--teleop-->
+    <node pkg="turtlebot_teleop" type="turtlebot_teleop_joy" name="turtlebot_teleop_joy" output="screen"/>
+
     <!--joy_control-->
     <node pkg="sobit_mini_bringup" type="sobit_mini_ps3_control.py" name="sobit_mini_ps3_control" output="screen"/>
 

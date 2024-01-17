@@ -5,14 +5,10 @@
 
   <xacro:macro name="left_hand" params="prefix parent">
       
-    <!-- <joint name="${prefix}_right_finger_joint" type="revolute"> -->
     <joint name="${prefix}_joint" type="revolute">
-      <!-- <parent link="${prefix}_base_link" /> -->
       <parent link="${parent}" />
       <child link="${prefix}_right_finger_link" />
-      <!-- <origin rpy="0 0 0" xyz="-0.015855 0.0 -0.04725" /> -->
       <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 -0.015855" />
-      <!-- <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="-0.015855 0.0 -0.04725" /> -->
       <axis xyz="0 -1 0" />
       <limit lower="-1.0" upper="0.0" effort="30" velocity="${M_PI/2.0}" />
     </joint>
@@ -43,14 +39,11 @@
     </link>
 
     <joint name="${prefix}_left_finger_joint" type="revolute">
-      <!-- <parent link="${prefix}_base_link" /> -->
       <parent link="${parent}" />
       <child link="${prefix}_left_finger_link" />
-      <!-- <origin rpy="0 0 0" xyz="0.015855 0.0 -0.04725" /> -->
       <origin rpy="${M_PI/2.0} ${-M_PI/2.0} 0" xyz="0.0 0.04725 0.015855" />
       <axis xyz="0 1 0" />
       <limit lower="0.0" upper="1.0" effort="30" velocity="${M_PI/2.0}" />
-      <!-- <mimic joint="${prefix}_right_finger_joint" multiplier="1.0" /> -->
       <mimic joint="${prefix}_joint" multiplier="1.0" />
     </joint>
 

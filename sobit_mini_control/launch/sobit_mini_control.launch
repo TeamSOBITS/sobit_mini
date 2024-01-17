@@ -1,21 +1,90 @@
 <launch>
+  <!-- Activate Mobile-Base (true), Arm (true), Head (true) -->
+  <arg name="enable_arm"      default="true"/>
+  <arg name="enable_r_arm"    default="true"/>
+  <arg name="enable_l_arm"    default="true"/>
+  <arg name="enable_head"     default="true"/>
+  <arg name="enable_body"     default="true"/>
+
   <arg name="urdf_file" default="$(find xacro)/xacro '$(find sobit_mini_description)/robots/sobit_mini.urdf.xacro'" />
+
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="True"/>
   <param name="use_gui" value="$(arg gui)"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
+
+  <param name="use_gui" value="$(arg gui)"/>
   <param name="robot_description" command="$(arg urdf_file)" />
 
+  <!-- Load Poses -->
+  <!-- <include file="$(find sobit_mini_library)/launch/load_sobit_mini_pose.launch"/> -->
+  <rosparam command="load" file="$(find sobit_mini_library)/config/sobit_mini_pose.yaml"/>
+
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find sobit_mini_control)/config/position_control.yaml" command="load"/>
   <rosparam file="$(find sobit_mini_control)/config/joint_limit.yaml" command="load"/>
-  <node name="sobit_mini_control" pkg="sobit_common_library" type="dynamixel_servo_control" output="screen"/>
-  <!-- load the controllers -->
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-		args="body_trajectory_controller head_trajectory_controller r_arm_trajectory_controller l_arm_trajectory_controller joint_state_controller"/>
-	<!-- convert joint states to TF transforms for rviz, etc -->
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+  <!-- Load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller"/>
+
+  <group if="$(eval arg('enable_arm') and arg('enable_head'))">
+    <node name="sobit_mini_arm_head_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+    <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_arm_head.yaml"    command="load"/>
+  </group>
+
+  <group if="$(eval arg('enable_arm'))">
+    <group if="$(eval not(arg('enable_head')))">
+      <node name="sobit_mini_arm_head_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+      <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_arm.yaml" command="load"/>
+    </group>
+
+    <rosparam file="$(find sobit_mini_control)/config/state_control_arm.yaml" command="load"/>
+    <node name="controller_arm" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="r_arm_trajectory_controller l_arm_trajectory_controller"/>
+  </group>
+
+  <!-- Only right arm -->
+  <group if="$(eval arg('enable_r_arm'))">
+    <group if="$(eval not(arg('enable_arm')))">
+      <node name="sobit_mini_r_arm_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+      <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_r_arm.yaml" command="load"/>
+    </group>
+    <rosparam file="$(find sobit_mini_control)/config/state_control_r_arm.yaml" command="load"/>
+    <node name="controller_r_arm" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="r_arm_trajectory_controller"/>
+  </group>
+
+  <!-- Only left arm -->
+  <group if="$(eval arg('enable_l_arm'))">
+    <group if="$(eval not(arg('enable_arm')))">
+      <node name="sobit_mini_l_arm_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+      <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_l_arm.yaml" command="load"/>
+    </group>
+    <rosparam file="$(find sobit_mini_control)/config/state_control_l_arm.yaml" command="load"/>
+    <node name="controller_l_arm" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="l_arm_trajectory_controller"/>
+  </group>
+
+  <!-- Only head -->
+  <group if="$(eval arg('enable_head'))">
+    <group if="$(eval not(arg('enable_arm')))">
+        <node name="sobit_mini_arm_head_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+        <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_head.yaml" command="load"/>
+    </group>
+
+    <rosparam file="$(find sobit_mini_control)/config/state_control_head.yaml" command="load"/>
+    <node name="controller_head" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="head_trajectory_controller"/>
+  </group>
+
+  <!-- Only body -->
+  <group if="$(eval arg('enable_body'))">
+    <group if="$(eval not(arg('enable_arm')) and not(arg('enable_head')))">
+      <node name="sobit_mini_body_control" pkg="sobits_common" type="dynamixel_servo_control" output="screen"/>
+      <rosparam file="$(find sobit_mini_control)/config/state_control_dynamixel_body.yaml" command="load"/>
+    </group>
+    <rosparam file="$(find sobit_mini_control)/config/state_control_body.yaml" command="load"/>
+    <node name="controller_body" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="body_trajectory_controller"/>
+  </group>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
 
 </launch>

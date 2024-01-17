@@ -3,14 +3,12 @@
 
 #include <ros/ros.h>
 
-// #include <tf/transform_listener.h>
 #include <tf2_ros/transform_listener.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Point.h>
 
 #include "sobit_mini_library/sobit_mini_library.h"
-// #include "sobit_mini_library/sobit_turtlebot_controller.hpp"
 
 namespace sobit_mini {
     enum Joint { L_ARM_SHOULDER_ROLL_JOINT = 0,

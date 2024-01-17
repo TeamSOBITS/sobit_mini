@@ -119,7 +119,7 @@ Processing enabled by this node:
   <group ns="$(arg camera)">
 
     <!-- Launch the camera device nodelet-->
-    <include file="$(find sobit_mini_bringup)/launch/includes/nodelet.launch.xml">
+    <include file="$(find sobit_mini_bringup)/nodelet.launch.xml">
       <arg name="external_manager"         value="$(arg external_manager)"/>
       <arg name="manager"                  value="$(arg manager)"/>
       <arg name="tf_prefix"                value="$(arg tf_prefix)"/>

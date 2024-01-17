@@ -6,7 +6,7 @@ using namespace sobit_mini;
 const double sobit_mini::SobitMiniJointController::arm_upper_link_cm = 11.125;
 const double sobit_mini::SobitMiniJointController::arm_forearm_link_cm = 10.275;
 const double sobit_mini::SobitMiniJointController::arm_hand_link_cm = 15.6856;
-const double sobit_mini::SobitMiniJointController::grasp_min_z_cm = 22.0;//sobitminiの場合通常のx-yグラフを+90°回転させた状態を基準としているため
+const double sobit_mini::SobitMiniJointController::grasp_min_z_cm = 22.0;//In the case of sobitmini, the normal x-y graph is rotated by +90°
 const double sobit_mini::SobitMiniJointController::grasp_max_z_cm = -22.0;
 
 SobitMiniJointController::SobitMiniJointController( const std::string &name ) : ROSCommonNode( name ), nh_(), pnh_("~"), tfBuffer_(), tfListener_(tfBuffer_) {
@@ -294,12 +294,12 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
     // std::cout << "beta:" << beta << std::endl;
     // std::cout << "gamma:" << gamma << std::endl;
 
-    //各ジョイントの角度を決定
+    //Determine the angle of each joint
     const double arm_shoulder_roll_joint_rad = gamma - alpha;
     const double arm_elbow_tilt_joint_rad = (180.0 * M_PI / 180.0) - beta;
     const double arm_wrist_tilt_joint_rad = (total_degrees * M_PI / 180.0) - arm_shoulder_roll_joint_rad - arm_elbow_tilt_joint_rad;
 
-    //tan_rad回転
+    //tan_rad rotation
     wheel_ctrl.controlWheelRotateRad(tan_rad);
     ros::Duration(3.0).sleep();
     // std::cout << "arm_shoulder_roll_joint_rad:" << arm_shoulder_roll_joint_rad * 180.0 / M_PI <<std::endl;

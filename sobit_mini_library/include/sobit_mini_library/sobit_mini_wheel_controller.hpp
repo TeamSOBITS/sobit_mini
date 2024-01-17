@@ -5,7 +5,6 @@
 #include <cstring>
 
 #include <ros/ros.h>
-// #include <tf/transform_broadcaster.h>
 
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
@@ -84,7 +83,6 @@ inline void sobit_mini::SobitMiniWheelController::callbackOdometry ( const nav_m
 inline double sobit_mini::SobitMiniWheelController::geometryQuat2Yaw( const geometry_msgs::Quaternion& geometry_quat ) {
     tf2::Quaternion quat_tf;
     double roll, pitch, yaw;
-    // quaternionMsgToTF(geometry_quat, quat_tf);
     tf2::fromMsg(geometry_quat, quat_tf);
     quat_tf.normalize();
     tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, yaw);
