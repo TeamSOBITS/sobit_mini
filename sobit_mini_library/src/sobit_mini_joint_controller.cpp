@@ -222,7 +222,7 @@ bool SobitMiniJointController::moveLeftArm ( const double shoulder_roll, const d
     }
 }
 
-bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z ){
+bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, const double hand_rad,const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z ){
     sobit_mini::SobitMiniWheelController wheel_ctrl;
     geometry_msgs::Point shift;
 
@@ -311,7 +311,7 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
     if (arm_mode == 0){//left_arm
         moveLeftArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
         ros::Duration(2.0).sleep();
-        moveLeftArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 1.0, 2.0, true);
+        moveLeftArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad, 2.0, true);
         wheel_ctrl.controlWheelLinear(linear_m);
         ros::Duration(3.0).sleep();
         bool is_reached = moveLeftArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 0.0, 2.0, true);
@@ -320,7 +320,7 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
     } else if (arm_mode == 1){//right_arm
         moveRightArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
         ros::Duration(2.0).sleep();
-        moveRightArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 1.0, 2.0, true);
+        moveRightArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad, 2.0, true);
         wheel_ctrl.controlWheelLinear(linear_m);
         ros::Duration(3.0).sleep();
         bool is_reached = moveRightArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 0.0, 1.0, true);
@@ -331,7 +331,7 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
     // return is_reached;
 }
 
-bool SobitMiniJointController::moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z){
+bool SobitMiniJointController::moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double hand_rad, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z){
     sobit_mini::SobitMiniWheelController wheel_ctrl;
     // tf2::StampedTransform transform_base_to_target;
     geometry_msgs::TransformStamped transform_base_to_target;
@@ -383,7 +383,7 @@ bool SobitMiniJointController::moveGripperToTargetTF(const int arm_mode, const s
         return false;
     }
 
-    bool is_reached = moveGripperToTargetCoord(arm_mode, goal_position_x, goal_position_y, goal_position_z, diff_goal_position_x, diff_goal_position_y, diff_goal_position_z);
+    bool is_reached = moveGripperToTargetCoord(arm_mode, hand_rad, goal_position_x, goal_position_y, goal_position_z, diff_goal_position_x, diff_goal_position_y, diff_goal_position_z);
 
     return is_reached;
 }

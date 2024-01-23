@@ -61,6 +61,7 @@ PYBIND11_MODULE(sobit_mini_module, m) {
             py::arg( "is_sleep" ) = true )
         .def( "moveGripperToTargetCoord", &SobitMiniJointController::moveGripperToTargetCoord, "moveGripperToTargetCoord",
             py::arg( "arm_mode" ),
+            py::arg( "hand_rad" ),
             py::arg( "goal_position_x" ),
             py::arg( "goal_position_y" ),
             py::arg( "goal_position_z" ),
@@ -70,6 +71,7 @@ PYBIND11_MODULE(sobit_mini_module, m) {
         .def( "moveGripperToTargetTF", &SobitMiniJointController::moveGripperToTargetTF, "moveGripperToTargetTF",
             py::arg( "arm_mode"),
             py::arg( "target_name" ),
+            py::arg( "hand_rad" ),
             py::arg( "diff_goal_position_x" ),
             py::arg( "diff_goal_position_y" ),
             py::arg( "diff_goal_position_z" ) );

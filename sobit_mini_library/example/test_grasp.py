@@ -14,11 +14,11 @@ def test():
     ang = math.radians(-10)
 
     #Grasping an object by inverse kinematics
-    #mini_joint_ctrl.moveGripperToTargetTF(arm_mode(0:left_arm, 1:right_arm), tf name of the object to be grasped, Additional parameter x, Additional parameter y, Additional parameter z)
+    #mini_joint_ctrl.moveGripperToTargetTF(arm_mode(0:left_arm, 1:right_arm), tf name of the object to be grasped, hand motor radian, Additional parameter x, Additional parameter y, Additional parameter z)
     #Additional parameter is basically 0.0, used for fine tuning
     mini_joint_ctrl.moveJoint( Joint.HEAD_TILT_JOINT, ang, 2.0, True )
     rospy.sleep(2.0)
-    mini_joint_ctrl.moveGripperToTargetTF(0, "object_0", 0.0, 0.0, 0.0)
+    mini_joint_ctrl.moveGripperToTargetTF(0, "object_0", 1.0, 0.0, 0.0, 0.0)
     rospy.sleep(2.0)
 
     #Lift the object slightly upward

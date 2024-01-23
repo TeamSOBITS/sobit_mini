@@ -12,6 +12,8 @@
 
 <!--目次-->
 <details>
+   <summary>目次</summary>
+   <ol>
     <li>
       <a href="#概要">概要</a>
     </li>
@@ -49,6 +51,7 @@
     <!-- <li><a href="#contributing">Contributing</a></li> -->
     <!-- <li><a href="#license">License</a></li> -->
     <li><a href="#参考文献">参考文献</a></li>
+   </ol>
 </details>
 
 <!--レポジトリの概要-->
@@ -151,7 +154,7 @@ $ roslaunch sobit_mini_description display.launch
 
 
 ### ジョイントコントローラ
-SOBIT_MINIのパンチルト機構とマニピュレータを動かすための情報まとめです．
+SOBIT MINIのパンチルト機構とマニピュレータを動かすための情報まとめです．
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
@@ -236,6 +239,7 @@ SOBIT_MINIのパンチルト機構とマニピュレータを動かすための�
    ```cpp
    bool moveGripperToTargetCoord(
       const int arm_mode,                 //使用するアーム(arm_mode=0:左腕,arm_mode=1:左腕)
+      const double hand_rad,              //ハンドの開閉角度の調整
       const double goal_position_x,       //把持目的地のx [m]
       const double goal_position_y,       //把持目的地のy [m]
       const double goal_position_z,       //把持目的地のz [m]
@@ -250,6 +254,7 @@ SOBIT_MINIのパンチルト機構とマニピュレータを動かすための�
    bool moveGripperToTargetTF(
       const int arm_mode,                    //使用するアーム(arm_mode=0:左腕,arm_mode=1:左腕)
       const std::string &goal_position_name, //把持目的tf名
+      const double hand_rad,                 //ハンドの開閉角度の調整
       const double diff_goal_position_x,     // xyz座標のx軸をシフトする [m]
       const double diff_goal_position_y,     // xyz座標のy軸をシフトする [m]
       const double diff_goal_position_z      // xyz座標のz軸をシフトする [m]

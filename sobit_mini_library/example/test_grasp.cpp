@@ -18,10 +18,10 @@ int main( int argc, char *argv[] ){
     double ang = radians(-10.0);
 
     // Grasping an object by inverse kinematics
-    // mini_joint_ctrl.moveGripperToTargetTF(arm_mode(0:left_arm, 1:right_arm), tf name of the object to be grasped, Additional parameter x, Additional parameter y, Additional parameter z);
+    // mini_joint_ctrl.moveGripperToTargetTF(arm_mode(0:left_arm, 1:right_arm), tf name of the object to be grasped, hand motor radian, Additional parameter x, Additional parameter y, Additional parameter z);
     mini_joint_ctrl.moveJoint( sobit_mini::HEAD_TILT_JOINT, ang, 2.0, true );
     ros::Duration(2.0).sleep();
-    mini_joint_ctrl.moveGripperToTargetTF(0, "object_0", 0.0, 0.0, 0.0);
+    mini_joint_ctrl.moveGripperToTargetTF(0, "object_0", 1.0, 0.0, 0.0, 0.0);
     ros::Duration(2.0).sleep();
 
     // Lift the object slightly upward

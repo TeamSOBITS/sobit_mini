@@ -98,8 +98,8 @@ namespace sobit_mini {
             bool moveRightArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep = true );
             bool moveLeftArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep = true );
             bool moveToPose( const std::string &pose_name );
-            bool moveGripperToTargetCoord(const int arm_mode, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z );
-            bool moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z);
+            bool moveGripperToTargetCoord(const int arm_mode, const double hand_rad, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z );
+            bool moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double hand_rad, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z);
     };
 
     inline void sobit_mini::SobitMiniJointController::setJointTrajectory( const std::string& joint_name, 
