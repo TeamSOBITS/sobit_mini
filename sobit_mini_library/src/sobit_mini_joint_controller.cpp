@@ -309,7 +309,7 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
 
 
     if (arm_mode == 0){//left_arm
-        moveLeftArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
+        // moveLeftArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
         ros::Duration(2.0).sleep();
         moveLeftArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad, 2.0, true);
         wheel_ctrl.controlWheelLinear(linear_m);
@@ -318,7 +318,7 @@ bool SobitMiniJointController::moveGripperToTargetCoord(const int arm_mode, cons
         ros::Duration(2.0).sleep();
         return is_reached;
     } else if (arm_mode == 1){//right_arm
-        moveRightArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
+        // moveRightArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
         ros::Duration(2.0).sleep();
         moveRightArm(arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad, 2.0, true);
         wheel_ctrl.controlWheelLinear(linear_m);
@@ -372,7 +372,7 @@ bool SobitMiniJointController::moveGripperToTargetTF(const int arm_mode, const s
             // goal_position_z = transform_base_to_target.getOrigin().z();
 
             goal_position_x = transform_base_to_target.transform.translation.x;
-            goal_position_y = transform_base_to_target.transform.translation.y - 0.05375;
+            goal_position_y = transform_base_to_target.transform.translation.y + 0.05375;
             goal_position_z = transform_base_to_target.transform.translation.z;
         }  catch (tf2::TransformException ex){
             ROS_ERROR("ERROR: %s", ex.what() );
