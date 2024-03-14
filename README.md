@@ -451,6 +451,18 @@ Distributed under the MIT License. See `LICENSE.txt` for more NOTErmation.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<!-- [contributors-shield]: https://img.shields.io/github/contributors/TeamSOBITS/sobit_mini.svg?style=for-the-badge
+[contributors-url]: https://github.com/TeamSOBITS/sobit_mini/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/TeamSOBITS/sobit_mini.svg?style=for-the-badge
+[forks-url]: https://github.com/TeamSOBITS/sobit_mini/network/members
+[stars-shield]: https://img.shields.io/github/stars/TeamSOBITS/sobit_mini.svg?style=for-the-badge
+[stars-url]: https://github.com/TeamSOBITS/sobit_mini/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TeamSOBITS/sobit_mini.svg?style=for-the-badge
+[issues-url]: https://github.com/TeamSOBITS/sobit_mini/issues
+[license-shield]: https://img.shields.io/github/license/TeamSOBITS/sobit_mini.svg?style=for-the-badge
+[license-url]: https://github.com/TeamSOBITS/sobit_mini/issues -->
+
+
 [contributors-shield]: https://img.shields.io/github/contributors/TeamSOBITS/sobit_mini.svg?style=for-the-badge
 [contributors-url]: https://github.com/TeamSOBITS/sobit_mini/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/TeamSOBITS/sobit_mini.svg?style=for-the-badge
@@ -460,7 +472,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more NOTErmation.
 [issues-shield]: https://img.shields.io/github/issues/TeamSOBITS/sobit_mini.svg?style=for-the-badge
 [issues-url]: https://github.com/TeamSOBITS/sobit_mini/issues
 [license-shield]: https://img.shields.io/github/license/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[license-url]: https://github.com/TeamSOBITS/sobit_mini/issues
+[license-url]: https://github.com/TeamSOBITS/sobit_mini/blob/feature/oss/LICENSE
 
 
 
