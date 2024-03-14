@@ -434,6 +434,13 @@ TBD
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
+<!-- LICENSE -->
+<!-- ## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more NOTErmation.
+
+<p align="right">(<a href="#readme-top">上に戻る</a>)</p> -->
+
 <!-- 参考文献 -->
 ## 参考文献
 
@@ -453,7 +460,7 @@ TBD
 [issues-shield]: https://img.shields.io/github/issues/TeamSOBITS/sobit_mini.svg?style=for-the-badge
 [issues-url]: https://github.com/TeamSOBITS/sobit_mini/issues
 [license-shield]: https://img.shields.io/github/license/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[license-url]: LICENSE
+[license-url]: https://github.com/TeamSOBITS/sobit_mini/issues
 
 
 
