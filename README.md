@@ -434,33 +434,12 @@ TBD
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
-<!-- LICENSE -->
-<!-- ## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more NOTErmation.
-
-<p align="right">(<a href="#readme-top">上に戻る</a>)</p> -->
-
 <!-- 参考文献 -->
 ## 参考文献
 
 * [Dynamixel SDK](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/overview/)
 * [ROS Noetic](http://wiki.ros.org/noetic)
 * [ROS Control](http://wiki.ros.org/ros_control)
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-<!-- [contributors-shield]: https://img.shields.io/github/contributors/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[contributors-url]: https://github.com/TeamSOBITS/sobit_mini/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[forks-url]: https://github.com/TeamSOBITS/sobit_mini/network/members
-[stars-shield]: https://img.shields.io/github/stars/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[stars-url]: https://github.com/TeamSOBITS/sobit_mini/stargazers
-[issues-shield]: https://img.shields.io/github/issues/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[issues-url]: https://github.com/TeamSOBITS/sobit_mini/issues
-[license-shield]: https://img.shields.io/github/license/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[license-url]: https://github.com/TeamSOBITS/sobit_mini/issues -->
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/TeamSOBITS/sobit_mini.svg?style=for-the-badge
@@ -472,27 +451,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more NOTErmation.
 [issues-shield]: https://img.shields.io/github/issues/TeamSOBITS/sobit_mini.svg?style=for-the-badge
 [issues-url]: https://github.com/TeamSOBITS/sobit_mini/issues
 [license-shield]: https://img.shields.io/github/license/TeamSOBITS/sobit_mini.svg?style=for-the-badge
-[license-url]: https://github.com/TeamSOBITS/sobit_mini/blob/feature/oss/LICENSE
-
-
-
-<!-- まず，以下のコマンドを入力して，SOBIT MINIを動かすための環境設定を行います．
-この設定は，初回のみに行う作業ですので，1度行ったことのある人は飛ばしてください．
-
-※ 開発するPCで，SOBIT EDUやSOBIT PROを動かしたことがある場合も，この作業は必要ありません．
-
-```bash:
-$ cd sobit_mini
-$ bash sobit_setup.sh
-```
-
-以下のコマンドを入力することで，SOBIT MINIを起動することができます．
-これにより，SOBIT MINIのモータやRGB-Dカメラ，測域センサ(Lidar)などのデバイスが起動します．
-また，それと同時にRvizも起動します．
-
-:warning: ロボットをコンテナで動かす場合，動かしたいデバイスをホストPCと接続してから，コンテナを立ち上げてください．
-コンテナを立ち上げてからデバイスとの接続を行う場合，ロボットが動かない場合があります．
-
-```bash:
-$ roslaunch sobit_mini_bringup minimal.launch
-``` -->
+[license-url]: LICENSE
