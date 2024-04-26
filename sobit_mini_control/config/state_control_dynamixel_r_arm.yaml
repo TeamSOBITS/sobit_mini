@@ -1,0 +1,15 @@
+dynamixel_port:
+  port_name: "/dev/input/dynamixel1"
+  baud_rate: 1000000
+  joints:
+    - r_arm_shoulder_roll_joint
+    - r_arm_shoulder_pan_joint
+    - r_arm_elbow_tilt_joint
+    - r_arm_wrist_tilt_joint
+    - r_hand_joint
+
+  r_arm_shoulder_roll_joint:  {id: 21, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_shoulder_pan_joint:   {id: 22, center: 2048, home: 1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_elbow_tilt_joint:     {id: 23, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_wrist_tilt_joint:     {id: 24, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_hand_joint:               {id: 25, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 4700, pos_i_gain: 5, pos_p_gain: 200, lim: 150, gear_ratio: 1 }

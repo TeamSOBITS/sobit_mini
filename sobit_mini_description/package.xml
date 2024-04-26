@@ -1,37 +1,32 @@
 <?xml version="1.0"?>
-<package>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>sobit_mini_description</name>
   <version>0.0.0</version>
-  <description>The sobit_mini_description package</description>
+  <description>
+    This package allows shared configuration with SOBITS robots
+  </description>
+  <maintainer email="sakuyuu2002@gmai.com">Yuusaku Hanajima</maintainer>
 
-  <maintainer email="sobit-x2@todo.todo">sobit-x2</maintainer>
+  <license>BSD</license>
 
-  <license>MIT</license>
+  <url type="website">https://home.soka.ac.jp/~choi/index.html</url>
+  <url type="repository">https://github.com/TeamSOBITS/sobit_common</url>
+  <url type="bugtracker">https://github.com/TeamSOBITS/sobit_common/issues</url>
+  <author email="choi.7f@gmail.com">Team SOBITS</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>roscpp</build_depend>
-  <build_depend>rospy</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>tf</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>sensor_msgs</build_depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>rviz</depend>
 
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>rospy</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>geometry_msgs</run_depend>
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
 
+  </export>
 </package>
-  <!-- geometry_msgs
-  roscpp
-  rospy
-  std_msgs
-  dynamic_reconfigure
-  pcl_conversions
-  pcl_ros
-  tf
-  message_generation
-  sensor_msgs -->

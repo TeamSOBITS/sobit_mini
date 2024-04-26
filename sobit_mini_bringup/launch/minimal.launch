@@ -4,19 +4,40 @@
     <arg name="stacks"            default="$(env TURTLEBOT_STACKS)"       doc="stack type displayed in visualisation/simulation [circles, hexagons]"/>
     <arg name="3d_sensor"         default="$(env TURTLEBOT_3D_SENSOR)"    doc="3d sensor types [kinect, asux_xtion_pro]"/>
     <arg name="simulation"        default="$(env TURTLEBOT_SIMULATION)"   doc="set flags to indicate this turtle is run in simulation mode."/>
-    <arg name="serialport"        default="/dev/input/kobuki"  doc="used by create to configure the port it is connected on [/dev/kobuki]"/>
+    <arg name="serialport"        default="/dev/input/kobuki"  doc="used by create to configure the port it is connected on [/dev/input/kobuki]"/>
 
+    <!-- Activate Mobile-Base (true), Arm (true), Head (true), Body (true) -->
+    <!-- IMPORTANT: If using both arms, set to false individual arms -->
+   <arg name="enable_mb"       default="true"/>
+   <arg name="enable_arm"      default="true"/>
+   <arg name="enable_r_arm"    default="false"/>
+   <arg name="enable_l_arm"    default="false"/>
+   <arg name="enable_head"     default="true"/>
+   <arg name="enable_body"     default="true"/>
+
+    <!-- param -->
     <param name="/use_sim_time" value="$(arg simulation)"/>
-
     <param name="/proportional_control" type="double" value="0.10"/>
     <param name="/derivation_control" type="double" value="0.40"/>
     <param name="/integral_control" type="double" value="0.80"/>
 
-    <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
-        <arg name="base" value="$(arg base)" />
+    <!-- Turtlebot -->
+    <group if="$(eval arg('enable_mb'))">
+        <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
+        <arg name="base"       value="$(arg base)" />
         <arg name="serialport" value="$(arg serialport)" />
     </include>
-    <include file="$(find sobit_mini_control)/launch/sobit_mini_control.launch"/>
-    <include file="$(find sobit_mini_library)/launch/load_sobit_mini_pose.launch"/>
+    </group>
+
+    <!--URG-->
+    <include file="$(find sobit_mini_bringup)/launch/urg.launch"/>
+
+    <include file="$(find sobit_mini_control)/launch/sobit_mini_control.launch">
+        <arg name="enable_arm"    value="$(arg enable_arm)"/>
+        <arg name="enable_r_arm"  value="$(arg enable_r_arm)"/>
+        <arg name="enable_l_arm"  value="$(arg enable_l_arm)"/>
+        <arg name="enable_head"   value="$(arg enable_head)"/>
+        <arg name="enable_body"   value="$(arg enable_body)"/>
+    </include>
 
 </launch>

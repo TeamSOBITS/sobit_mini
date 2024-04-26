@@ -1,29 +1,33 @@
 <?xml version="1.0"?>
-<package>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>sobit_mini_bringup</name>
   <version>0.0.0</version>
-  <description>The sobit_mini_bringup package</description>
+  <description>
+    This package allows shared configuration with SOBITS robots
+  </description>
 
-  <maintainer email="sobit-x6@todo.todo">sobit-x6</maintainer>
+  <maintainer email="sakuyuu2002@gmail.com">Yuusaku Hanajima</maintainer>
 
-  <license>MIT</license>
+  <license>BSD</license>
+
+  <url type="website">https://home.soka.ac.jp/~choi/index.html</url>
+  <url type="repository">https://github.com/TeamSOBITS/sobit_common</url>
+  <url type="bugtracker">https://github.com/TeamSOBITS/sobit_common/issues</url>
+  <author email="choi.7f@gmail.com">Team SOBITS</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
-  <build_depend>roscpp</build_depend>
-  <build_depend>rospy</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>tf</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>trajectory_msgs</build_depend>
-  <build_depend>sobit_common_msg</build_depend>
-  
-  <run_depend>roscpp</run_depend>
-  <run_depend>rospy</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>trajectory_msgs</run_depend>
-  <run_depend>sobit_common_msg</run_depend>
+
+  <depend>rospy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
 
 </package>

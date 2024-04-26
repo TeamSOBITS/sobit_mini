@@ -1,4 +1,4 @@
-mini_pose:
+sobit_mini_pose:
     - { 
         pose_name: "initial_pose",
         l_arm_shoulder_roll_joint: 0.0,
@@ -14,17 +14,6 @@ mini_pose:
         body_roll_joint: 0.0,
         head_pan_joint: 0.0,
         head_tilt_joint: 0.0
-        # head_pan_joint: 0.0,
-        # head_tilt_joint: 0.0,     
-        # body_roll_joint: 0.0,                             
-        # right_shoulder_roll_joint: 0.0,
-        # right_shoulder_flex_joint: -1.25,
-        # right_elbow_roll_joint: 0.0,
-        # right_hand_motor_joint: 0.0,
-        # left_shoulder_roll_joint: 0.0,
-        # left_shoulder_flex_joint: -1.25,
-        # left_elbow_roll_joint: 0.0,
-        # left_hand_motor_joint : 0.0
     }
 
     - { 
@@ -42,17 +31,6 @@ mini_pose:
         body_roll_joint: 0.0,
         head_pan_joint: 0.0,
         head_tilt_joint: 0.0
-        # head_pan_joint: 0.0,
-        # head_tilt_joint: 0.0,       
-        # body_roll_joint: 0.0,                           
-        # right_shoulder_roll_joint: 0.0,
-        # right_shoulder_flex_joint: -1.30,
-        # right_elbow_roll_joint: 0.0,
-        # right_hand_motor_joint: 0.0,
-        # left_shoulder_roll_joint: 0.0,
-        # left_shoulder_flex_joint: -1.30,
-        # left_elbow_roll_joint: 0.0,
-        # left_hand_motor_joint : 0.0
     }
 
     - { 
@@ -70,15 +48,4 @@ mini_pose:
         body_roll_joint: 0.0,
         head_pan_joint: -0.2,
         head_tilt_joint: 0.0
-        # head_pan_joint: -0.2,
-        # head_tilt_joint: 0.0,     
-        # body_roll_joint: 0.0,                            
-        # right_shoulder_roll_joint: 0.0,
-        # right_shoulder_flex_joint: -1.30,
-        # right_elbow_roll_joint: 1.57,
-        # right_hand_motor_joint: 0.0,
-        # left_shoulder_roll_joint: 0.0,
-        # left_shoulder_flex_joint: -1.30,
-        # left_elbow_roll_joint: 0.0,
-        # left_hand_motor_joint : 0.0
     }

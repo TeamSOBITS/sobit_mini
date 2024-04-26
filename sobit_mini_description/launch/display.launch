@@ -1,9 +1,12 @@
 <launch>
   <arg name="urdf_file" default="$(find xacro)/xacro '$(find sobit_mini_description)/robots/sobit_mini.urdf.xacro'" />
-  <arg name="gui" default="True" />
-  <param name="use_gui" value="$(arg gui)" />
+  <arg name="gui"       default="true" />
+  
   <param name="robot_description" command="$(arg urdf_file)" />
-  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find sobit_mini_description)/rviz/display.rviz"/>
+
+  <node name="joint_state_publisher"     pkg="joint_state_publisher"     type="joint_state_publisher" />
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg gui)" />
+  <node name="robot_state_publisher"     pkg="robot_state_publisher"     type="robot_state_publisher" />
+
+  <node name="rviz"                      pkg="rviz"                      type="rviz"     args="-d $(find sobit_edu_description)/rviz/display.rviz"/>
 </launch>

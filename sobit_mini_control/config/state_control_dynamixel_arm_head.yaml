@@ -1,0 +1,31 @@
+dynamixel_port:
+  port_name: "/dev/input/dynamixel1"
+  baud_rate: 1000000
+  joints:
+    - l_arm_shoulder_roll_joint
+    - l_arm_shoulder_pan_joint
+    - l_arm_elbow_tilt_joint
+    - l_arm_wrist_tilt_joint
+    - l_hand_joint
+    - r_arm_shoulder_roll_joint
+    - r_arm_shoulder_pan_joint
+    - r_arm_elbow_tilt_joint
+    - r_arm_wrist_tilt_joint
+    - r_hand_joint
+    - body_roll_joint
+    - head_pan_joint
+    - head_tilt_joint
+
+  l_arm_shoulder_roll_joint:  {id: 11, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_shoulder_pan_joint:   {id: 12, center: 2048, home: -1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_elbow_tilt_joint:     {id: 13, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_arm_wrist_tilt_joint:     {id: 14, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  l_hand_joint:               {id: 15, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 300, pos_i_gain: 5, pos_p_gain: 130, lim: 150, gear_ratio: 1 }
+  r_arm_shoulder_roll_joint:  {id: 21, center: 2048, home: 0.0, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_shoulder_pan_joint:   {id: 22, center: 2048, home: 1.25, mode: 3, vel: 120, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_elbow_tilt_joint:     {id: 23, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_arm_wrist_tilt_joint:     {id: 24, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  r_hand_joint:               {id: 25, center: 2048, home: 0.0, mode: 5, vel: 0, acc: 0, pos_d_gain: 4700, pos_i_gain: 5, pos_p_gain: 200, lim: 150, gear_ratio: 1 }
+  body_roll_joint:            {id: 2, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1}
+  head_pan_joint:             {id: 3, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 1 }
+  head_tilt_joint:            {id: 4, center: 2048, home: 0.0, mode: 3, vel: 200, acc: 0, pos_d_gain: 0, pos_i_gain: 0, pos_p_gain: 800, gear_ratio: 2.04348 }

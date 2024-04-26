@@ -21,7 +21,6 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <!-- <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_bottom.dae" /> -->
           <mesh filename="package://sobit_mini_description/meshes/body/pole_bottom_39mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
@@ -53,7 +52,6 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 ${M_PI} 0" />
         <geometry>
-          <!-- <mesh filename="package://turtlebot_description/meshes/sensors/sensor_pole.dae" /> -->
           <mesh filename="package://sobit_mini_description/meshes/body/pole_middle_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
@@ -85,7 +83,6 @@
       <visual>
         <origin xyz=" 0 0 0" rpy="0 0 0" />
         <geometry>
-          <!-- <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_top.dae" /> -->
           <mesh filename="package://sobit_mini_description/meshes/body/pole_top_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
@@ -188,7 +185,6 @@
     <xacro:stack_middle_pole parent="${parent}" number="7" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.13385" /> -->
     
     <joint name="plate_middle_joint" type="fixed">
-      <!-- <origin xyz="-0.01364 0.0 0.222" rpy="0 0 0" /> -->
       <origin xyz="-0.01364 0.0 0.2646" rpy="0 0 0" />
       <parent link="${parent}" />
       <child link="plate_middle_link" />
