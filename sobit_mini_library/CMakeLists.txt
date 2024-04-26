@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10.2)
 project(sobit_mini_library)
 
-# set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
+cmake_policy(SET CMP0002 OLD)
+set(ALLOW_DUPLICATE_CUSTOM_TARGETS TRUE)
 
 ## Compile as C++14, supported in ROS Noetic and newer
 add_compile_options(-std=c++14)
@@ -96,8 +97,3 @@ add_executable(test_grasp example/test_grasp.cpp
                                  src/sobit_mini_wheel_controller.cpp)
 target_link_libraries(test_grasp ${catkin_LIBRARIES} ${PYTHON_LIBRARIES})
 add_dependencies(test_grasp ${catkin_EXPORTED_TARGETS})
-
-#これはいらない
-####### add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-
