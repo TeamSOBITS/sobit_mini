@@ -7,6 +7,7 @@
     <arg name="serialport"        default="/dev/input/kobuki"  doc="used by create to configure the port it is connected on [/dev/input/kobuki]"/>
 
     <!-- Activate Mobile-Base (true), Arm (true), Head (true), Body (true) -->
+    <!-- IMPORTANT: If using both arms, set to false individual arms -->
    <arg name="enable_mb"       default="true"/>
    <arg name="enable_arm"      default="true"/>
    <arg name="enable_r_arm"    default="false"/>
@@ -38,6 +39,5 @@
         <arg name="enable_head"   value="$(arg enable_head)"/>
         <arg name="enable_body"   value="$(arg enable_body)"/>
     </include>
-    <!-- <include file="$(find sobit_mini_library)/launch/load_sobit_mini_pose.launch"/> -->
 
 </launch>
