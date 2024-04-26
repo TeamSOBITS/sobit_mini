@@ -1,4 +1,4 @@
-mini_pose:
+sobit_mini_pose:
     - { 
         pose_name: "initial_pose",
         l_arm_shoulder_roll_joint: 0.0,
