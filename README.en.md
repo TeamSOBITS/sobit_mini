@@ -162,7 +162,9 @@ This is a summary of information for moving the pan-tilt mechanism and manipulat
 #### 動作関数
 1.  `moveToPose()` : Move it to a predetermined pose.
    ```cpp
-   bool moveToPose( const std::string &pose_name //Pose Name
+   bool moveToPose(
+      const std::string &pose_name, //Pose Name
+      const double sec              // Whether to wait after rotation
    );
    ```
 
@@ -245,7 +247,9 @@ This is a summary of information for moving the pan-tilt mechanism and manipulat
       const double goal_position_z,       // z [m] of the grasp destination
       const double diff_goal_position_x,  // Shift the x-axis of the xyz coordinate [m].
       const double diff_goal_position_y,  // Shift the y-axis of the xyz coordinate [m].
-      const double diff_goal_position_z   // Shift the z-axis of the xyz coordinate [m].
+      const double diff_goal_position_z,  // Shift the z-axis of the xyz coordinate [m].
+      const double sec,                   // Rotation time [s]
+      bool is_sleep                       // Whether to wait after rotation
    )
    ```
 
@@ -257,7 +261,9 @@ This is a summary of information for moving the pan-tilt mechanism and manipulat
       const double hand_rad,                 // Adjustment of hand opening and closing angles
       const double diff_goal_position_x,     // Shift the x-axis of the xyz coordinate [m].
       const double diff_goal_position_y,     // Shift the y-axis of the xyz coordinate [m].
-      const double diff_goal_position_z      // Shift the z-axis of the xyz coordinate [m].
+      const double diff_goal_position_z,     // Shift the z-axis of the xyz coordinate [m].
+      const double sec,                      // Rotation time [s]
+      bool is_sleep                          // Whether to wait after rotation
    )
    ```
 
@@ -291,7 +297,7 @@ SOBIT MINI joint names and their constant names are as follows
 Poses can be added and edited in the file [sobit_mini_pose.yaml](sobit_mini_library/config/sobit_mini_pose.yaml). The format is as follows.
 
 ```yaml
-mini_pose:
+sobit_mini_pose:
     - { 
         pose_name: "pose_name",
         l_arm_shoulder_roll_joint: 0.0,
@@ -430,7 +436,7 @@ TBD
     - [x] Enhanced documentation
     - [x] Unified coding style
 
-Please visit [Issue page][license-url] to see the current bag and new feature requests.
+Please visit [Issue page][issues-url] to see the current bag and new feature requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

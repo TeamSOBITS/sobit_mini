@@ -162,7 +162,9 @@ SOBIT MINIのパンチルト機構とマニピュレータを動かすための�
 #### 動作関数
 1.  `moveToPose()` : 決められたポーズに動かします．
    ```cpp
-   bool moveToPose( const std::string &pose_name //ポーズ名
+   bool moveToPose(
+      const std::string &pose_name, // ポーズ名
+      const double sec              // 回転後に待機するかどうか
    );
    ```
 
@@ -245,7 +247,9 @@ SOBIT MINIのパンチルト機構とマニピュレータを動かすための�
       const double goal_position_z,       //把持目的地のz [m]
       const double diff_goal_position_x,  // xyz座標のx軸をシフトする [m]
       const double diff_goal_position_y,  // xyz座標のy軸をシフトする [m]
-      const double diff_goal_position_z   // xyz座標のz軸をシフトする [m]
+      const double diff_goal_position_z,  // xyz座標のz軸をシフトする [m]
+      const double sec,                   // 回転時間 [s]
+      bool is_sleep                       // 回転後に待機するかどうか
    )
    ```
 
@@ -257,7 +261,9 @@ SOBIT MINIのパンチルト機構とマニピュレータを動かすための�
       const double hand_rad,                 //ハンドの開閉角度の調整
       const double diff_goal_position_x,     // xyz座標のx軸をシフトする [m]
       const double diff_goal_position_y,     // xyz座標のy軸をシフトする [m]
-      const double diff_goal_position_z      // xyz座標のz軸をシフトする [m]
+      const double diff_goal_position_z,     // xyz座標のz軸をシフトする [m]
+      const double sec,                      // 回転時間 [s]
+      bool is_sleep                          // 回転後に待機するかどうか
    )
    ```
 
@@ -291,7 +297,7 @@ SOBIT MINIのジョイント名とその定数名は以下の通りです．
 [sobit_mini_pose.yaml](sobit_mini_library/config/sobit_mini_pose.yaml)というファイルでポーズの追加・編集ができます．以下のようなフォーマットになります．
 
 ```yaml
-mini_pose:
+sobit_mini_pose:
     - { 
         pose_name: "pose_name",
         l_arm_shoulder_roll_joint: 0.0,
@@ -341,7 +347,7 @@ SOBIT MINIの移動機構部を動かすための情報まとめです．
 
 ## ハードウェア
 
-SOBIT MINIはオープンソースハードウェアとして[Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8)にて公開しております．
+SOBIT MINIはオープンソースハードウェアとして [Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8) にて公開しております．
 
 ![SOBIT MINI in OnShape](sobit_mini/img/sobit_mini_onshape.png)
 
@@ -430,7 +436,7 @@ TBD
     - [x] ドキュメンテーションの充実
     - [x] コーディングスタイルの統一
 
-現時点のバッグや新規機能の依頼を確認するために[Issueページ][license-url] をご覧ください．
+現時点のバッグや新規機能の依頼を確認するために[Issueページ][issues-url] をご覧ください．
 
 <p align="right">(<a href="#readme-top">上に戻る</a>)</p>
 
