@@ -19,47 +19,14 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>rviz</depend>
+
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
 
   </export>
 </package>
-
-<!-- <?xml version="1.0"?>
-<package>
-  <name>sobit_mini_description</name>
-  <version>0.0.0</version>
-  <description>The sobit_mini_description package</description>
-
-  <maintainer email="sobit-x2@todo.todo">sobit-x2</maintainer>
-
-  <license>MIT</license>
-
-  <buildtool_depend>catkin</buildtool_depend>
-
-  <build_depend>roscpp</build_depend>
-  <build_depend>rospy</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>tf2</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>rospy</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>tf2</run_depend>
-  <run_depend>geometry_msgs</run_depend>
-
-</package> -->
-  <!-- geometry_msgs
-  roscpp
-  rospy
-  std_msgs
-  dynamic_reconfigure
-  pcl_conversions
-  pcl_ros
-  tf
-  message_generation
-  sensor_msgs -->
