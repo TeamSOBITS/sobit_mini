@@ -1,19 +1,18 @@
 <launch>
   <!-- Activate Mobile-Base (true), Arm (true), Head (true) -->
   <arg name="enable_arm"      default="true"/>
-  <arg name="enable_r_arm"    default="true"/>
-  <arg name="enable_l_arm"    default="true"/>
+  <arg name="enable_r_arm"    default="false"/>
+  <arg name="enable_l_arm"    default="false"/>
   <arg name="enable_head"     default="true"/>
   <arg name="enable_body"     default="true"/>
 
   <arg name="urdf_file" default="$(find xacro)/xacro '$(find sobit_mini_description)/robots/sobit_mini.urdf.xacro'" />
 
-  <arg name="paused" default="false"/>
+  <arg name="paused"       default="false"/>
   <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="True"/>
-  <param name="use_gui" value="$(arg gui)"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
+  <arg name="gui"          default="True"/>
+  <arg name="headless"     default="false"/>
+  <arg name="debug"        default="false"/>
 
   <param name="use_gui" value="$(arg gui)"/>
   <param name="robot_description" command="$(arg urdf_file)" />
