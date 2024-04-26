@@ -63,11 +63,11 @@ namespace sobit_mini {
                                                             };
             std::vector<Pose> pose_list_;
 
-            static const double arm_upper_link_cm;
-            static const double arm_forearm_link_cm;
-            static const double arm_hand_link_cm;
-            static const double grasp_min_z_cm;//sobitminiの場合通常のx-yグラフを+90°回転させた状態を基準としているため
-            static const double grasp_max_z_cm;
+            static constexpr const double arm_upper_link_cm = 11.125;
+            static constexpr const double arm_forearm_link_cm = 10.275;
+            static constexpr const double arm_hand_link_cm = 15.6856;
+            static constexpr const double grasp_min_z_cm = 22.0; //In the case of SOBIT MINI, the normal x-y graph is rotated by +90°
+            static constexpr const double grasp_max_z_cm = -22.0;
 
             void setJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt );
             void addJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt );
@@ -87,25 +87,47 @@ namespace sobit_mini {
                                const double body_roll_joint,
                                const double head_pan_joint,
                                const double head_tilt_joint,
-                               const double sec,
-                               bool is_sleep = true 
+                               const double sec, bool is_sleep = true 
             );
         public:
             SobitMiniJointController( const std::string &name );
             SobitMiniJointController( );
-            bool moveJoint ( const Joint joint_num, const double rad, const double sec, bool is_sleep = true );
-            bool moveHeadPanTilt ( const double pan_rad, const double tilt_rad, const double sec, bool is_sleep = true );  
-            bool moveRightArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep = true );
-            bool moveLeftArm ( const double shoulder_roll, const double shoulder_pan, const double elbow_tilt, const double wrist_tilt, const double hand_motor, const double sec, bool is_sleep = true );
-            bool moveToPose( const std::string &pose_name );
-            bool moveGripperToTargetCoord(const int arm_mode, const double hand_rad, const double goal_position_x, const double goal_position_y, const double goal_position_z, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z );
-            bool moveGripperToTargetTF(const int arm_mode, const std::string &goal_position_name, const double hand_rad, const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z);
+            bool moveJoint ( const Joint joint_num,
+                             const double rad,
+                             const double sec=5.0, bool is_sleep = true );
+            bool moveHeadPanTilt ( const double pan_rad,
+                                   const double tilt_rad,
+                                   const double sec=5.0, bool is_sleep = true );  
+            bool moveRightArm ( const double shoulder_roll,
+                                const double shoulder_pan,
+                                const double elbow_tilt,
+                                const double wrist_tilt,
+                                const double hand_motor,
+                                const double sec=5.0, bool is_sleep = true );
+            bool moveLeftArm ( const double shoulder_roll,
+                               const double shoulder_pan,
+                               const double elbow_tilt,
+                               const double wrist_tilt,
+                               const double hand_motor,
+                               const double sec=5.0, bool is_sleep = true );
+            bool moveToPose( const std::string &pose_name
+                           , const double sec = 5.0 );
+            bool moveGripperToTargetCoord( const int arm_mode,
+                                           const double hand_rad,
+                                           const double goal_position_x, const double goal_position_y, const double goal_position_z,
+                                           const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
+                                           const double sec = 5.0, bool is_sleep = true );
+            bool moveGripperToTargetTF( const int arm_mode,
+                                        const std::string &goal_position_name,
+                                        const double hand_rad,
+                                        const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
+                                        const double sec = 5.0, bool is_sleep = true );
     };
 
     inline void sobit_mini::SobitMiniJointController::setJointTrajectory( const std::string& joint_name, 
-                                                                        const double rad, 
-                                                                        const double sec, 
-                                                                    trajectory_msgs::JointTrajectory* jt ) {
+                                                                          const double rad, 
+                                                                          const double sec, 
+                                                                          trajectory_msgs::JointTrajectory* jt ) {
         trajectory_msgs::JointTrajectory joint_trajectory;
         trajectory_msgs::JointTrajectoryPoint joint_trajectory_point; 
 
@@ -123,9 +145,9 @@ namespace sobit_mini {
     }
 
     inline void sobit_mini::SobitMiniJointController::addJointTrajectory( const std::string& joint_name, 
-                                                                        const double rad, 
-                                                                        const double sec, 
-                                                                        trajectory_msgs::JointTrajectory* jt ) {
+                                                                          const double rad, 
+                                                                          const double sec, 
+                                                                          trajectory_msgs::JointTrajectory* jt ) {
         trajectory_msgs::JointTrajectory joint_trajectory = *jt;
 
         joint_trajectory.joint_names.push_back( joint_name ); 
