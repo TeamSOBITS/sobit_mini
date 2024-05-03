@@ -347,7 +347,7 @@ This is a summary of information for moving the mobile mechanism part of SOBIT M
 
 ## Hardware
 
-SOBIT MINI is available as open source hardware at [Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00 fdacbdb703dc27e5e0d3f8).
+SOBIT MINI is available as open source hardware at [Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8).
 
 ![SOBIT MINI in OnShape](sobit_mini/img/sobit_mini_onshape.png)
 
