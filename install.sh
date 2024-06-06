@@ -55,7 +55,6 @@ sudo apt-get install -y \
 
 # Setting up Dynamixel USB configuration (SOBIT MINI: Head and Arm Robot Mechanism)
 echo "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6015\", SYMLINK+=\"input/dx_upper\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/dx_upper.rules
-
 # Setting up PS4/PS3 Joystick USB configuration
 echo "KERNEL==\"uinput\", MODE=\"0666\"
       KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{idVendor}==\"054c\", ATTRS{idProduct}==\"05c4\", MODE=\"0666\"

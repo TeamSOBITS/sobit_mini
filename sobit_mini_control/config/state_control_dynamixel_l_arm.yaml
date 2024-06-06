@@ -1,5 +1,5 @@
 dynamixel_port:
-  port_name: "/dev/input/dynamixel1"
+  port_name: "/dev/input/dx_upper"
   baud_rate: 1000000
   joints:
     - l_arm_shoulder_roll_joint
