@@ -5,5 +5,69 @@
     <position_joint_transmission joint="${prefix}_shoulder_pan_joint" reduction="1" />
     <position_joint_transmission joint="${prefix}_elbow_tilt_joint" reduction="1" />
     <position_joint_transmission joint="${prefix}_wrist_tilt_joint" reduction="1" />
+
+    <!--add transmission-->
+    <transmission name="${prefix}_shoulder_roll_trans">
+      <provideFeedback>true</provideFeedback>
+      <implicitSpringDamper>0</implicitSpringDamper>
+      <type>transmission_interface/SimpleTransmission</type>
+      <!--joint designation-->
+      <joint name="${prefix}_shoulder_roll_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <!--actuator definition-->
+      <actuator name="${prefix}_shoulder_roll_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+    <transmission name="${prefix}_shoulder_pan_trans">
+      <provideFeedback>true</provideFeedback>
+      <implicitSpringDamper>0</implicitSpringDamper>
+      <type>transmission_interface/SimpleTransmission</type>
+      <!--joint designation-->
+      <joint name="${prefix}_shoulder_pan_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <!--actuator definition-->
+      <actuator name="${prefix}_shoulder_pan_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+    <transmission name="${prefix}_elbow_tilt_trans">
+      <provideFeedback>true</provideFeedback>
+      <implicitSpringDamper>0</implicitSpringDamper>
+      <type>transmission_interface/SimpleTransmission</type>
+      <!--joint designation-->
+      <joint name="${prefix}_elbow_tilt_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <!--actuator definition-->
+      <actuator name="${prefix}_elbow_tilt_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+    <transmission name="${prefix}_wrist_tilt_trans">
+      <provideFeedback>true</provideFeedback>
+      <implicitSpringDamper>0</implicitSpringDamper>
+      <type>transmission_interface/SimpleTransmission</type>
+      <!--joint designation-->
+      <joint name="${prefix}_wrist_tilt_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <!--actuator definition-->
+      <actuator name="${prefix}_wrist_tilt_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 </robot>

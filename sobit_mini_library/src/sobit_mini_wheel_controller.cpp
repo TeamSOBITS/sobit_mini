@@ -4,7 +4,7 @@ using namespace sobit_mini;
 
 SobitMiniWheelController::SobitMiniWheelController ( const std::string &name ) : ROSCommonNode( name ), nh_(), pnh_("~") {
     sub_odom_ = nh_.subscribe( "/odom", 1, &SobitMiniWheelController::callbackOdometry, this );
-    pub_cmd_vel_ = nh_.advertise< geometry_msgs::Twist >( "/cmd_vel_mux/input/teleop", 1 );
+    pub_cmd_vel_ = nh_.advertise< geometry_msgs::Twist >( "/mobile_base/commands/velocity", 1 );
 
     ros::spinOnce();
     ros::Duration(3.0).sleep();
@@ -12,7 +12,7 @@ SobitMiniWheelController::SobitMiniWheelController ( const std::string &name ) :
 
 SobitMiniWheelController::SobitMiniWheelController ( ) : ROSCommonNode( ), nh_(), pnh_("~") { 
     sub_odom_ = nh_.subscribe( "/odom", 1, &SobitMiniWheelController::callbackOdometry, this );
-    pub_cmd_vel_ = nh_.advertise< geometry_msgs::Twist >( "/cmd_vel_mux/input/teleop", 1 );
+    pub_cmd_vel_ = nh_.advertise< geometry_msgs::Twist >( "/mobile_base/commands/velocity", 1 );
 
     ros::spinOnce();
     ros::Duration(3.0).sleep();

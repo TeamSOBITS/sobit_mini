@@ -1,7 +1,22 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <!-- <xacro:macro name="right_hand_transmission" params="prefix"> -->
   <xacro:macro name="r_hand_transmission" params="prefix">
     <position_joint_transmission joint="${prefix}_motor_joint" reduction="1" />
+
+    <transmission name="${prefix}_joint_trans">
+      <provideFeedback>true</provideFeedback>
+      <implicitSpringDamper>0</implicitSpringDamper>
+      <type>transmission_interface/SimpleTransmission</type>
+      <!--joint designation-->
+      <joint name="${prefix}_joint">
+        <!-- <hardwareInterface>PositionJointInterface</hardwareInterface> -->
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <!--actuator definition-->
+      <actuator name="${prefix}_joint_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 </robot>
