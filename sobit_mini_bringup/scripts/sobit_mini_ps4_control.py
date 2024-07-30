@@ -18,7 +18,7 @@ class JoyControl:
         self.pub_head_control      = rospy.Publisher('/head_trajectory_controller/command', JointTrajectory, queue_size=10)
         self.pub_left_arm_control  = rospy.Publisher('/left_arm_trajectory_controller/command', JointTrajectory, queue_size=10)
         self.pub_right_arm_control = rospy.Publisher('/right_arm_trajectory_controller/command', JointTrajectory, queue_size=10)
-        self.pub_wheel_control     = rospy.Publisher('/cmd_vel_mux/input/teleop',geometry_msgs.msg.Twist,queue_size=10)
+        self.pub_wheel_control     = rospy.Publisher('/mobile_base/commands/velocity',geometry_msgs.msg.Twist,queue_size=10)
 
         # Rate
         self.rate = rospy.Rate(10)
