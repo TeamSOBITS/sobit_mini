@@ -13,8 +13,7 @@ ros_packages=(
     "sobits_msgs" \
     "urg_node"\
     "realsense_ros"\
-    "turtlebot2_on_noetic"\
-    "sobit_mini_gazebo"
+    "turtlebot2_on_noetic"
 )
 
 for ((i = 0; i < ${#ros_packages[@]}; i++)) {
