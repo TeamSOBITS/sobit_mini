@@ -46,6 +46,8 @@ sudo apt-get install -y \
     ros-$ROS_DISTRO-transmission-interface \
     ros-$ROS_DISTRO-controller-interface \
     ros-$ROS_DISTRO-controller-manager \
+    ros-$ROS_DISTRO-ros-control \
+    ros-$ROS_DISTRO-ros-controllers \
     ros-$ROS_DISTRO-tf2 \
     ros-$ROS_DISTRO-tf2-ros \
     ros-$ROS_DISTRO-sensor-msgs \
