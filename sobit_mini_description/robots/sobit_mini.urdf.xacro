@@ -32,5 +32,9 @@
   <xacro:head prefix="head" parent="body_front_pole_link"/>
   <xacro:realsense_d435 prefix="head_camera" parent="head_tilt_link" />
   <xacro:mic prefix="mic" parent="head_tilt_link"/>
-  
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    </plugin>
+  </gazebo>
 </robot>
