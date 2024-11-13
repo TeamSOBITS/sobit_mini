@@ -9,7 +9,7 @@ cd ..
 
 # git cloneしたいTeamSOBITSのROSパッケージを以下に記述
 ros_packages=(
-    "sobit_common" \
+    "sobits_common" \
     "sobits_msgs" \
     "urg_node"\
     "realsense_ros"\
