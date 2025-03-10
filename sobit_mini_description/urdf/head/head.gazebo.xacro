@@ -1,0 +1,41 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="head_gazebo" params="prefix">
+    <gazebo reference="${prefix}_camera_base_link">
+	  <selfCollide>false</selfCollide>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="${prefix}_camera_pan_link">
+	  <selfCollide>false</selfCollide>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="${prefix}_camera_tilt_link">
+	  <selfCollide>false</selfCollide>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <jointName>head_camera_pan_joint, head_camera_tilt_joint</jointName>
+      <updateRate>1000.0</updateRate>
+    </plugin>
+  </gazebo>
+
+  </xacro:macro>
+</robot>
+
+
+    <!--plug-in to distribute joint condition data-->
+    <!-- <gazebo>
+      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+        <jointName>${prefix}_camera_pan_joint, ${prefix}_camera_tilt_joint</jointName>
+      </plugin>
+    </gazebo>
+
+    <gazebo reference="${prefix}_camera_pan_link">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <xacro:head_transmission prefix="${prefix}"/> -->

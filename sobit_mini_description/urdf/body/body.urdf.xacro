@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot name="body" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find sobit_mini_description)/urdf/body/body.transmission.xacro" />
+  <xacro:include filename="$(find sobit_mini_description)/urdf/body/body.transmission.xacro" />  <!-- XXXXXXXXXX -->
 
   <xacro:macro name="body" params="prefix parent">
 
@@ -15,7 +15,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.034" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear_motor.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_small_gear_motor.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -48,7 +48,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_small_gear.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_small_gear.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -81,7 +81,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/big_gear_base.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/big_gear_base.stl" />
         </geometry>
         <material name="silver" />
       </visual>
@@ -116,7 +116,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_big_gear.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_big_gear.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -157,7 +157,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0 0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_center_back.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_center_back.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -189,7 +189,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/spine.stl" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/spine.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -221,7 +221,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/sobit_mini_body_cover.dae" />
+          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_body_cover.dae" />
         </geometry>
       </visual>
 
@@ -236,7 +236,7 @@
 
     <!--plug-in to distribute joint condition data-->
     <gazebo>
-      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">  <!-- XXXXXXXXXX -->
         <jointName>${prefix}_roll_joint</jointName>
       </plugin>
     </gazebo>
@@ -245,7 +245,7 @@
     <!-- the following is the template to mimic a joint -->
     <xacro:macro name="mimic_joint_plugin" params="name_prefix parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=1.0 robot_namespace:=''">
       <gazebo>
-        <plugin name="${name_prefix}mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <plugin name="${name_prefix}mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">  <!-- XXXXXXXXXX -->
           <joint>${parent_joint}</joint>
           <mimicJoint>${mimic_joint}</mimicJoint>
           <xacro:if value="${has_pid}">                     <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->

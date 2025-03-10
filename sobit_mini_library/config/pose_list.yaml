@@ -1,0 +1,41 @@
+sobit_mini_pose:
+    - { 
+        pose_name: "initial_pose",
+        arm_shoulder_yaw_joint: 0.00,
+        arm_shoulder_pitch_joint: 1.5708,
+        arm_elbow_pitch_joint: -1.40,
+        arm_wrist_pitch_joint: -0.17,
+        hand_joint: -1.00,
+        head_yaw: 0.00,
+        head_pitch: 0.00
+    }
+    - { 
+        pose_name: "pan_pose",
+        arm_shoulder_yaw_joint: 0.00,
+        arm_shoulder_pitch_joint: 1.5708,
+        arm_elbow_pitch_joint: -1.40,
+        arm_wrist_pitch_joint: -0.17,
+        hand_joint: -1.00,
+        head_yaw: -0.00,
+        head_pitch: -1.00
+    }
+    - { 
+        pose_name: "detecting_pose",
+        arm_shoulder_yaw_joint: 0.00,
+        arm_shoulder_pitch_joint: 0.00,
+        arm_elbow_pitch_joint: 0.00,
+        arm_wrist_pitch_joint: 0.00,
+        hand_joint: 0.00,
+        head_yaw: 0.00,
+        head_pitch: -0.53
+    }
+    - { 
+        pose_name: "following_pose",
+        arm_shoulder_yaw_joint: -1.5708,
+        arm_shoulder_pitch_joint: 1.5708,
+        arm_elbow_pitch_joint: -1.40,
+        arm_wrist_pitch_joint: -0.17,
+        hand_joint: -1.00,
+        head_yaw: 0.00,
+        head_pitch: 0.00
+    }

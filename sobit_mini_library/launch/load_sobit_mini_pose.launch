@@ -1,3 +1,0 @@
-<launch>
-    <rosparam command="load" file="$(find sobit_mini_library)/config/sobit_mini_pose.yaml"/>
-</launch>

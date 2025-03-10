@@ -1,19 +1,33 @@
-#include <ros/ros.h>
-#include <math.h>
+#include "rclcpp/rclcpp.hpp"
 #include "sobit_mini_library/sobit_mini_wheel_controller.hpp"
 
-int main( int argc, char *argv[] ){
-    ros::init(argc, argv, "sobit_edu_test_control_wheel" );
+int main(int argc, char *argv[]) {
+  // ROS2の初期化
+  rclcpp::init(argc, argv);
 
-    sobit_mini::SobitMiniWheelController mini_wheel_ctrl;
+  // ノードの作成
+  auto node = std::make_shared<sobit_mini::WheelController>();
 
-    //Move the tire wheel
-    mini_wheel_ctrl.controlWheelLinear(1.0);
-    mini_wheel_ctrl.controlWheelRotateRad(1.57);
-    ros::Duration(2.0).sleep();
-    mini_wheel_ctrl.controlWheelRotateDeg(-90);
+  // 車輪制御インスタンスの作成
+  // `WheelController`クラスが提供するメソッドを利用します
 
-    mini_wheel_ctrl.controlWheelLinear(-1.0);
+  // 直線移動 (linear motion)
+  node->controlWheelLinear(0.5);
 
-    return 0;
+  // 回転移動 (radian) (rotational motion: Radian)
+  node->controlWheelRotateRad(-1.5708);
+
+  // 回転移動 (degree) (rotational motion: Degree)
+  node->controlWheelRotateDeg(90);
+
+  // 直線移動 (linear motion)
+  node->controlWheelLinear(-0.5);
+
+  // ノードの終了処理 (Node termination)
+  node.reset();
+
+  // ROS2の終了処理 (ROS2 termination)
+  rclcpp::shutdown();
+
+  return 0;
 }

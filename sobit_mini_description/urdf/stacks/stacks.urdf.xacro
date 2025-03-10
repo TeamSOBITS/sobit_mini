@@ -3,7 +3,7 @@
   Hexagon stacks
  -->
 <robot name="stack_hexagons" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find turtlebot_description)/urdf/common_properties.urdf.xacro" />
+  <xacro:include filename="$(find turtlebot2_description)/urdf/common_properties.urdf.xacro" />
   
   <!-- Xacro properties -->
   <xacro:property name="M_SCALE" value="0.001" />
@@ -21,7 +21,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/pole_bottom_39mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_bottom_39mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
       </visual>
@@ -52,7 +52,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 ${M_PI} 0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/pole_middle_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_middle_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
       </visual>
@@ -83,7 +83,7 @@
       <visual>
         <origin xyz=" 0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/body/pole_top_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_top_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
       </visual>
@@ -114,7 +114,7 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://turtlebot_description/meshes/sensors/sensor_pole.dae" />
+          <mesh filename="package://turtlebot2_description/meshes/sensors/sensor_pole.dae" />
         </geometry>
       </visual>
       <collision>
@@ -156,7 +156,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_bottom.dae" />
+          <mesh filename="package://turtlebot2_description/meshes/stacks/hexagons/plate_bottom.dae" />
         </geometry>
       </visual>
       <collision>
@@ -194,7 +194,7 @@
       <visual>
         <origin xyz="0 0.0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/plate_top.dae" />
+          <mesh filename="package://turtlebot2_description/meshes/stacks/hexagons/plate_top.dae" />
         </geometry>
       </visual>
       <collision>

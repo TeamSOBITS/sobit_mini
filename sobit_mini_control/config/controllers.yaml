@@ -1,0 +1,58 @@
+/**/controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    diff_controller:
+      type: diff_drive_controller/DiffDriveController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+/**/velocity_controller:
+  ros__parameters:
+    joints:
+      - r_arm_shoulder_roll_joint
+      - r_arm_shoulder_pan_joint
+      - r_arm_elbow_tilt_joint
+      - r_arm_wrist_tilt_joint
+      - r_hand_joint
+      - l_arm_shoulder_roll_joint
+      - l_arm_shoulder_pan_joint
+      - l_arm_elbow_tilt_joint
+      - l_arm_wrist_tilt_joint
+      - l_hand_joint
+      - body_roll_joint
+      - head_camera_pan_joint
+      - head_camera_tilt_joint
+
+
+
+/**/joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - r_arm_shoulder_roll_joint
+      - r_arm_shoulder_pan_joint
+      - r_arm_elbow_tilt_joint
+      - r_arm_wrist_tilt_joint
+      - r_hand_joint
+      - l_arm_shoulder_roll_joint
+      - l_arm_shoulder_pan_joint
+      - l_arm_elbow_tilt_joint
+      - l_arm_wrist_tilt_joint
+      - l_hand_joint
+      - body_roll_joint
+      - head_camera_pan_joint
+      - head_camera_tilt_joint
+
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+

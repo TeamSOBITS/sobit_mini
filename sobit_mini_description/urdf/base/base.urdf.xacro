@@ -8,7 +8,7 @@
  -->
 <robot name="base" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find kobuki_description)/urdf/common_properties.urdf.xacro" />
-  <xacro:include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro" />
+  <!-- <xacro:include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro" /> -->
   <!-- Kobuki -->
   <xacro:macro name="base">
     <link name="base_footprint" />

@@ -1,175 +1,271 @@
-#ifndef SOBIT_MINI_JOINT_CONTROLLER_H
-#define SOBIT_MINI_JOINT_CONTROLLER_H
+#ifndef SOBIT_MINI_JOINT_CONTROLLER_H_
+#define SOBIT_MINI_JOINT_CONTROLLER_H_
 
-#include <ros/ros.h>
+#include <chrono>
+#include <string>
 
+#include <rclcpp/rclcpp.hpp>
+// #include <rclcpp_components/register_node_macro.hpp>
+
+#include <tf2/exceptions.h>
 #include <tf2_ros/transform_listener.h>
-#include <trajectory_msgs/JointTrajectory.h>
-#include <geometry_msgs/TransformStamped.h>
-#include <geometry_msgs/Point.h>
+#include <tf2_ros/buffer.h>
 
-#include "sobit_mini_library/sobit_mini_library.h"
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/point.hpp>
+#include "sobits_interfaces/msg/current_state_array.hpp"
+
+#include "sobit_mini_library/sobit_mini_library.hpp"
+
 
 namespace sobit_mini {
-    enum Joint { L_ARM_SHOULDER_ROLL_JOINT = 0,
-                 L_ARM_SHOULDER_PAN_JOINT,
-                 L_ARM_ELBOW_TILT_JOINT,
-                 L_ARM_WRIST_TILT_JOINT,
-                 L_HAND_JOINT,
-                 R_ARM_SHOULDER_ROLL_JOINT,
-                 R_ARM_SHOULDER_PAN_JOINT,
-                 R_ARM_ELBOW_ROLL_JOINT,
-                 R_ARM_WRIST_TILT_JOINT,
-                 R_HAND_JOINT,
-                 BODY_ROLL_JOINT,
-                 HEAD_PAN_JOINT,
-                 HEAD_TILT_JOINT,
-                 JOINT_NUM  
-                };
+enum Joint {
+    kArmShoulderYawJoint = 0,
+    kArmShoulder_1_PitchJoint,
+    kArmShoulder_2_PitchJoint,
+    kArmElbow_1_PitchJoint,
+    kArmElbow_2_PitchJoint,
+    kArmWrist_PitchJoint,
+    kHandJoint,
+    kHeadYawJoint,
+    kHeadPitchJoint,
+    kJointNum
+};
 
-    typedef struct {         
-        std::string pose_name;
-        std::vector<double> joint_val;
-    } Pose;
+typedef struct {     
+  std::string         pose_name;
+  std::vector<double> joint_val;
+} Pose;
 
-    class SobitMiniJointController : private ROSCommonNode {
-        private:
+// class JointController : private ROSCommonNode {
+class JointController : public rclcpp::Node {
+ public:
+  JointController(
+      const std::string& node_name = "sobit_mini_joint_controller");
+  ~JointController();
 
-            ros::NodeHandle   nh_;
-            ros::NodeHandle   pnh_;
+  bool moveToPose(
+      const std::string &pose_name,
+      const int32_t sec = 5, bool is_sleep = true);
+//   bool moveAllJointsDeg(
+//       const double arm_shoulder_roll,
+//       const double arm_shoulder_pitch,
+//       const double arm_elbow_pitch,
+//       const double arm_forearm_roll,
+//       const double arm_wrist_pitch,
+//       const double arm_wrist_roll,
+//       const double hand,
+//       const double head_yaw,
+//       const double head_pitch,
+//       const int32_t sec = 5, bool is_sleep = true);
+  bool moveAllJointsRad(
+      const double arm_shoulder_yaw,
+      const double arm_shoulder_pitch,
+      const double arm_elbow_pitch,
+      const double arm_wrist_pitch,
+      const double hand,
+      const double head_yaw,
+      const double head_pitch,
+      const int32_t sec = 5, bool is_sleep = true);
+//   bool moveJointDeg(
+//       const Joint  joint_num,
+//       const double deg,
+//       const int32_t sec = 5, bool is_sleep = true);
+  bool moveJointRad(
+      const Joint  joint_num,
+      const double rad,
+      const int32_t sec = 5, bool is_sleep = true);
+//   bool moveArmDeg(
+//       const double arm_shoulder_roll,
+//       const double arm_shoulder_pitch,
+//       const double arm_elbow_pitch,
+//       const double arm_forearm_roll,
+//       const double arm_wrist_pitch,
+//       const double arm_wrist_roll,
+//       const double hand,
+//       const int32_t sec = 5, bool is_sleep = true);
+  bool moveArmRad(
+      const double arm_shoulder_yaw,
+      const double arm_shoulder_pitch,
+      const double arm_elbow_pitch,
+      const double arm_wrist_pitch,
+      const double hand,
+      const int32_t sec = 5, bool is_sleep = true);
+//   bool moveHeadDeg(
+//       const double head_yaw,
+//       const double head_pitch,
+//       const int32_t sec = 5, bool is_sleep = true);
+  bool moveHeadRad(
+      const double head_yaw,
+      const double head_pitch,
+      const int32_t sec = 5, bool is_sleep = true);
+  bool moveHandToTargetCoord(
+      const double target_x, const double target_y, const double target_z, 
+      const double shift_x , const double shift_y , const double shift_z,
+      const int32_t sec = 5, bool is_sleep = true);
+  bool moveHandToTargetTF(
+      const std::string &target_name,
+      const double shift_x, const double shift_y, const double shift_z,
+      const int32_t sec = 5, bool is_sleep = true);
+  bool moveHandToPlaceCoord(
+      const double target_x, const double target_y, const double target_z, 
+      const double shift_x , const double shift_y , const double shift_z,
+      const int32_t sec = 5, bool is_sleep = true);
+  bool moveHandToPlaceTF(
+      const std::string& target_name,
+      const double shift_x, const double shift_y, const double shift_z,
+      const int32_t sec = 5, bool is_sleep = true);
+//   bool moveHeadToTargetCoord(
+//       const double target_x, const double target_y, const double target_z, 
+//       const double shift_x , const double shift_y , const double shift_z,
+//       const int32_t sec = 5, bool is_sleep = true);
+//   bool moveHeadToTargetTF(
+//       const std::string &target_name,
+//       const double shift_x, const double shift_y, const double shift_z,
+//       const int32_t sec = 5, bool is_sleep = true);
+  bool graspDecision(const int min_curr = 300, const int max_curr = 1000);
+  bool placeDecision(const int min_curr = 500, const int max_curr = 1000);
 
-            ros::Publisher pub_body_control_;
-            ros::Publisher pub_head_control_; 
-            ros::Publisher pub_l_arm_control_; 
-            ros::Publisher pub_r_arm_control_;
+ private:
+  rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr pub_arm_control_;
+  rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr pub_head_control_;
 
-            tf2_ros::Buffer            tfBuffer_;
-            tf2_ros::TransformListener tfListener_;
-            // tf::TransformListener listener_;
-            
-            const std::vector<std::string> joint_names_ = { "l_arm_shoulder_roll_joint",
-                                                            "l_arm_shoulder_pan_joint",  
-                                                            "l_arm_elbow_tilt_joint",                               
-                                                            "l_arm_wrist_tilt_joint",
-                                                            "l_hand_joint",
-                                                            "r_arm_shoulder_roll_joint",
-                                                            "r_arm_shoulder_pan_joint",
-                                                            "r_arm_elbow_tilt_joint",
-                                                            "r_arm_wrist_tilt_joint",
-                                                            "r_hand_joint",
-                                                            "body_roll_joint",
-                                                            "head_pan_joint",
-                                                            "head_tilt_joint"
-                                                            };
-            std::vector<Pose> pose_list_;
+  rclcpp::Subscription<sobits_interfaces::msg::CurrentStateArray>::SharedPtr sub_arm_curr_;
 
-            static constexpr const double arm_upper_link_cm = 11.125;
-            static constexpr const double arm_forearm_link_cm = 10.275;
-            static constexpr const double arm_hand_link_cm = 15.6856;
-            static constexpr const double grasp_min_z_cm = 22.0; //In the case of SOBIT MINI, the normal x-y graph is rotated by +90°
-            static constexpr const double grasp_max_z_cm = -22.0;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
+  std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+  // std::string target_frame_;
 
-            void setJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt );
-            void addJointTrajectory( const std::string& joint_name, const double rad, const double sec, trajectory_msgs::JointTrajectory* jt );
-            void checkPublishersConnection( const ros::Publisher& pub );
-            void loadPose();
+  std::vector<Pose> kPoseList;
 
-            bool moveAllJoint( const double l_arm_shoulder_roll_joint,
-                               const double l_arm_shoulder_pan_joint,
-                               const double l_arm_elbow_tilt_joint,
-                               const double l_arm_wrist_tilt_joint,
-                               const double l_hand_joint,
-                               const double r_arm_shoulder_roll_joint,
-                               const double r_arm_shoulder_pan_joint,
-                               const double r_arm_elbow_tilt_joint,
-                               const double r_arm_wrist_tilt_joint,
-                               const double r_hand_joint,
-                               const double body_roll_joint,
-                               const double head_pan_joint,
-                               const double head_tilt_joint,
-                               const double sec, bool is_sleep = true 
-            );
-        public:
-            SobitMiniJointController( const std::string &name );
-            SobitMiniJointController( );
-            bool moveJoint ( const Joint joint_num,
-                             const double rad,
-                             const double sec=5.0, bool is_sleep = true );
-            bool moveHeadPanTilt ( const double pan_rad,
-                                   const double tilt_rad,
-                                   const double sec=5.0, bool is_sleep = true );  
-            bool moveRightArm ( const double shoulder_roll,
-                                const double shoulder_pan,
-                                const double elbow_tilt,
-                                const double wrist_tilt,
-                                const double hand_motor,
-                                const double sec=5.0, bool is_sleep = true );
-            bool moveLeftArm ( const double shoulder_roll,
-                               const double shoulder_pan,
-                               const double elbow_tilt,
-                               const double wrist_tilt,
-                               const double hand_motor,
-                               const double sec=5.0, bool is_sleep = true );
-            bool moveToPose( const std::string &pose_name
-                           , const double sec = 5.0 );
-            bool moveGripperToTargetCoord( const int arm_mode,
-                                           const double hand_rad,
-                                           const double goal_position_x, const double goal_position_y, const double goal_position_z,
-                                           const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
-                                           const double sec = 5.0, bool is_sleep = true );
-            bool moveGripperToTargetTF( const int arm_mode,
-                                        const std::string &goal_position_name,
-                                        const double hand_rad,
-                                        const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
-                                        const double sec = 5.0, bool is_sleep = true );
-    };
+  const std::vector<std::string> kJointNames = {
+      "arm_shoulder_yaw_joint",
+      "arm_shoulder_pitch_joint",
+      "arm_elbow_pitch_joint",
+      "arm_wrist_pitch_joint",
+      "hand_joint",
+      "head_yaw_joint",
+      "head_pitch_joint"
+  };
 
-    inline void sobit_mini::SobitMiniJointController::setJointTrajectory( const std::string& joint_name, 
-                                                                          const double rad, 
-                                                                          const double sec, 
-                                                                          trajectory_msgs::JointTrajectory* jt ) {
-        trajectory_msgs::JointTrajectory joint_trajectory;
-        trajectory_msgs::JointTrajectoryPoint joint_trajectory_point; 
+  double kArmWristPitchCurr = 0.;
+  double kHandCurr = 0.;
 
-        joint_trajectory.joint_names.push_back( joint_name ); 
-        joint_trajectory_point.positions.push_back( rad );
-        joint_trajectory_point.velocities.push_back( 0.0 );
-        joint_trajectory_point.accelerations.push_back( 0.0 );
-        joint_trajectory_point.effort.push_back( 0.0 );
-        joint_trajectory_point.time_from_start = ros::Duration( sec );
-        joint_trajectory.points.push_back( joint_trajectory_point );
+  // TODO: obtain links lengths with TF
+    const double base_to_shoulder_flex_joint_z_cm = 52.2;
+    const double base_to_shoulder_flex_joint_x_cm = 12.2;
+    const double arm_upper_link_x_cm = 14.8;
+    const double arm_upper_link_z_cm = 2.4;
+    const double arm_outer_link_x_cm = 15.0;
+    const double grasp_min_z_cm = 35.0;
+    const double grasp_max_z_cm = 80.0;
+  void setJointTrajectory(
+      trajectory_msgs::msg::JointTrajectory* jt,
+      const std::string& joint_name,
+      const double rad,
+      const int32_t sec = 5);
+  void addJointTrajectory(
+      trajectory_msgs::msg::JointTrajectory* jt,
+      const std::string& joint_name,
+      const double rad,
+      const int32_t sec = 5);
+  void checkPublishersConnection(
+      const rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr& pub);
+  void declarePoseParams(const std::string& prefix);
+  void setPoseParams(
+      const std::string& prefix,
+      std::vector<Pose>& poses);
+  void callbackArmCurr(
+      const sobits_interfaces::msg::CurrentStateArray::SharedPtr msg);
+  void loadPose();
+};
+}  // namespace sobit_mini
 
-        *jt = joint_trajectory;
 
-        return;
-    }
+inline void sobit_mini::JointController::setJointTrajectory(
+    trajectory_msgs::msg::JointTrajectory* jt,
+    const std::string& joint_name,
+    const double rad,
+    const int32_t sec) {
+  trajectory_msgs::msg::JointTrajectory joint_trajectory;
+  trajectory_msgs::msg::JointTrajectoryPoint joint_trajectory_point; 
 
-    inline void sobit_mini::SobitMiniJointController::addJointTrajectory( const std::string& joint_name, 
-                                                                          const double rad, 
-                                                                          const double sec, 
-                                                                          trajectory_msgs::JointTrajectory* jt ) {
-        trajectory_msgs::JointTrajectory joint_trajectory = *jt;
+  joint_trajectory.joint_names.push_back(joint_name); 
+  joint_trajectory_point.positions.push_back(rad);
+  // joint_trajectory_point.velocities.push_back(0.0);
+  // joint_trajectory_point.accelerations.push_back(0.0);
+  // joint_trajectory_point.effort.push_back(0.0);
+  joint_trajectory_point.time_from_start = rclcpp::Duration(sec, 0);
+  joint_trajectory.points.push_back(joint_trajectory_point);
 
-        joint_trajectory.joint_names.push_back( joint_name ); 
-        joint_trajectory.points[0].positions.push_back( rad );
-        joint_trajectory.points[0].velocities.push_back( 0.0 );
-        joint_trajectory.points[0].accelerations.push_back( 0.0 );
-        joint_trajectory.points[0].effort.push_back( 0.0 );
-        joint_trajectory.points[0].time_from_start = ros::Duration( sec );
-
-        *jt = joint_trajectory;
-
-        return;
-    }
-
-    inline void sobit_mini::SobitMiniJointController::checkPublishersConnection ( const ros::Publisher& pub ) {
-
-        ros::Rate loop_rate( 10 );
-        while ( pub.getNumSubscribers()	== 0 && ros::ok() ) {
-            try { loop_rate.sleep();
-            } catch ( const std::exception& ex ) { break; }
-        }
-        return; 
-    }
+  *jt = joint_trajectory;
 }
-#endif /* SOBIT_MINI_JOINT_CONTROLLER_H */
+
+inline void sobit_mini::JointController::addJointTrajectory(
+    trajectory_msgs::msg::JointTrajectory* jt,
+    const std::string& joint_name, 
+    const double rad, 
+    const int32_t sec) {
+  trajectory_msgs::msg::JointTrajectory joint_trajectory = *jt;
+
+  joint_trajectory.joint_names.push_back(joint_name); 
+  joint_trajectory.points[0].positions.push_back(rad);
+  // joint_trajectory.points[0].velocities.push_back(0.0);
+  // joint_trajectory.points[0].accelerations.push_back(0.0);
+  // joint_trajectory.points[0].effort.push_back(0.0);
+  joint_trajectory.points[0].time_from_start = rclcpp::Duration(sec, 0);
+
+  *jt = joint_trajectory;
+}
+
+// TODO: send publisher
+inline void sobit_mini::JointController::checkPublishersConnection(
+    const rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr& pub) {
+    rclcpp::Rate loop_rate(10);
+  // while (pub->get_subscription_count() == 0 && rclcpp::ok()) {
+  while (pub->get_subscription_count() == 0) {
+    try { loop_rate.sleep(); }
+    catch (const std::exception& ex) { break; }
+  }
+  // while (this->count_subscribers("arm_trajectory_controller/command") == 0) {
+  //   rclcpp::sleep_for(std::chrono::seconds(1));
+  // }
+}
+
+inline void sobit_mini::JointController::declarePoseParams(
+    const std::string& prefix) {
+  for (const auto& joint_name : kJointNames) {
+    declare_parameter<double>(prefix + joint_name);
+  }
+}
+
+inline void sobit_mini::JointController::setPoseParams(
+    const std::string& prefix,
+    std::vector<Pose>& poses) {
+  Pose pose;
+  std::string param_name;
+  double value;
+
+  for (const auto& joint_name : kJointNames) {
+    param_name = prefix + "." + joint_name;
+    value = get_parameter(param_name).as_double();
+    pose.pose_name.push_back(value);
+  }
+  pose.pose_name = prefix;
+  poses.push_back(pose);
+}
+
+
+// TODO: obtain current from each actuator
+inline void sobit_mini::JointController::callbackArmCurr(
+    const sobits_interfaces::msg::CurrentStateArray::SharedPtr msg) {
+  for (const auto &actuator : msg->current_state_array) {
+    if (actuator.joint_name == kJointNames[kArmWristPitchJoint])
+      kArmWristPitchCurr = actuator.current_ma;
+    if (actuator.joint_name == kJointNames[kHandJoint])
+      kHandCurr = actuator.current_ma;
+  }
+}
+
+#endif  // SOBIT_MINI_JOINT_CONTROLLER_H_

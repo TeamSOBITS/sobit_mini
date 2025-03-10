@@ -1,443 +1,440 @@
 #include "sobit_mini_library/sobit_mini_joint_controller.hpp"
 #include "sobit_mini_library/sobit_mini_wheel_controller.hpp"
 
-using namespace sobit_mini;
 
-SobitMiniJointController::SobitMiniJointController( const std::string &name ) : ROSCommonNode( name ), nh_(), pnh_("~"), tfBuffer_(), tfListener_(tfBuffer_) {
-    pub_body_control_  = nh_.advertise<trajectory_msgs::JointTrajectory>("/body_trajectory_controller/command", 1);
-    pub_head_control_  = nh_.advertise<trajectory_msgs::JointTrajectory>("/head_trajectory_controller/command", 1);
-    pub_l_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/l_arm_trajectory_controller/command", 1);  
-    pub_r_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/r_arm_trajectory_controller/command", 1);
-    loadPose();
+namespace sobit_mini {
+
+JointController::JointController(
+    const std::string& node_name)
+: Node(node_name) {
+  rclcpp::QoS qos_profile(1); // depth = 1
+    qos_profile.reliability(RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);
+    qos_profile.history(RMW_QOS_POLICY_HISTORY_KEEP_LAST);
+
+  pub_arm_control_  = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "arm_trajectory_controller/command", qos_profile);
+  pub_head_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "head_trajectory_controller/command", qos_profile);
+
+  sub_arm_curr_ = this->create_subscription<sobits_interfaces::msg::CurrentStateArray>(
+      "current_state_array", qos_profile,
+      [this](const sobits_interfaces::msg::CurrentStateArray::SharedPtr msg) -> void {
+        callbackArmCurr(std::move(msg));
+      });
+
+  tf_buffer_ =
+    std::make_unique<tf2_ros::Buffer>(this->get_clock());
+  tf_listener_ =
+    std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+  declarePoseParams("initial_pose");
+  declarePoseParams("yaw_pose");
+  declarePoseParams("detecting_pose");
+  declarePoseParams("following_pose");
+
+  loadPose();
 }
 
-SobitMiniJointController::SobitMiniJointController( ) : ROSCommonNode( ), nh_(), pnh_("~"), tfBuffer_(), tfListener_(tfBuffer_) {
-    pub_body_control_  = nh_.advertise<trajectory_msgs::JointTrajectory>("/body_trajectory_controller/command", 1);
-    pub_head_control_  = nh_.advertise<trajectory_msgs::JointTrajectory>("/head_trajectory_controller/command", 1);
-    pub_l_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/l_arm_trajectory_controller/command", 1);  
-    pub_r_arm_control_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/r_arm_trajectory_controller/command", 1);
-    loadPose();
+JointController::~JointController() {
+  RCLCPP_INFO(this->get_logger(), "JointController has been terminated.");
+  sub_arm_curr_.reset();
+  // pub_arm_control_.reset();
 }
 
-void SobitMiniJointController::loadPose() {
-    XmlRpc::XmlRpcValue pose_val;
-    if ( !nh_.hasParam("/sobit_mini_pose") ) return; 
-    nh_.getParam("/sobit_mini_pose", pose_val);
+// TODO: Load poses from yaml file
+void JointController::loadPose() {
+  setPoseParams("initial_pose"  , kPoseList);
+  setPoseParams("yaw_pose"  , kPoseList);
+  setPoseParams("detecting_pose", kPoseList);
+  setPoseParams("following_pose", kPoseList);
 
-    int pose_num = pose_val.size();
-    pose_list_.clear();
-
-    for ( int i = 0; i < pose_num; i++ ) {
-        Pose pose;
-        std::vector<double> joint_val(Joint::JOINT_NUM, 0.0);
-
-        pose.pose_name                              = static_cast<std::string>(pose_val[i]["pose_name"]); 
-        joint_val[Joint::L_ARM_SHOULDER_ROLL_JOINT] = static_cast<double>(pose_val[i][joint_names_[Joint::L_ARM_SHOULDER_ROLL_JOINT]]);
-        joint_val[Joint::L_ARM_SHOULDER_PAN_JOINT]  = static_cast<double>(pose_val[i][joint_names_[Joint::L_ARM_SHOULDER_PAN_JOINT]]);
-        joint_val[Joint::L_ARM_ELBOW_TILT_JOINT]    = static_cast<double>(pose_val[i][joint_names_[Joint::L_ARM_ELBOW_TILT_JOINT]]);
-        joint_val[Joint::L_ARM_WRIST_TILT_JOINT]    = static_cast<double>(pose_val[i][joint_names_[Joint::L_ARM_WRIST_TILT_JOINT]]);
-        joint_val[Joint::L_HAND_JOINT]              = static_cast<double>(pose_val[i][joint_names_[Joint::L_HAND_JOINT]]);
-        joint_val[Joint::R_ARM_SHOULDER_ROLL_JOINT] = static_cast<double>(pose_val[i][joint_names_[Joint::R_ARM_SHOULDER_ROLL_JOINT]]);
-        joint_val[Joint::R_ARM_SHOULDER_PAN_JOINT]  = static_cast<double>(pose_val[i][joint_names_[Joint::R_ARM_SHOULDER_PAN_JOINT]]);
-        joint_val[Joint::R_ARM_ELBOW_ROLL_JOINT]    = static_cast<double>(pose_val[i][joint_names_[Joint::R_ARM_ELBOW_ROLL_JOINT]]);
-        joint_val[Joint::R_ARM_WRIST_TILT_JOINT]    = static_cast<double>(pose_val[i][joint_names_[Joint::R_ARM_WRIST_TILT_JOINT]]);
-        joint_val[Joint::R_HAND_JOINT]              = static_cast<double>(pose_val[i][joint_names_[Joint::R_HAND_JOINT]]);
-        joint_val[Joint::BODY_ROLL_JOINT]           = static_cast<double>(pose_val[i][joint_names_[Joint::BODY_ROLL_JOINT]]);
-        joint_val[Joint::HEAD_PAN_JOINT]            = static_cast<double>(pose_val[i][joint_names_[Joint::HEAD_PAN_JOINT]]);
-        joint_val[Joint::HEAD_TILT_JOINT]           = static_cast<double>(pose_val[i][joint_names_[Joint::HEAD_TILT_JOINT]]);
-                                                             
-        pose.joint_val = joint_val;
-        pose_list_.push_back( pose );
-    }
-    return;
+  return;
 }
 
-bool SobitMiniJointController::moveAllJoint( const double l_arm_shoulder_roll_joint,
-                                        const double l_arm_shoulder_pan_joint,
-                                        const double l_arm_elbow_tilt_joint,
-                                        const double l_arm_wrist_tilt_joint,
-                                        const double l_hand_joint,
-                                        const double r_arm_shoulder_roll_joint,
-                                        const double r_arm_shoulder_pan_joint,
-                                        const double r_arm_elbow_tilt_joint,
-                                        const double r_arm_wrist_tilt_joint,
-                                        const double r_hand_joint,
-                                        const double body_roll_joint,
-                                        const double head_pan_joint,
-                                        const double head_tilt_joint, 
-                                        const double sec, bool is_sleep ) {
-    try {
-        trajectory_msgs::JointTrajectory head_joint_trajectory;
-        trajectory_msgs::JointTrajectory body_joint_trajectory;
-        trajectory_msgs::JointTrajectory r_arm_joint_trajectory;
-        trajectory_msgs::JointTrajectory l_arm_joint_trajectory;
+bool JointController::moveToPose(
+    const std::string &pose_name,
+    const int32_t sec , bool is_sleep) {
+  bool                is_pose = false;
+  std::vector<double> joint_val;
 
-        setJointTrajectory( joint_names_[Joint::L_ARM_SHOULDER_ROLL_JOINT], -l_arm_shoulder_roll_joint, sec, &l_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_SHOULDER_PAN_JOINT] , l_arm_shoulder_pan_joint  , sec, &l_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_ELBOW_TILT_JOINT]   , -l_arm_elbow_tilt_joint   , sec, &l_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_WRIST_TILT_JOINT]   , -l_arm_wrist_tilt_joint   , sec, &l_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_HAND_JOINT]             , -l_hand_joint             , sec, &l_arm_joint_trajectory );
-        setJointTrajectory( joint_names_[Joint::R_ARM_SHOULDER_ROLL_JOINT], r_arm_shoulder_roll_joint , sec, &r_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_SHOULDER_PAN_JOINT] , -r_arm_shoulder_pan_joint , sec, &r_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_ELBOW_ROLL_JOINT]   , r_arm_elbow_tilt_joint    , sec, &r_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_WRIST_TILT_JOINT]   , r_arm_wrist_tilt_joint    , sec, &r_arm_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_HAND_JOINT]             , r_hand_joint              , sec, &r_arm_joint_trajectory );
-        setJointTrajectory( joint_names_[Joint::BODY_ROLL_JOINT]          , -body_roll_joint * (116 / 22), sec, &body_joint_trajectory );
-        setJointTrajectory( joint_names_[Joint::HEAD_PAN_JOINT]           , head_pan_joint            , sec, &head_joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::HEAD_TILT_JOINT]          , head_tilt_joint           , sec, &head_joint_trajectory );
+  // Check if the pose_name exists
+  for (auto& pose : kPoseList) {
+      if (pose_name != pose.pose_name) continue;
+      is_pose   = true;
+      joint_val = pose.joint_val;
+      break;
+  }
 
-        checkPublishersConnection ( pub_head_control_ );
-        checkPublishersConnection ( pub_body_control_ );
-        checkPublishersConnection ( pub_r_arm_control_ );
-        checkPublishersConnection ( pub_l_arm_control_ );
-
-        pub_head_control_.publish( head_joint_trajectory );
-        pub_body_control_.publish( body_joint_trajectory );
-        pub_r_arm_control_.publish( r_arm_joint_trajectory );
-        pub_l_arm_control_.publish( l_arm_joint_trajectory );
-
-        if ( is_sleep ) ros::Duration( sec ).sleep();
-
-        return true;
-
-    } catch ( const std::exception& ex ) {
-        ROS_ERROR("%s", ex.what());
-        return false;
-    }
+  // Move to the pose
+  if (is_pose) {
+      RCLCPP_INFO(this->get_logger(), "[SOBIT MINI] Pose '%s' was found.", pose_name.c_str());
+      return moveAllJointsRad(
+          joint_val[Joint::kArmShoulderYawJoint], 
+          joint_val[Joint::kArmShoulder_1_PitchJoint], 
+          joint_val[Joint::kArmShoulder_2_PitchJoint], 
+          joint_val[Joint::kArmElbow_1_PitchJoint], 
+          joint_val[Joint::kArmElbow_2_PitchJoint], 
+          joint_val[Joint::kArmWrist_PitchJoint], 
+          joint_val[Joint::kHandJoint],
+          joint_val[Joint::kHeadYawJoint],
+          joint_val[Joint::kHeadPitchJoint],
+          sec, is_sleep);
+  } else {
+      RCLCPP_WARN(this->get_logger(), "[SOBIT MINI] Pose '%s' was not found.", pose_name.c_str());
+      return false;
+  }
 }
 
-bool SobitMiniJointController::moveJoint ( const Joint joint_num,
-                                           const double rad,
-                                           const double sec, bool is_sleep ) {
-    try {
-        trajectory_msgs::JointTrajectory joint_trajectory;
+bool JointController::moveAllJointsRad(
+  const double arm_shoulder_yaw,
+  const double arm_shoulder_pitch,
+  const double arm_elbow_pitch,
+  const double arm_wrist_pitch,
+  const double hand,
+  const double head_yaw,
+  const double head_pitch,
+  const int32_t sec , bool is_sleep ) {
+  try {
+    trajectory_msgs::msg::JointTrajectory arm_joint_trajectory;
+    trajectory_msgs::msg::JointTrajectory head_joint_trajectory;
 
-        if(joint_num == Joint::L_ARM_SHOULDER_ROLL_JOINT || joint_num == Joint::L_ARM_ELBOW_TILT_JOINT || joint_num == Joint::L_ARM_WRIST_TILT_JOINT || joint_num == Joint::L_HAND_JOINT || joint_num == Joint:: R_ARM_SHOULDER_PAN_JOINT){
-            setJointTrajectory( joint_names_[joint_num], -rad, sec, &joint_trajectory);
+    // Arm
+    setJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulderYawJoint] , arm_shoulder_yaw , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulder_1_PitchJoint], arm_shoulder_pitch, sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulder_2_PitchJoint], -arm_shoulder_pitch, sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmElbow_1_PitchJoint]   , arm_elbow_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmElbow_2_PitchJoint]   , -arm_elbow_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmWristPitchJoint]   , arm_wrist_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kHandJoint]            , hand              , sec);
+    // Head
+    setJointTrajectory(&head_joint_trajectory, kJointNames[Joint::kHeadYawJoint]         ,  head_yaw         , sec);
+    addJointTrajectory(&head_joint_trajectory, kJointNames[Joint::kHeadPitchJoint]       ,  head_pitch       , sec);
 
-        }else if(joint_num == Joint::BODY_ROLL_JOINT){
-            double body_rad = rad * (116 / 22);
-            setJointTrajectory( joint_names_[joint_num], -body_rad, sec, &joint_trajectory);
+    // Check publishers connection
+    checkPublishersConnection(pub_arm_control_);
+    checkPublishersConnection(pub_head_control_);
 
-        }else{
-            setJointTrajectory( joint_names_[joint_num], rad, sec, &joint_trajectory);
-        } 
+    // Publish the joint trajectory
+    pub_arm_control_->publish(arm_joint_trajectory);
+    pub_head_control_->publish(head_joint_trajectory);
+    
+    if (is_sleep) rclcpp::sleep_for(std::chrono::seconds(sec));
+    return true;
+  } catch (const std::exception& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
 
-        if( joint_num == Joint::HEAD_PAN_JOINT  || joint_num == Joint::HEAD_TILT_JOINT) {
-            checkPublishersConnection ( pub_head_control_ );
-            pub_head_control_.publish( joint_trajectory );
-
-        }else if( joint_num == Joint::BODY_ROLL_JOINT){
-            checkPublishersConnection( pub_body_control_);
-            pub_body_control_.publish( joint_trajectory );
-
-        }else if( joint_num < Joint::R_ARM_SHOULDER_ROLL_JOINT){
-            checkPublishersConnection( pub_l_arm_control_);
-            pub_l_arm_control_.publish( joint_trajectory );
-
-        }else {
-            checkPublishersConnection ( pub_r_arm_control_ );
-            pub_r_arm_control_.publish( joint_trajectory );
-        }
-
-        if ( is_sleep ) ros::Duration( sec ).sleep();
-
-        return true;
-
-    } catch ( const std::exception& ex ) {
-        ROS_ERROR("%s", ex.what());
-        return false;
-    }
+    return false;
+  }
 }
 
-bool SobitMiniJointController::moveHeadPanTilt ( const double pan_rad,
-                                                 const double tilt_rad,
-                                                 const double sec, bool is_sleep ) {
-    try {
-        trajectory_msgs::JointTrajectory joint_trajectory;
+bool JointController::moveJointRad(
+    const Joint  joint_num,
+    const double rad,
+    const int32_t sec , bool is_sleep ) {
+  try {
+    trajectory_msgs::msg::JointTrajectory joint_trajectory;
 
-        setJointTrajectory( joint_names_[Joint::HEAD_PAN_JOINT] , pan_rad , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::HEAD_TILT_JOINT], tilt_rad, sec, &joint_trajectory );
-        
-        checkPublishersConnection ( pub_head_control_ );
-        pub_head_control_.publish( joint_trajectory );
+    setJointTrajectory(&joint_trajectory, kJointNames[joint_num], rad, sec);
 
-        if ( is_sleep ) ros::Duration( sec ).sleep();
-
-        return true;
-
-    } catch ( const std::exception& ex ) {
-        ROS_ERROR("%s", ex.what());
-        return false;
-    }
-}
-
-bool SobitMiniJointController::moveToPose( const std::string &pose_name, const double sec) {
-    bool is_find = false;
-    std::vector<double> joint_val;
-    for ( auto& pose : pose_list_ ) {
-        if ( pose_name != pose.pose_name ) continue;
-        is_find = true;
-        joint_val = pose.joint_val;
-        break;
-    }
-    if ( is_find ) {
-        ROS_INFO("I found a '%s'", pose_name.c_str() );
-        return moveAllJoint( 
-                            joint_val[L_ARM_SHOULDER_ROLL_JOINT],
-                            joint_val[L_ARM_SHOULDER_PAN_JOINT],
-                            joint_val[L_ARM_ELBOW_TILT_JOINT],
-                            joint_val[L_ARM_WRIST_TILT_JOINT],
-                            joint_val[L_HAND_JOINT],
-                            joint_val[R_ARM_SHOULDER_ROLL_JOINT],
-                            joint_val[R_ARM_SHOULDER_PAN_JOINT],
-                            joint_val[R_ARM_ELBOW_ROLL_JOINT],
-                            joint_val[R_ARM_WRIST_TILT_JOINT],
-                            joint_val[R_HAND_JOINT],
-                            joint_val[BODY_ROLL_JOINT],
-                            joint_val[HEAD_PAN_JOINT],
-                            joint_val[HEAD_TILT_JOINT],
-                            sec );
+    // if (joint_num == 1 || joint_num == 3) {
+    //     setJointTrajectory(&joint_trajectory, kJointNames[joint_num]    ,  rad, sec);
+    //     addJointTrajectory(&joint_trajectory, kJointNames[joint_num + 1], -rad, sec);
+    // } else {
+    //     setJointTrajectory(&joint_trajectory, kJointNames[joint_num]    ,  rad, sec);
+    // }
+    
+    if (joint_num <= Joint::kHandJoint) {
+        checkPublishersConnection(pub_arm_control_);
+        pub_arm_control_->publish(joint_trajectory);
     } else {
-        ROS_ERROR("'%s' doesn't exist.", pose_name.c_str() );
-        return false;
-    } 
+        checkPublishersConnection(pub_head_control_);
+        pub_head_control_->publish(joint_trajectory);
+    }
+
+    if (is_sleep) rclcpp::sleep_for(std::chrono::seconds(sec));
+    return true;
+  } catch (const std::exception& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
+    return false;
+  }
 }
 
-bool SobitMiniJointController::moveRightArm ( const double shoulder_roll,
-                                              const double shoulder_pan,
-                                              const double elbow_tilt,
-                                              const double wrist_tilt,
-                                              const double hand_motor,
-                                              const double sec, bool is_sleep ) {
-    try {
-        trajectory_msgs::JointTrajectory joint_trajectory;
+bool JointController::moveHeadRad(
+    const double head_yaw,
+    const double head_pitch,
+    const int32_t sec , bool is_sleep ) {
+  try {
+    trajectory_msgs::msg::JointTrajectory joint_trajectory;
 
-        setJointTrajectory( joint_names_[Joint::R_ARM_SHOULDER_ROLL_JOINT], shoulder_roll, sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_SHOULDER_PAN_JOINT] , -shoulder_pan, sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_ELBOW_ROLL_JOINT]   , elbow_tilt   , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_ARM_WRIST_TILT_JOINT]   , wrist_tilt   , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::R_HAND_JOINT]             , hand_motor   , sec, &joint_trajectory );
-        
-        checkPublishersConnection ( pub_r_arm_control_ );
-        pub_r_arm_control_.publish( joint_trajectory );
-
-        if (is_sleep) ros::Duration( sec ).sleep();
-
-        return true;
-
-    } catch ( const std::exception& ex ) {
-        ROS_ERROR("%s", ex.what());
-        return false;
-    }
+    setJointTrajectory(&joint_trajectory, kJointNames[Joint::kHeadYawJoint]  , head_yaw  , sec);
+    addJointTrajectory(&joint_trajectory, kJointNames[Joint::kHeadPitchJoint], head_pitch, sec);
+    
+    checkPublishersConnection(pub_head_control_);
+    pub_head_control_->publish(joint_trajectory);
+    
+    if (is_sleep)rclcpp::sleep_for(std::chrono::seconds(sec));
+    return true;
+  } catch (const std::exception& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
+    return false;
+  }
 }
 
-bool SobitMiniJointController::moveLeftArm ( const double shoulder_roll,
-                                             const double shoulder_pan,
-                                             const double elbow_tilt,
-                                             const double wrist_tilt,
-                                             const double hand_motor,
-                                             const double sec, bool is_sleep ) {
-    try {
-        trajectory_msgs::JointTrajectory joint_trajectory;
+bool JointController::moveArmRad(
+  const double arm_shoulder_yaw,
+  const double arm_shoulder_pitch,
+  const double arm_elbow_pitch,
+  const double arm_wrist_pitch,
+  const double hand,
+  const double head_yaw,
+  const double head_pitch,
+    const int32_t sec , bool is_sleep ) {
+  try {
+    trajectory_msgs::msg::JointTrajectory arm_joint_trajectory;
 
-        setJointTrajectory( joint_names_[Joint::L_ARM_SHOULDER_ROLL_JOINT], -shoulder_roll, sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_SHOULDER_PAN_JOINT] , shoulder_pan  , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_ELBOW_TILT_JOINT]   , -elbow_tilt   , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_ARM_WRIST_TILT_JOINT]   , -wrist_tilt   , sec, &joint_trajectory );
-        addJointTrajectory( joint_names_[Joint::L_HAND_JOINT]             , -hand_motor   , sec, &joint_trajectory );
-        
-        checkPublishersConnection ( pub_l_arm_control_ );
-        pub_l_arm_control_.publish( joint_trajectory );
-
-        if (is_sleep) ros::Duration( sec ).sleep();
-
-        return true;
-
-    } catch ( const std::exception& ex ) {
-        ROS_ERROR("%s", ex.what());
-        return false;
-    }
+    setJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulderYawJoint] , arm_shoulder_yaw , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulder_1_PitchJoint], arm_shoulder_pitch, sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmShoulder_2_PitchJoint], -arm_shoulder_pitch, sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmElbow_1_PitchJoint]   , arm_elbow_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmElbow_2_PitchJoint]   , -arm_elbow_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kArmWristPitchJoint]   , arm_wrist_pitch   , sec);
+    addJointTrajectory(&arm_joint_trajectory, kJointNames[Joint::kHandJoint]            , hand              , sec);
+    
+    checkPublishersConnection (pub_arm_control_);
+    pub_arm_control_->publish(arm_joint_trajectory);
+    
+    if (is_sleep) rclcpp::sleep_for(std::chrono::seconds(sec));
+    return true;
+  } catch (const std::exception& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
+    return false;
+  }
 }
 
-bool SobitMiniJointController::moveGripperToTargetCoord( const int arm_mode,
-                                                         const double hand_rad,
-                                                         const double goal_position_x, const double goal_position_y, const double goal_position_z,
-                                                         const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
-                                                         const double sec, bool is_sleep ){
-    sobit_mini::SobitMiniWheelController wheel_ctrl;
-    geometry_msgs::Point shift;
+// TODO (@m.shigemori): Implement inverse kinematics
+bool JointController::moveHandToTargetCoord(
+    const double target_x, const double target_y, const double target_z, 
+    const double shift_x , const double shift_y , const double shift_z,
+    const int32_t sec , bool is_sleep ) {
+  // sobit_mini::WheelController wheel_ctrl;
+  WheelController wheel_ctrl;
 
-    // Calculate goal_position_pos + difference(gap)
-    const double base_to_goal_position_x = goal_position_x + shift.x + diff_goal_position_x;
-    const double base_to_goal_position_y = goal_position_y + shift.y + diff_goal_position_y;
-    const double base_to_goal_position_z = goal_position_z + shift.z + diff_goal_position_z;
+  // // Calculate goal_position_pos + difference(gap)
+  const double goal_position_pos_x_cm = target_x + shift_x;
+  const double goal_position_pos_y_cm = target_y + shift_y;
+  const double goal_position_pos_z_cm = target_z + shift_z;
+  bool is_reached = false;
 
-    // Calculate angle between footbase_pos and the sifted goal_position_pos (XY平面)
-    double tan_rad = std::atan2(base_to_goal_position_y,base_to_goal_position_x);
-
-    // Change goal_position_pos units (m->cm)
-    const double goal_position_pos_x_cm = base_to_goal_position_x * 100.0;
-    const double goal_position_pos_y_cm = base_to_goal_position_y * 100.0;
-    const double goal_position_pos_z_cm = base_to_goal_position_z * 100.0;
-
-    //Stores values used in inverse kinematics
-    double goal_object_distance_x_cm = std::sqrt(std::pow(goal_position_pos_x_cm,2) + std::pow(goal_position_pos_y_cm,2));
-    double goal_object_distance_z_cm = -goal_position_pos_z_cm;
-
-    //Determination of grasp direction for objects
-    const double total_degrees = 90.0;
-
-    // Check if the object is graspable
-    if (goal_object_distance_z_cm <= grasp_max_z_cm) {
-        std::cout << "The target is located too tall(" << -goal_object_distance_z_cm << ">22.0)" << std::endl;
-        return false;
-    } else if (goal_object_distance_z_cm >= grasp_min_z_cm) {
-        std::cout << "The target is located too low(" << -goal_object_distance_z_cm << "<-22.0)" << std::endl;
-        return false;
-    }
-
-    //Value is determined by the height of the object
-    double linear_m = 0.0;
-    if ((goal_object_distance_z_cm < -20.0) || (20.0 < goal_object_distance_z_cm)) {
-        linear_m = goal_object_distance_x_cm - 19.0;
-        goal_object_distance_x_cm = goal_object_distance_x_cm - linear_m;
-    } 
-    else if ((-20.0 <= goal_object_distance_z_cm && goal_object_distance_z_cm <= -15.0) || (15.0 <= goal_object_distance_z_cm && goal_object_distance_z_cm <= 20.0)) {
-        linear_m = goal_object_distance_x_cm - 23.0;
-        goal_object_distance_x_cm = goal_object_distance_x_cm - linear_m;
-    } 
-    else if ((-15.0 <= goal_object_distance_z_cm && goal_object_distance_z_cm <= -11.0) || (11.0 < goal_object_distance_z_cm && goal_object_distance_z_cm < 15.0)) {
-        linear_m = goal_object_distance_x_cm - 30.0;
-        goal_object_distance_x_cm = goal_object_distance_x_cm - linear_m;
-    } 
-    else if (-11.0 <= goal_object_distance_z_cm && goal_object_distance_z_cm <= 11.0) {
-        linear_m = goal_object_distance_x_cm - 34.0;
-        goal_object_distance_x_cm = goal_object_distance_x_cm - linear_m;
-    }
-
-    // - Move forward the robot
-    linear_m = linear_m / 100.0;
-
-    // Inverse Kinematics Calculations
-    const double x_p = goal_object_distance_z_cm - (arm_hand_link_cm * std::cos(total_degrees * M_PI / 180.0));
-    const double y_p = goal_object_distance_x_cm - (arm_hand_link_cm * std::sin(total_degrees * M_PI / 180.0));
-
-    const double o_b = std::sqrt(std::pow(x_p,2) + std::pow(y_p,2));
-    double alpha = std::acos(((std::pow(arm_upper_link_cm,2) + std::pow(o_b,2)) - std::pow(arm_forearm_link_cm,2)) / (2 * arm_upper_link_cm * o_b));
-    double beta = std::acos(((std::pow(arm_upper_link_cm,2) + std::pow(arm_forearm_link_cm,2)) - std::pow(o_b,2)) / (2 * arm_upper_link_cm * arm_forearm_link_cm));
-    double gamma = std::atan2(y_p,x_p);
-
-    // std::cout << "alpha:" << alpha * 180.0 / M_PI <<std::endl;
-    // std::cout << "beta:" << beta * 180.0 / M_PI <<std::endl;
-    // std::cout << "gamma:" << gamma * 180.0 / M_PI <<std::endl;
-
-    // std::cout << "alpha:" << alpha << std::endl;
-    // std::cout << "beta:" << beta << std::endl;
-    // std::cout << "gamma:" << gamma << std::endl;
-
-    //Determine the angle of each joint
-    const double arm_shoulder_roll_joint_rad = gamma - alpha;
-    const double arm_elbow_tilt_joint_rad = (180.0 * M_PI / 180.0) - beta;
-    const double arm_wrist_tilt_joint_rad = (total_degrees * M_PI / 180.0) - arm_shoulder_roll_joint_rad - arm_elbow_tilt_joint_rad;
-
-    //tan_rad rotation
-    wheel_ctrl.controlWheelRotateRad(tan_rad);
-    ros::Duration(3.0).sleep();
-    // std::cout << "arm_shoulder_roll_joint_rad:" << arm_shoulder_roll_joint_rad * 180.0 / M_PI <<std::endl;
-    // std::cout << "arm_elbow_tilt_joint_rad:" << arm_elbow_tilt_joint_rad * 180.0 / M_PI <<std::endl;
-    // std::cout << "arm_wrist_tilt_joint_rad:" << arm_wrist_tilt_joint_rad * 180.0 / M_PI <<std::endl;
-    // std::cout << "linear_m:" << linear_m << std::endl;
-
-
-    if (arm_mode == 0){//left_arm
-        // moveLeftArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
-        ros::Duration(2.0).sleep();
-        moveLeftArm( arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad,
-                     2.0, true);
-        wheel_ctrl.controlWheelLinear(linear_m);
-        ros::Duration(3.0).sleep();
-        bool is_reached = moveLeftArm( arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 0.0,
-                                       2.0, true);
-        ros::Duration(2.0).sleep();
-        return is_reached;
-    } else if (arm_mode == 1){//right_arm
-        // moveRightArm((80.0 * M_PI / 180.0), -(90.0 * M_PI / 180.0), (60.0 * M_PI / 180.0), (90.0 * M_PI / 180.0), 0.0, 2.0, true);
-        ros::Duration(2.0).sleep();
-        moveRightArm( arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, hand_rad,
-                      2.0, true);
-        wheel_ctrl.controlWheelLinear(linear_m);
-        ros::Duration(3.0).sleep();
-        bool is_reached = moveRightArm( arm_shoulder_roll_joint_rad, -(90.0 * M_PI / 180.0), arm_elbow_tilt_joint_rad, arm_wrist_tilt_joint_rad, 0.0,
-                                        1.0, true);
-        ros::Duration(2.0).sleep();
-        return is_reached;
-    }
-
-    // return is_reached;
-}
-
-bool SobitMiniJointController::moveGripperToTargetTF( const int arm_mode,
-                                                      const std::string &goal_position_name,
-                                                      const double hand_rad,
-                                                      const double diff_goal_position_x, const double diff_goal_position_y, const double diff_goal_position_z,
-                                                      const double sec, bool is_sleep ){
-    sobit_mini::SobitMiniWheelController wheel_ctrl;
-    // tf2::StampedTransform transform_base_to_target;
-    geometry_msgs::TransformStamped transform_base_to_target;
-    // tf::StampedTransform transform_base_to_target;
-    geometry_msgs::Point shift;
-    double goal_position_x = 0.0;
-    double goal_position_y = 0.0;
-    double goal_position_z = 0.0;
-
-    bool tf_flag = false;
-
-    if (arm_mode == 0){//left_arm
-        try{
-            tfBuffer_.canTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
-            transform_base_to_target = tfBuffer_.lookupTransform("l_arm_shoulder_roll_link", goal_position_name, ros::Time(0));//transform_base_to_targetで物体のxyz成分を格納している
-            tf_flag = true;
-
-            // goal_position_x = transform_base_to_target.getOrigin().x();
-            // goal_position_y = transform_base_to_target.getOrigin().y() - 0.05375;
-            // goal_position_z = transform_base_to_target.getOrigin().z();
-
-            goal_position_x = transform_base_to_target.transform.translation.x;
-            goal_position_y = transform_base_to_target.transform.translation.y - 0.05375;
-            goal_position_z = transform_base_to_target.transform.translation.z;
-
-        }  catch (tf2::TransformException ex){
-            ROS_ERROR("ERROR: %s", ex.what() );
-            return false;
-        }
-    } else if (arm_mode == 1){//right_arm
-        try{
-            tfBuffer_.canTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0), ros::Duration(2.0));
-            transform_base_to_target = tfBuffer_.lookupTransform("r_arm_shoulder_roll_link", goal_position_name, ros::Time(0));//transform_base_to_targetで物体のxyz成分を格納している
-            tf_flag = true;
-
-            // goal_position_x = transform_base_to_target.getOrigin().x();
-            // goal_position_y = transform_base_to_target.getOrigin().y() + 0.05375;
-            // goal_position_z = transform_base_to_target.getOrigin().z();
-
-            goal_position_x = transform_base_to_target.transform.translation.x;
-            goal_position_y = transform_base_to_target.transform.translation.y + 0.05375;
-            goal_position_z = transform_base_to_target.transform.translation.z;
-        }  catch (tf2::TransformException ex){
-            ROS_ERROR("ERROR: %s", ex.what() );
-            return false;
-        }
-    } else {
-        std::cout << "There is no mode type! mode type is 0 or 1." << std::endl;
-        return false;
-    }
-
-    bool is_reached = moveGripperToTargetCoord(arm_mode,
-                                               hand_rad,
-                                               goal_position_x, goal_position_y, goal_position_z,
-                                               diff_goal_position_x, diff_goal_position_y, diff_goal_position_z,
-                                               sec, is_sleep);
-
+  // Check if the object is graspable
+  if (goal_position_pos_z_cm > grasp_max_z_cm) {
+    // std::cout << "The target is located too tall ("  << goal_position_pos_z_cm << ">80.0)" << std::endl;
+    RCLCPP_WARN(this->get_logger(), "The target is located too tall (%f>80.0)", goal_position_pos_z_cm);
     return is_reached;
+
+  } else if (goal_position_pos_z_cm < grasp_min_z_cm) {
+    // std::cout << "The target is located too low (" << goal_position_pos_z_cm << "<35.0) " << std::endl;
+    RCLCPP_WARN(this->get_logger(), "The target is located too low (%f>35.0)", goal_position_pos_z_cm);
+    return is_reached;
+  }
+
+  double arm_shoulder_yaw_joint_rad  = 0.0;
+  double arm_shoulder_pitch_joint_rad = 0.0;
+  double arm_elbow_pitch_joint_rad    = 0.0;
+  double arm_wrist_pitch_joint_rad    = 0.0;
+  double hand_joint_rad               = 0.0;
+
+  // Target is above arm_elbow_pitch_join
+  if ( (base_to_shoulder_roll_joint_z_cm + arm_upper_link_z_cm) < goal_position_pos_z_cm )  {
+    std::cout << "Target (z:" << goal_position_pos_z_cm << ") is above arm_elbow_pitch_joint" << std::endl;
+    RCLCPP_INFO(this->get_logger(), "Target (z:%f) is above arm_elbow_pitch_joint", goal_position_pos_z_cm);
+
+    // Caution: Calculating until arm_forearm_roll_joint_x_cm (not target)
+    double arm_elbow_pitch_joint_sin = (goal_position_pos_z_cm - (base_to_shoulder_roll_joint_z_cm + arm_upper_link_x_cm)) / arm_outer_link_x_cm;
+    arm_elbow_pitch_joint_rad = std::asin(arm_elbow_pitch_joint_sin);
+    arm_wrist_pitch_joint_rad = -arm_elbow_pitch_joint_rad;
+    shoulder_roll_joint_rad = 0.0;
+
+    base_to_arm_wrist_pitch_joint_x_cm = base_to_shoulder_roll_joint_x_cm + arm_upper_link_z_cm + arm_outer_link_x_cm * std::cos(arm_elbow_pitch_joint_rad);
+
+  }
+
+  // Target is below arm_elbow_pitch_join and above shoulder_roll_joint
+  else if ( base_to_shoulder_roll_joint_z_cm <= goal_position_pos_z_cm && goal_position_pos_z_cm <= (base_to_shoulder_roll_joint_z_cm + arm_upper_link_x_cm) ) {
+    std::cout << "Target (z:" << goal_position_pos_z_cm << ") is below arm_elbow_pitch_join and above shoulder_roll_joint" << std::endl;
+    RCLCPP_INFO(this->get_logger(), "Target (z:%f) is below arm_elbow_pitch_join and above shoulder_roll_joint", goal_position_pos_z_cm);
+
+    // Caution: Calculating until arm_forearm_roll_joint_x_cm (not target)
+    double arm_elbow_pitch_joint_sin = (base_to_shoulder_roll_joint_z_cm + arm_upper_link_x_cm - goal_position_pos_z_cm) / arm_outer_link_x_cm;
+    arm_elbow_pitch_joint_rad = -std::asin(arm_elbow_pitch_joint_sin);
+    arm_wrist_pitch_joint_rad = -arm_elbow_pitch_joint_rad;
+    shoulder_roll_joint_rad = 0.0;
+
+    base_to_arm_wrist_pitch_joint_x_cm = base_to_shoulder_roll_joint_x_cm + arm_upper_link_z_cm + arm_outer_link_x_cm * std::cos(arm_elbow_pitch_joint_rad);
+  }
+
+  // Target is below shoulder_roll_joint
+  else if ( goal_position_pos_z_cm < base_to_shoulder_roll_joint_z_cm ) {
+    std::cout << "Target (z:" << goal_position_pos_z_cm << ") is below shoulder_roll_joint" << std::endl;
+    RCLCPP_INFO(this->get_logger(), "Target (z:%f) is below shoulder_roll_joint", goal_position_pos_z_cm);
+
+    // Caution: Calculating until arm_forearm_roll_joint_x_cm (not target)
+    double arm_elbow_pitch_joint_cos = (base_to_shoulder_roll_joint_z_cm - arm_upper_link_z_cm - goal_position_pos_z_cm) / arm_outer_link_x_cm;
+    arm_elbow_pitch_joint_rad = std::acos(arm_elbow_pitch_joint_cos);
+    arm_wrist_pitch_joint_rad = std::asin(arm_elbow_pitch_joint_cos);
+    shoulder_roll_joint_rad = -wheel_ctrl.deg2Rad(90.0);
+
+    base_to_arm_wrist_pitch_joint_x_cm = base_to_shoulder_roll_joint_x_cm + arm_upper_link_z_cm + arm_outer_link_x_cm * std::cos(arm_elbow_pitch_joint_rad);
+
+  }
+
+  // Calculate wheel movement (diagonal)
+  // - Rotate the robot
+  const double rot_rad = std::atan2( goal_position_pos_y_cm, goal_position_pos_x_cm );
+  // ROS_INFO("rot_rad = %f(deg:%f)", rot_rad, SobitminiWheelController::rad2Deg(rot_rad));
+  wheel_ctrl.controlWheelRotateRad(rot_rad);
+  rclcpp::sleep_for(std::chrono::seconds(1));
+  // - Move forward the robot
+  const double linear_m = std::sqrt(std::pow(goal_position_pos_x_cm, 2) + std::pow(goal_position_pos_y_cm, 2)) / 100.0 - base_to_arm_wrist_pitch_joint_x_cm / 100.0;
+  RCLCPP_INFO(this->get_logger(), "linear_m = %f", linear_m);
+  wheel_ctrl.controlWheelLinear(linear_m);
+  rclcpp::sleep_for(std::chrono::seconds(1));
+
+  // // Calculate wheel movement (+-90->x_pos->-+90->y_pos) NEEDS CONFIRMATION
+  // // - Rotate the robot
+  // const double rot_deg = goal_position_pos_x_cm > 0.0 ? 90.0:-90.0;
+  // ROS_INFO("rot_deg:%f)", rot_deg);
+  // wheel_ctrl.controlWheelRotateDeg(rot_deg);
+  // rclcpp::sleep_for(std::chrono::seconds(3));
+
+  // // - Move forward the robot
+  // ROS_INFO("linear_m = %f", goal_position_pos_x_cm);
+  // wheel_ctrl.controlWheelLinear(goal_position_pos_x_cm);
+  // rclcpp::sleep_for(std::chrono::seconds(3));
+
+  // // - Rotate the robot
+  // ROS_INFO("rot_deg:%f)", -rot_deg);
+  // wheel_ctrl.controlWheelRotateDeg(-rot_deg);
+  // rclcpp::sleep_for(std::chrono::seconds(3));
+
+  // // - Move forward the robot
+  // ROS_INFO("linear_m = %f", goal_position_pos_y_cm);
+  // wheel_ctrl.controlWheelLinear(goal_position_pos_y_cm);
+  // rclcpp::sleep_for(std::chrono::seconds(3));
+
+  // - Move arm (OPEN)
+  is_reached = moveArmRad(
+      arm_shoulder_yaw_joint_rad,
+      arm_shoulder_pitch_joint_rad,
+      arm_elbow_pitch_joint_rad,
+      arm_wrist_pitch_joint_rad,
+      hand_joint_rad,
+      sec, is_sleep);
+
+  RCLCPP_INFO(this->get_logger(), "goal_position_pos = (%f, %f, %f)",
+      goal_position_pos_x_cm, goal_position_pos_y_cm, goal_position_pos_z_cm);
+  // rclcpp::Duration(2, 0)
+
+  return is_reached;
 }
+
+bool JointController::moveHandToTargetTF(
+    const std::string &target_name,
+    const double shift_x, const double shift_y, const double shift_z,
+    const int32_t sec , bool is_sleep ) {
+  geometry_msgs::msg::TransformStamped transformStamped;
+  bool is_reached = false;
+
+  try {
+    tf_buffer_->canTransform("base_footprint", target_name, this->get_clock()->now(), rclcpp::Duration(0, RCL_S_TO_NS(0.5)));
+    transformStamped = tf_buffer_->lookupTransform("base_footprint", target_name, this->get_clock()->now());
+  } catch (const tf2::TransformException& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
+    return false;
+  }
+
+  auto& tf_target_to_arm = transformStamped.transform.translation;
+  is_reached = moveHandToTargetCoord(
+      tf_target_to_arm.x, tf_target_to_arm.y, tf_target_to_arm.z,
+      shift_x, shift_y, shift_z,
+      sec, is_sleep);
+  
+  return is_reached;
+}
+
+bool JointController::moveHandToPlaceCoord(
+    const double target_x, const double target_y,  double target_z, 
+    const double shift_x     , const double shift_y     , const double shift_z,
+    const int32_t sec , bool is_sleep ) {
+  geometry_msgs::msg::Point shift;
+  // double target_z   = 0.;
+  bool   is_reached = false;
+
+  // Reduce the target_z by 0.002[m], until expected collision is detected
+  while (!(is_reached && placeDecision(500, 1000))) {
+    is_reached = moveHandToTargetCoord(
+        target_x, target_y, target_z, 
+        shift_x, shift_y, shift_z+target_z,
+        sec, is_sleep);
+
+    if (!is_reached) return is_reached;
+
+    // Accumulate the target_z
+    target_z -= 0.05;
+  }
+
+  return is_reached;
+}
+
+bool JointController::moveHandToPlaceTF(
+    const std::string& target_name,
+    const double shift_x, const double shift_y, const double shift_z,
+    const int32_t sec , bool is_sleep ) {
+  geometry_msgs::msg::Point shift;
+  geometry_msgs::msg::TransformStamped transform_base_to_target;
+  bool is_reached = false;
+
+  try {
+    tf_buffer_->canTransform("base_footprint", target_name, this->get_clock()->now(), rclcpp::Duration(2, 0));
+    transform_base_to_target = tf_buffer_->lookupTransform("base_footprint", target_name, this->get_clock()->now());
+  } catch (const tf2::TransformException& ex) {
+    RCLCPP_ERROR(this->get_logger(), "[SOBIT MINI] %s", ex.what());
+    return false;
+  }
+
+  auto& goal_position = transform_base_to_target.transform.translation;
+
+  is_reached = moveHandToPlaceCoord(
+      goal_position.x, goal_position.y, goal_position.z,
+      shift_x, shift_y, shift_z,
+      sec, is_sleep);
+
+  return is_reached;
+}
+
+bool JointController::graspDecision(const int min_curr, const int max_curr) {
+    bool is_grasped = false;
+
+    // Spin until the current value is obtained
+    // while(kHandCurr == 0.) ros::spinOnce();
+    std::cout << "kHandCurr = " << kHandCurr << std::endl;
+
+    is_grasped = (min_curr <= kHandCurr && kHandCurr <= max_curr) ? true : false;
+
+    return is_grasped;
+}
+
+bool JointController::placeDecision(const int min_curr, const int max_curr) {
+    bool is_placed = false;
+
+    // Spin until the current value is obtained
+    // while(kArmWristPitchCurr == 0.) ros::spinOnce();
+    std::cout << "kArmWristPitchCurr = " << kArmWristPitchCurr << std::endl;
+
+    is_placed = (min_curr <= kArmWristPitchCurr && kArmWristPitchCurr <= max_curr) ? true : false;
+
+    return is_placed;
+}
+
+}  // namespace sobit_mini
+
+// RCLCPP_COMPONENTS_REGISTER_NODE(sobit_mini::JointController)

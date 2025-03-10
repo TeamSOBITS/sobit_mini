@@ -17,7 +17,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/R_arm/R_ARM_SHOULDER_ROLL_JOINT.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/r_arm/r_arm_shoulder_roll_joint.stl" />
         </geometry>
         <material name="black"/>
       </visual>
@@ -50,7 +50,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/R_arm/R_ARM_SHOULDER_FLEX_JOINT.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/r_arm/r_arm_shoulder_flex_joint.stl" />
         </geometry>
         <material name="black"/>
       </visual>
@@ -83,7 +83,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/R_arm/R_ARM_ELBOW_TILT_JOINT.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/r_arm/r_arm_elbow_tilt_joint.stl" />
         </geometry>
         <material name="black"/>
       </visual>
@@ -116,7 +116,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/R_arm/R_ARM_WRIST_TILT_JOINT.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/r_arm/r_arm_wrist_tilt_joint.stl" />
         </geometry>
       <material name="black"/>
       </visual>
@@ -149,7 +149,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 ${M_PI/2.0} 0.0" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/R_hand/R_hand_JOINT.stl"/>
+          <mesh filename="file://$(find sobit_mini_description)/meshes/r_hand/r_hand_joint.stl"/>
         </geometry>
         <material name="black" />
       </visual>
@@ -169,31 +169,5 @@
                  izz="${1/12*0.15580851*(0.078**2 + 0.057**2)}" />
       </inertial>
     </link>
-
-    <!--plug-in to distribute joint condition data-->
-    <gazebo>
-      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
-        <jointName>${prefix}_shoulder_roll_joint, ${prefix}_shoulder_pan_joint, ${prefix}_elbow_tilt_joint, ${prefix}_wrist_tilt_joint</jointName>
-      </plugin>
-    </gazebo>
-
-    <gazebo reference="${prefix}_shoulder_fixed_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-    <gazebo reference="${prefix}_shoulder_roll_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-    <gazebo reference="${prefix}_shoulder_pan_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-    <gazebo reference="${prefix}_elbow_tilt_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-    <gazebo reference="${prefix}_wrist_tilt_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-
-    <xacro:right_arm_transmission prefix="${prefix}"/>
-
   </xacro:macro>
 </robot>

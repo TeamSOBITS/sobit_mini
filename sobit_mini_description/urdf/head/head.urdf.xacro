@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot name="head" xmlns:xacro="http://ros.org/wiki/xacro">
-
   <xacro:include filename="$(find sobit_mini_description)/urdf/head/head.transmission.xacro" />
+  <!-- <xacro:include filename="$(find sobit_mini_description)/urdf/head/head.gazebo.xacro" /> -->
 
   <xacro:macro name="head" params="prefix parent">
 
@@ -17,7 +17,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_PAN_JOINT.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/head/head_camera_pan_joint.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -43,7 +43,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="package://sobit_mini_description/meshes/head/HEAD_TILT_JOINT.dae" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/head/head_camera_tilt_joint.dae" />
         </geometry>
       </visual>
 
@@ -65,7 +65,7 @@
 
 
     <!--plug-in to distribute joint condition data-->
-    <gazebo>
+    <!-- <gazebo>
       <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
         <jointName>${prefix}_pan_joint, ${prefix}_tilt_joint</jointName>
       </plugin>
@@ -75,7 +75,7 @@
       <material>Gazebo/Black</material>
     </gazebo>
 
-    <xacro:head_transmission prefix="${prefix}"/>
+    <xacro:head_transmission prefix="${prefix}"/> -->
 
   </xacro:macro>
 </robot>
