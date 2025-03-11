@@ -50,14 +50,14 @@
 
     <link name="pole_middle_${number}_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 ${M_PI} 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
           <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_middle_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
           <cylinder length="0.0608" radius="0.006" />
         </geometry>
@@ -81,21 +81,21 @@
 
     <link name="pole_top_${number}_link">
       <visual>
-        <origin xyz=" 0 0 0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
-          <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_top_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/pole_middle_134mm.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}" />
         </geometry>
         <material name="grey" />
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
           <cylinder length="0.2032" radius="0.006" />
         </geometry>
       </collision>
       <inertial>
         <mass value="0.060" />
-        <origin xyz="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" />
         <inertia ixx="0.000206991" ixy="0.0" ixz="0.0" 
                  iyy="0.000206991" iyz="0.0" 
                  izz="0.000001080" />
@@ -112,9 +112,9 @@
 
     <link name="pole_kinect_${number}_link">
       <visual>
-        <origin xyz="0 0 0.0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://turtlebot2_description/meshes/sensors/sensor_pole.dae" />
+          <mesh filename="file://$(find turtlebot2_description)/meshes/sensors/sensor_pole.dae" />
         </geometry>
       </visual>
       <collision>
@@ -125,7 +125,7 @@
       </collision>
       <inertial>
         <mass value="0.020" />
-        <origin xyz="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" />
         <inertia ixx="0.000014782" ixy="0.0" ixz="0.0" 
                  iyy="0.000014782" iyz="0.0" 
                  izz="0.000000360" />
@@ -147,70 +147,75 @@
     <stack_bottom_pole parent="${parent}" number="5" x_loc="-0.055" y_loc="-0.120" z_loc="0.1028" />
     
     <joint name="plate_bottom_joint" type="fixed">
-      <origin xyz="0.02364 0.0 0.1306" rpy="0 0 0" />
+      <origin xyz="0.02364 0.0 0.1306" rpy="0.0 0.0 0.0" />
       <parent link="${parent}" />
       <child link="plate_bottom_link" />
     </joint>
 
     <link name="plate_bottom_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://turtlebot2_description/meshes/stacks/hexagons/plate_bottom.dae" />
+          <mesh filename="file://$(find turtlebot2_description)/meshes/stacks/hexagons/plate_bottom.dae" />
         </geometry>
       </visual>
       <collision>
-        <origin xyz="-0.02364 0 0" rpy="0 0 0" />
+        <origin xyz="-0.02364 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
           <cylinder length="0.006" radius="0.170" />
         </geometry>
       </collision>
       <inertial>
         <mass value="0.520" />
-        <origin xyz="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" />
         <inertia ixx="0.003328" ixy="0.0" ixz="0.0" 
                  iyy="0.003328" iyz="0.0" 
                  izz="0.006656" />
       </inertial>
     </link>
 
-    <stack_3d_sensor_pole parent="${parent}" number="0" x_loc="0.0381" y_loc="0.1505" z_loc="0.1735" />
+    <!-- <stack_3d_sensor_pole parent="${parent}" number="0" x_loc="0.0381" y_loc="0.1505" z_loc="0.1735" />
     <stack_3d_sensor_pole parent="${parent}" number="1" x_loc="0.0381" y_loc="-0.1505" z_loc="0.1735" />
     <stack_3d_sensor_pole parent="${parent}" number="2" x_loc="-0.0381" y_loc="0.1505" z_loc="0.1735" />
-    <stack_3d_sensor_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.1735" />
+    <stack_3d_sensor_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.1735" /> -->
 
-    <!-- <xacro:stack_middle_pole parent="${parent}" number="4" x_loc="0.0381" y_loc="0.1505" z_loc="0.13385" />
-    <xacro:stack_middle_pole parent="${parent}" number="5" x_loc="0.0381" y_loc="-0.1505" z_loc="0.13385" />
-    <xacro:stack_middle_pole parent="${parent}" number="6" x_loc="-0.0381" y_loc="0.1505" z_loc="0.13385" />
-    <xacro:stack_middle_pole parent="${parent}" number="7" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.13385" /> -->
+    <xacro:stack_middle_pole parent="${parent}" number="4" x_loc= "0.0381" y_loc= "0.1505" z_loc="0.13385" />
+    <xacro:stack_middle_pole parent="${parent}" number="5" x_loc= "0.0381" y_loc="-0.1505" z_loc="0.13385" />
+    <xacro:stack_middle_pole parent="${parent}" number="6" x_loc="-0.0381" y_loc= "0.1505" z_loc="0.13385" />
+    <xacro:stack_middle_pole parent="${parent}" number="7" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.13385" />
     
     <joint name="plate_middle_joint" type="fixed">
-      <origin xyz="-0.01364 0.0 0.2646" rpy="0 0 0" />
+      <origin xyz="-0.01364 0.0 0.2646" rpy="0.0 0.0 0.0" />
       <parent link="${parent}" />
       <child link="plate_middle_link" />
     </joint>
 
     <link name="plate_middle_link">
       <visual>
-        <origin xyz="0 0.0 0" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://turtlebot2_description/meshes/stacks/hexagons/plate_top.dae" />
+          <mesh filename="file://$(find turtlebot2_description)/meshes/stacks/hexagons/plate_top.dae" />
         </geometry>
       </visual>
       <collision>
         <origin xyz="0.01364 0.0 0.0" rpy="0 0 0" />
         <geometry>
-          <cylinder length="0.006" radius="0.170" />
+          <!-- <cylinder length="0.006" radius="0.170" /> -->
+          <mesh filename="file://$(find turtlebot2_description)/meshes/stacks/hexagons/plate_middle.dae" />
         </geometry>
       </collision>
       <inertial>
         <mass value="0.520" />
-        <origin xyz="0 0 0" />
+        <origin xyz="0.0 0.0 0.0" />
         <inertia ixx="0.003328" ixy="0.0" ixz="0.0" 
                  iyy="0.003328" iyz="0.0" 
                  izz="0.006656" />
       </inertial>
     </link>
+    <xacro:stack_top_pole parent="${parent}" number="0" x_loc= "0.0381" y_loc= "0.1505" z_loc="0.23035" />
+    <xacro:stack_top_pole parent="${parent}" number="1" x_loc= "0.0381" y_loc="-0.1505" z_loc="0.23035" />
+    <xacro:stack_top_pole parent="${parent}" number="2" x_loc="-0.0381" y_loc= "0.1505" z_loc="0.23035" />
+    <xacro:stack_top_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.23035" />
 
   </xacro:macro>
 </robot>

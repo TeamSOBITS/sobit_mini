@@ -51,7 +51,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 0.0" />
         <geometry>
-          <mesh filename="file://$(find sobit_mini_description)/meshes/l_hand/Ll_hand_finger_l_joint.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/l_hand/l_hand_finger_l_joint.stl" />
         </geometry>
         <material name="black" />
       </visual>

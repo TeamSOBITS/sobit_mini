@@ -15,7 +15,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.034" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_small_gear_motor.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/sobit_mini_small_gear_motor.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -48,7 +48,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_small_gear.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/sobit_mini_small_gear.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -81,9 +81,9 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/big_gear_base.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/big_gear_base.stl" />
         </geometry>
-        <material name="silver" />
+        <material name="grey" />
       </visual>
 
       <collision>
@@ -116,7 +116,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_big_gear.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/sobit_mini_big_gear.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -157,7 +157,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0 0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_center_back.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/sobit_mini_center_back.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -189,7 +189,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/spine.stl" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/spine.stl" />
         </geometry>
         <material name="black" />
       </visual>
@@ -221,7 +221,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
-          <mesh filename="file://$(sobit_mini_description)/meshes/body/sobit_mini_body_cover.dae" />
+          <mesh filename="file://$(find sobit_mini_description)/meshes/body/sobit_mini_body_cover.dae" />
         </geometry>
       </visual>
 

@@ -66,7 +66,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([
-                    FindPackageShare('sobit_mini_bringup'),
+                    get_package_share_directory('sobit_mini_bringup'),
                     'launch',
                     'robot.launch.py'
                 ])
@@ -85,20 +85,20 @@ def generate_launch_description():
             output="both",
             parameters=[kobuki_params]
         ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('azure_kinect_ros_driver'),
-                    'launch',
-                    'driver.launch.py'
-                ])
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         PathJoinSubstitution([
+        #             FindPackageShare('azure_kinect_ros_driver'),
+        #             'launch',
+        #             'driver.launch.py'
+        #         ])
 
-            ]),
-        ),
+        #     ]),
+        # ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([
-                    FindPackageShare('urg_node'),
+                    get_package_share_directory('urg_node'),
                     'launch',
                     'urg.launch.py'
                 ])

@@ -35,7 +35,8 @@
       <parent link="${prefix}_pan_link" />
       <child link="${prefix}_tilt_link" />
       <origin xyz="0.0 0.0 0.017" rpy="0.0 0.0 0.0" />
-      <axis xyz="0 -1 0" />
+      <!-- <axis xyz="0 -1 0" /> -->
+      <axis xyz="0 1 0" />
       <limit effort="30" lower="-1" upper="1" velocity="${M_PI/2.0}" />
     </joint>
 
@@ -73,9 +74,9 @@
 
     <gazebo reference="${prefix}_pan_link">
       <material>Gazebo/Black</material>
-    </gazebo>
+    </gazebo> -->
 
-    <xacro:head_transmission prefix="${prefix}"/> -->
+    <xacro:head_transmission prefix="${prefix}"/>
 
   </xacro:macro>
 </robot>
