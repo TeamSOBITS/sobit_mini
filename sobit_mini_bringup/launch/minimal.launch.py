@@ -32,11 +32,6 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 from launch_ros.actions import Node
-# import xacro
-# import yaml
-# import launch_ros
-# from launch.actions import IncludeLaunchDescription,SetLaunchConfiguration,DeclareLaunchArgument,LogInfo
-
 
 
 
@@ -55,7 +50,6 @@ def generate_launch_description():
         kobuki_params = yaml.safe_load(f)["kobuki_ros_node"]["ros__parameters"]
 
     return LaunchDescription([
-        # robot_state_publisher_node,
         Node(
             package="rviz2",
             executable="rviz2",
@@ -65,10 +59,10 @@ def generate_launch_description():
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
+                PathJoinSubstitution([os.path.join(
                     get_package_share_directory('sobit_mini_bringup'),
                     'launch',
-                    'robot.launch.py'
+                    'robot.launch.py')
                 ])
 
             ]),
@@ -85,16 +79,16 @@ def generate_launch_description():
             output="both",
             parameters=[kobuki_params]
         ),
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource([
-        #         PathJoinSubstitution([
-        #             FindPackageShare('azure_kinect_ros_driver'),
-        #             'launch',
-        #             'driver.launch.py'
-        #         ])
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([os.path.join(
+                    get_package_share_directory('sobit_mini_bringup'),
+                    'launch',
+                    'realsense_bringup.launch.py')
+                ])
 
-        #     ]),
-        # ),
+            ]),
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([

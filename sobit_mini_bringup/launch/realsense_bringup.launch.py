@@ -21,7 +21,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 
 
-configurable_parameters = [{'name': 'camera_name',                  'default': 'sobit_mini/head_camera_base', 'description': 'camera unique name'},## sobit_mini/head_camera_base_link
+configurable_parameters = [{'name': 'camera_name',                  'default': 'head_camera_base', 'description': 'camera unique name'},## sobit_mini/head_camera_base_link
                            {'name': 'camera_namespace',             'default': 'sobit_mini', 'description': 'namespace for camera'},
                            {'name': 'serial_no',                    'default': "''", 'description': 'choose device by serial number'},
                            {'name': 'usb_port_id',                  'default': "''", 'description': 'choose device by usb port id'},

@@ -368,7 +368,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -389,7 +389,7 @@ Visualization Manager:
         Value: /sobit_mini/head_camera_base/depth/color/points
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -436,25 +436,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.2571613788604736
+      Distance: 4.090522766113281
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.18440943956375122
-        Y: -0.22243747115135193
-        Z: 0.32661086320877075
+        X: 0.6384527683258057
+        Y: -0.21220740675926208
+        Z: 0.806485116481781
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5503984093666077
+      Pitch: 0.48539838194847107
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.1703977584838867
+      Yaw: 2.1403980255126953
     Saved: ~
 Window Geometry:
   Displays:
