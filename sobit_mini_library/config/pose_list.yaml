@@ -1,41 +1,35 @@
-sobit_mini_pose:
-    - { 
-        pose_name: "initial_pose",
-        arm_shoulder_yaw_joint: 0.00,
-        arm_shoulder_pitch_joint: 1.5708,
-        arm_elbow_pitch_joint: -1.40,
-        arm_wrist_pitch_joint: -0.17,
-        hand_joint: -1.00,
-        head_yaw: 0.00,
-        head_pitch: 0.00
-    }
-    - { 
-        pose_name: "pan_pose",
-        arm_shoulder_yaw_joint: 0.00,
-        arm_shoulder_pitch_joint: 1.5708,
-        arm_elbow_pitch_joint: -1.40,
-        arm_wrist_pitch_joint: -0.17,
-        hand_joint: -1.00,
-        head_yaw: -0.00,
-        head_pitch: -1.00
-    }
-    - { 
-        pose_name: "detecting_pose",
-        arm_shoulder_yaw_joint: 0.00,
-        arm_shoulder_pitch_joint: 0.00,
-        arm_elbow_pitch_joint: 0.00,
-        arm_wrist_pitch_joint: 0.00,
-        hand_joint: 0.00,
-        head_yaw: 0.00,
-        head_pitch: -0.53
-    }
-    - { 
-        pose_name: "following_pose",
-        arm_shoulder_yaw_joint: -1.5708,
-        arm_shoulder_pitch_joint: 1.5708,
-        arm_elbow_pitch_joint: -1.40,
-        arm_wrist_pitch_joint: -0.17,
-        hand_joint: -1.00,
-        head_yaw: 0.00,
-        head_pitch: 0.00
-    }
+/**:
+  ros__parameters:
+    poses:
+      - initial_pose
+      - detecting_pose
+
+    initial_pose:
+      r_arm_shoulder_roll :  0.0
+      r_arm_shoulder_pan  :  1.25
+      r_arm_elbow_tilt    :  0.0
+      r_arm_wrist_tilt    :  0.0
+      r_hand              :  0.0
+      l_arm_shoulder_roll :  0.0
+      l_arm_shoulder_pan  : -1.25
+      l_arm_elbow_tilt    :  0.0
+      l_arm_wrist_tilt    :  0.0
+      l_hand              :  0.0
+      body_roll           :  0.0
+      head_camera_pan     :  0.0
+      head_camera_tilt    :  0.0
+
+    detecting_pose:
+      r_arm_shoulder_roll : -0.78
+      r_arm_shoulder_pan  :  1.25
+      r_arm_elbow_tilt    :  1.57
+      r_arm_wrist_tilt    :  1.57
+      r_hand              :  0.0
+      l_arm_shoulder_roll :  0.78
+      l_arm_shoulder_pan  : -1.25
+      l_arm_elbow_tilt    : -1.57
+      l_arm_wrist_tilt    : -1.57
+      l_hand              :  0.0
+      body_roll           :  0.0
+      head_camera_pan     :  0.0
+      head_camera_tilt    :  0.4 # -0.4
