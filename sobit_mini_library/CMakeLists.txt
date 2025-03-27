@@ -26,16 +26,16 @@ include_directories(include)
 # Library
 add_library(${PROJECT_NAME} SHARED
   src/sobit_mini_joint_action_server.cpp
-  # src/sobit_mini_wheel_action_server.cpp
+  src/sobit_mini_wheel_action_server.cpp
 )
 
 
 rclcpp_components_register_node(${PROJECT_NAME}
   PLUGIN "sobit_mini::JointActionServer"
   EXECUTABLE joint_action_server)
-# rclcpp_components_register_node(${PROJECT_NAME}
-#   PLUGIN "sobit_mini::WheelActionServer"
-#   EXECUTABLE wheel_action_server)
+rclcpp_components_register_node(${PROJECT_NAME}
+  PLUGIN "sobit_mini::WheelActionServer"
+  EXECUTABLE wheel_action_server)
 
 
 ament_target_dependencies(${PROJECT_NAME}

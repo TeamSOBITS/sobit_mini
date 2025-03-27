@@ -38,6 +38,7 @@ public:
 private:
   nav_msgs::msg::Odometry init_odom_;
   nav_msgs::msg::Odometry curt_odom_;
+  geometry_msgs::msg::Twist zero_vel_;
 
   rclcpp_action::Server<MoveWheelLinear>::SharedPtr action_server_move_wheel_linear_;
   rclcpp_action::Server<MoveWheelRotate>::SharedPtr action_server_move_wheel_rotate_;

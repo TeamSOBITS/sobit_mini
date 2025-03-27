@@ -24,16 +24,16 @@ def generate_launch_description():
         output="screen",
     )
 
-    # wheel_action_server_node = Node(
-    #     package="sobit_mini_library",
-    #     executable="wheel_action_server",
-    #     name="wheel_action_server",
-    #     namespace=robot_name if robot_id == 0 else f"{robot_name}_{robot_id}",
-    #     output="screen",
-    # )
+    wheel_action_server_node = Node(
+        package="sobit_mini_library",
+        executable="wheel_action_server",
+        name="wheel_action_server",
+        namespace=robot_name if robot_id == 0 else f"{robot_name}_{robot_id}",
+        output="screen",
+    )
 
 
     return LaunchDescription([
         joint_action_server_node,
-        # wheel_action_server_node,
+        wheel_action_server_node,
     ])

@@ -38,6 +38,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     robot_name = "sobit_mini"
     bringup_pkg = robot_name + "_bringup"
+    library_pkg = robot_name + "_library"
 
     rviz_config = os.path.join(get_package_share_directory(
         bringup_pkg), "rviz", "real.rviz")
@@ -60,7 +61,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([os.path.join(
-                    get_package_share_directory('sobit_mini_bringup'),
+                    get_package_share_directory(bringup_pkg),
                     'launch',
                     'robot.launch.py')
                 ])
@@ -82,7 +83,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([os.path.join(
-                    get_package_share_directory('sobit_mini_bringup'),
+                    get_package_share_directory(bringup_pkg),
                     'launch',
                     'realsense_bringup.launch.py')
                 ])
@@ -100,5 +101,15 @@ def generate_launch_description():
             launch_arguments={
                 "config_file" : urg_config
             }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([os.path.join(
+                    get_package_share_directory(library_pkg),
+                    'launch',
+                    'library_server.launch.py')
+                ])
+
+            ]),
         )
     ])

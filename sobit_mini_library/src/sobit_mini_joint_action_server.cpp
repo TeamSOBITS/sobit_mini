@@ -469,7 +469,7 @@ void JointActionServer::serve_move_hand_to_coord(
 
   // Inverse kinematics to get the target joint rad
   // 座標を元に逆運動学でbody_roll,arm_shoulder_roll,arm_shoulder_pan,arm_elbow_tilt,arm_wrist_tiltの5つのなすべき角度をvectorで算出
-  std::vector<std::string> target_joint_names = {"body_roll","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
+  std::vector<std::string> target_joint_names = {"body_roll_joint","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
   for (size_t i=1; i<target_joint_names.size(); i++) target_joint_names[i] = (is_right) ? ("r" + target_joint_names[i]) : ("l" + target_joint_names[i]);
   std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, target_yaw);
 
@@ -599,7 +599,7 @@ void JointActionServer::serve_move_hand_to_tf(
 
   // Inverse kinematics to get the target joint rad
   // 座標を元に逆運動学でbody_roll,arm_shoulder_roll,arm_shoulder_pan,arm_elbow_tilt,arm_wrist_tiltの5つのなすべき角度をvectorで算出
-  std::vector<std::string> target_joint_names = {"body_roll","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
+  std::vector<std::string> target_joint_names = {"body_roll_joint","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
   for (size_t i=1; i<target_joint_names.size(); i++) target_joint_names[i] = (is_right) ? ("r" + target_joint_names[i]) : ("l" + target_joint_names[i]);
   std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, target_yaw);
 
@@ -815,22 +815,18 @@ std::vector<double> JointActionServer::inverse_kinematics(
 
   // ほぼ肩くらいの高さならば・・・(肩より下)
   if ((-LengthShoulderElbow*std::cos(M_PI/4.) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < 0.)) {
-    RCLCPP_INFO(this->get_logger(), "near SHOULDER lower");
     target_joint_rad[1] = M_PI / 4.;
   }
   // ほぼ肘くらいの高さならば・・・(肩より下で肘より上)
   else if ((-(LengthShoulderElbow + LengthElbowWrist*std::cos(M_PI/4.)) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < -LengthShoulderElbow*std::cos(M_PI/4.))) {
-    RCLCPP_INFO(this->get_logger(), "near ELBOW");
     target_joint_rad[1] = 0.;
   }
   // ほぼ肩くらいの高さならば・・・(肩より上)
   else if ((0 <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < LengthElbowWrist*std::cos(M_PI/4.))) {
-    RCLCPP_INFO(this->get_logger(), "near SHOULDER upper");
     target_joint_rad[1] = M_PI / 2.;
   }
   // どれにも該当しないならば・・・
   else {
-    RCLCPP_INFO(this->get_logger(), "OTHER");
     target_joint_rad[1] = M_PI - std::atan2(std::sqrt(std::pow(LengthShoulderElbow + LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z, 2)), goal_coord_rotate.transform.translation.z);
   }
 
@@ -838,7 +834,7 @@ std::vector<double> JointActionServer::inverse_kinematics(
   double e_z = -LengthShoulderElbow*std::cos(target_joint_rad[1]);
   double w_x =  std::sqrt(std::pow(LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z - e_z, 2)) + e_x;
   double w_z =  goal_coord_rotate.transform.translation.z;
-  RCLCPP_INFO(this->get_logger(), "w_x,w_z,e_x,e_z,target_joint_rad[1]=%.2f, %.2f, %.2f, %.2f, %.2f",w_x,w_z,e_x,e_z,target_joint_rad[1]);
+
   target_joint_rad[3] = M_PI - std::atan2(w_x - e_x, w_z - e_z) - target_joint_rad[1];
   target_joint_rad[4] = M_PI/2. - (target_joint_rad[1] + target_joint_rad[3]);
 
