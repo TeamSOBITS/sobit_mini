@@ -54,7 +54,7 @@
         <inertia ixx="0.019995" ixy="0.0" ixz="0.0" iyy="0.019995" iyz="0.0" izz="0.03675" />
       </inertial>
     </link>
-    <joint name="wheel_l_joint" type="continuous">
+    <joint name="wheel_l_joint" type="fixed">
       <parent link="base_link" />
       <child link="wheel_l_link" />
       <origin xyz="0.00 ${0.23/2} 0.0250" rpy="${-M_PI/2} 0 0" />
@@ -81,7 +81,7 @@
                  izz="0.001" />
       </inertial>
     </link>
-    <joint name="wheel_r_joint" type="continuous">
+    <joint name="wheel_r_joint" type="fixed">
       <parent link="base_link" />
       <child link="wheel_r_link" />
       <origin xyz="0.00 -${0.23/2} 0.0250" rpy="${-M_PI/2} 0 0" />
