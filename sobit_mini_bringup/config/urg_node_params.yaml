@@ -1,4 +1,4 @@
-urg_node:
+/**:
   ros__parameters:
     angle_max: 1.57
     angle_min: -1.57
