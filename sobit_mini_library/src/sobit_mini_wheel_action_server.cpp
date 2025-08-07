@@ -27,9 +27,9 @@ WheelActionServer::WheelActionServer(const rclcpp::NodeOptions & options = rclcp
 
 
   this->pub_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>(
-      "/commands/velocity", qos_profile);
+      "commands/velocity", qos_profile);
   this->sub_odom_ = this->create_subscription<nav_msgs::msg::Odometry>(
-      "/odom", qos_profile, std::bind(&WheelActionServer::odom_callback, this, std::placeholders::_1));
+      "odom", qos_profile, std::bind(&WheelActionServer::odom_callback, this, std::placeholders::_1));
 
 
   RCLCPP_INFO(this->get_logger(), "WheelActionServer has been initialized.");
