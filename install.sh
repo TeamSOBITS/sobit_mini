@@ -9,7 +9,7 @@ cd ..
 
 # Dowload required packages for SOBIT MINI
 ros_packages=(
-    "sobits_msgs" \
+    "sobits_interfaces" \
     "dynamixel_hardware" \
     "realsense_ros" \
     "urg_node" \
