@@ -10,5 +10,5 @@ kobuki_ros_node:
     base_frame: base_footprint
     publish_tf: true
     use_imu_heading: true
-    wheel_left_joint_name: wheel_left_joint
-    wheel_right_joint_name: wheel_right_joint
+    wheel_left_joint_name: wheel_l_joint
+    wheel_right_joint_name: wheel_r_joint

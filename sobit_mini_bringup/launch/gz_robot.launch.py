@@ -13,7 +13,7 @@ from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration
 
-from launch_ros.actions import Node
+# from launch_ros.actions import Node
 
 import xacro
 
@@ -64,7 +64,7 @@ def launch_gz(context, *args, **kwargs):
         cmd=['ros2', 'control', 'load_controller',
              '--set-state', 'active',
              '--controller-manager', robot_name+'/controller_manager',
-             '--use-sim-time',
+            #  '--use-sim-time',
              'joint_state_broadcaster'
         ],
         output='screen'
@@ -74,7 +74,7 @@ def launch_gz(context, *args, **kwargs):
         cmd=['ros2', 'control', 'load_controller',
              '--set-state', 'active',
              '--controller-manager', robot_name+'/controller_manager',
-             '--use-sim-time',
+            #  '--use-sim-time',
              'joint_trajectory_controller'
         ],
         output='screen'
@@ -84,7 +84,7 @@ def launch_gz(context, *args, **kwargs):
         cmd=['ros2', 'control', 'load_controller',
              '--set-state', 'configure',
              '--controller-manager', robot_name+'/controller_manager',
-             '--use-sim-time',
+            #  '--use-sim-time',
              'velocity_controller'
         ],
         output='screen'
@@ -94,7 +94,7 @@ def launch_gz(context, *args, **kwargs):
         cmd=['ros2', 'control', 'load_controller',
              '--set-state', 'active',
              '--controller-manager', robot_name+'/controller_manager',
-             '--use-sim-time',
+            #  '--use-sim-time',
              'diff_controller'
         ],
         output='screen'
@@ -133,7 +133,7 @@ def launch_gz(context, *args, **kwargs):
         namespace=robot_name,
         arguments=[
                     "/" + robot_name + "/joint_states" + "@sensor_msgs/msg/JointState" + "[ignition.msgs.Model",
-                    "/model/" + robot_name + "/pose" + "@geometry_msgs/msg/Pose" + "[ignition.msgs.Pose",
+                    # "/model/" + robot_name + "/pose" + "@geometry_msgs/msg/Pose" + "[ignition.msgs.Pose",
                     # "/" + robot_name + "/base_front_camera/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
                     # "/" + robot_name + "/base_front_camera/color" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                     # "/" + robot_name + "/base_front_camera/depth" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
@@ -148,10 +148,10 @@ def launch_gz(context, *args, **kwargs):
                     # "/" + robot_name + "/hand_camera/color" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                     # "/" + robot_name + "/hand_camera/depth" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                     # "/" + robot_name + "/hand_camera/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
-                    "/" + robot_name + "/lidar/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
+                    "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
 
-                    "/" + robot_name + "/lidar/scan/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
-                    "/" + robot_name + "/imu" + "@sensor_msgs/msg/Imu" + "[ignition.msgs.IMU",
+                    # "/" + robot_name + "/scan/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
+                    # "/" + robot_name + "/imu" + "@sensor_msgs/msg/Imu" + "[ignition.msgs.IMU",
                    ],
 
         output='screen'
@@ -176,22 +176,8 @@ def launch_gz(context, *args, **kwargs):
     #                '--roll', '1.57'],
     #     output='screen',
     # )
-    controller_pkg = robot_name + "_control"
-    controller_config = os.path.join(
-        get_package_share_directory(
-            controller_pkg), "config", "controllers_gz.yaml"
-    )
 
-
-    ros2_control_node = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        parameters=[
-            {"robot_description": robot_description_config.toxml()}, controller_config],
-        output="screen",
-    )
     return [
-        ros2_control_node,
         gz_spawn_entity_node,
         gz_bridge_node,
         # gz_tf_head_cam_node,

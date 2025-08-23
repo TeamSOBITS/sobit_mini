@@ -16,7 +16,7 @@ def generate_launch_description():
         executable='parameter_bridge',
         arguments=[
                     "/clock" + "@rosgraph_msgs/msg/Clock" + "[ignition.msgs.Clock",
-                    "/tf" + "@tf2_msgs/msg/TFMessage" + "[ignition.msgs.TFMessage",
+                    "/tf" + "@tf2_msgs/msg/TFMessage" + "[ignition.msgs.Pose_V",
                    ],
         output='screen'
     )
@@ -35,9 +35,9 @@ def generate_launch_description():
 
     ##### SOBIT LIGHT参照しにいっているので今後注意！！ #####
     world_file = os.path.join(get_package_share_directory(
-        'sobit_light_description'), 
+        'sobits_gazebo_worlds'), 
         'worlds',
-        'empty_w_physics.sdf'
+        'rcjo2025_arena.world.xacro'
     )
     ##### SOBIT LIGHT参照しにいっているので今後注意！！ #####
 
@@ -67,8 +67,8 @@ def generate_launch_description():
             ]),
             launch_arguments={
                 'robot_name': 'sobit_mini',
-                'robot_coords_x': '0', # x 
-                'robot_coords_y': '0', # y
+                'robot_coords_x': '-5.5', # x 
+                'robot_coords_y': '1.5', # y
                 'robot_coords_Y': '0', # yaw
                 'enable_gz_lidar' : 'True',
                 'enable_gz_imu' : 'True',

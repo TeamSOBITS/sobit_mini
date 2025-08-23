@@ -3,31 +3,5 @@
   <xacro:macro name="head_transmission" params="prefix">
     <xacro:position_joint_transmission joint="${prefix}_camera_pan_joint" reduction="1" />
     <xacro:position_joint_transmission joint="${prefix}_camera_tilt_joint" reduction="1" />
-
-    <!--add transmission--> <!-- XXXXXXXXXX -->
-    <!-- <transmission name="${prefix}_camera_pan_trans">
-      <provideFeedback>true</provideFeedback>
-      <implicitSpringDamper>0</implicitSpringDamper>
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}_camera_pan_joint">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="${prefix}_camera_pan_motor">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-
-    <transmission name="${prefix}_camera_tilt_trans">
-      <provideFeedback>true</provideFeedback>
-      <implicitSpringDamper>0</implicitSpringDamper>
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}_camera_tilt_joint">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="${prefix}_camera_tilt_motor">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </actuator>
-    </transmission> -->
   </xacro:macro>
 </robot>
