@@ -48,7 +48,7 @@
       - head_camera_pan_joint
       - head_camera_tilt_joint
 
-
+    allow_partial_joints_goal: true
     command_interfaces:
       - position
 
