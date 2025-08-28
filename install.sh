@@ -5,65 +5,26 @@ echo "╔══╣ Setup: SOBIT MINI (STARTING) ╠══╗"
 DIR=$(pwd)
 cd ..
 
-echo "Cloning: sobits_interfaces"
-git clone -b "$ROS_DISTRO-devel" "https://github.com/TeamSOBITS/sobits_interfaces.git"
+ros_packages=(
+    "sobits_interfaces" \
+    "dynamixel_hardware" \
+    "realsense_ros" \
+    "urg_node" \
+    "kobuki_ros" \
+    "turtlebot2_description"
+)
 
-if [[ -f "sobits_interfaces/install.sh" ]]; then
-    echo "Running install.sh in sobits_interfaces."
-    cd "sobits_interfaces" || exit
-    bash install.sh
-    cd ..
-fi
+for ((i = 0; i < ${#ros_packages[@]}; i++)) {
+    echo "Clonning: ${ros_packages[i]}"
+    git clone -b $ROS_DISTRO-devel https://github.com/TeamSOBITS/${ros_packages[i]}.git
 
-echo "Cloning: dynamixel_hardware"
-git clone -b feature/multi_control "https://github.com/TeamSOBITS/dynamixel_hardware.git"
-
-if [[ -f "dynamixel_hardware/install.sh" ]]; then
-    echo "Running install.sh in dynamixel_hardware."
-    cd "dynamixel_hardware" || exit
-    bash install.sh
-    cd ..
-fi
-
-echo "Cloning: realsense_ros"
-git clone -b "$ROS_DISTRO-devel" "https://github.com/TeamSOBITS/realsense_ros.git"
-
-if [[ -f "realsense_ros/install.sh" ]]; then
-    echo "Running install.sh in realsense_ros."
-    cd "realsense_ros" || exit
-    bash install.sh
-    cd ..
-fi
-
-echo "Cloning: urg_node"
-git clone -b "$ROS_DISTRO-devel" "https://github.com/TeamSOBITS/urg_node.git"
-
-if [[ -f "urg_node/install.sh" ]]; then
-    echo "Running install.sh in urg_node."
-    cd "urg_node" || exit
-    bash install.sh
-    cd ..
-fi
-
-echo "Cloning: kobuki_ros"
-git clone -b "$ROS_DISTRO-devel" "https://github.com/TeamSOBITS/kobuki_ros.git"
-
-if [[ -f "kobuki_ros/install.sh" ]]; then
-    echo "Running install.sh in kobuki_ros."
-    cd "kobuki_ros" || exit
-    bash install.sh
-    cd ..
-fi
-
-echo "Cloning: turtlebot2_description"
-git clone -b "$ROS_DISTRO-devel" "https://github.com/TeamSOBITS/turtlebot2_description.git"
-
-if [[ -f "turtlebot2_description/install.sh" ]]; then
-    echo "Running install.sh in turtlebot2_description."
-    cd "turtlebot2_description" || exit
-    bash install.sh
-    cd ..
-fi
+    if [ -f ${ros_packages[i]}/install.sh ]; then
+        echo "Running install.sh in ${ros_packages[i]}."
+        cd ${ros_packages[i]}
+        bash install.sh
+        cd ..
+    fi
+}
 
 cd "$DIR" || exit
 
