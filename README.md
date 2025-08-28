@@ -11,43 +11,43 @@
 # SOBIT MINI
 
 <details>
-   <summary>目次</summary>
-   <ol>
+  <summary>目次</summary>
+  <ol>
+    <li><a href="#概要">概要</a></li>
     <li>
-      <a href="#概要">概要</a>
-    </li>
-    <li>
-      <a href="#環境構築">環境構築</a>
+      <a href="#セットアップ">セットアップ</a>
       <ul>
         <li><a href="#環境条件">環境条件</a></li>
         <li><a href="#インストール方法">インストール方法</a></li>
       </ul>
     </li>
     <li>
-    <a href="#実行操作方法">実行・操作方法</a>
+      <a href="#操作方法">操作方法</a>
       <ul>
-        <li><a href="#Rviz上の可視化">Rviz上の可視化</a></li>
+        <li><a href="#rviz上の可視化">Rviz上の可視化</a></li>
       </ul>
     </li>
     <li>
-    <a href="#ソフトウェア">ソフトウェア</a>
+      <a href="#ソフトウェア">ソフトウェア</a>
       <ul>
-        <li><a href="#ジョイントコントローラ">ジョイントコントローラ</a></li>
-        <li><a href="#ホイールコントローラ">ホイールコントローラ</a></li>
+        <li><a href="#ジョイント関連のアクションサーバー">ジョイント関連のアクションサーバー</a></li>
+        <li><a href="#リニア関連のアクションサーバー">リニア関連のアクションサーバー</a></li>
+        <li><a href="#ポーズの設定方法">ポーズの設定方法</a></li>
       </ul>
     </li>
     <li>
-    <a href="#ハードウェア">ハードウェア</a>
+      <a href="#ハードウェア">ハードウェア</a>
       <ul>
         <li><a href="#パーツのダウンロード方法">パーツのダウンロード方法</a></li>
         <li><a href="#電子回路図">電子回路図</a></li>
         <li><a href="#ロボットの組み立て">ロボットの組み立て</a></li>
         <li><a href="#ロボットの特徴">ロボットの特徴</a></li>
-        <li><a href="#部品リストBOM">部品リスト（BOM）</a></li>
+        <li><a href="#部品リストbom">部品リスト（BOM）</a></li>
       </ul>
+    </li>
     <li><a href="#マイルストーン">マイルストーン</a></li>
     <li><a href="#参考文献">参考文献</a></li>
-   </ol>
+  </ol>
 </details>
 
 ## 概要
@@ -99,7 +99,7 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
     source ~/colcon_ws/install/setup.sh
     ```
 
-## 実行・操作方法
+## 操作方法
 
 1. [minimal.launch](sobit_mini_bringup/launch/minimal.launch.py)というlaunchファイルを起動します．
    ```sh
@@ -225,10 +225,6 @@ SOBIT MINIはオープンソースハードウェアとして [Onshape](https://
 ### パーツのダウンロード方法
 
 1. Onshapeにアクセスしましょう．
-
-> [!NOTE]
-> ファイルをダウンロードするために，`OnShape`のアカウントを作成する必要がありません．ただし，本ドキュメント全体をコピーする場合，アカウントの作成を推奨します．
-
 2. `Instance`の中にパーツを右クリックで選択します．
 3. 一覧が表示され，`Export`ボタンを押してください．
 4. 表示されたウィンドウの中に，`Format`という項目があります．`STEP`を選択してください．
