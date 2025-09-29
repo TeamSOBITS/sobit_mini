@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot name="body" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find sobit_mini_description)/urdf/body/body.transmission.xacro" />  <!-- XXXXXXXXXX -->
+  <xacro:include filename="$(find sobit_mini_description)/urdf/body/body.transmission.xacro" />
 
   <xacro:macro name="body" params="prefix parent">
 
@@ -26,12 +26,12 @@
           <box size="0.0285 0.0465 0.034"/>
         </geometry>
       </collision>
-      
+
       <inertial>
         <origin xyz="0.0125 0.0 0.034" rpy="0.0 0.0 ${M_PI/2.0}" />
         <mass value="0.09065062" />
         <inertia ixx="${1/12*0.09065062*(0.034**2 + 0.0465**2)}" ixy="0.0" ixz="0.0"
-                 iyy="${1/12*0.09065062*(0.0285**2 + 0.034**2)}" iyz="0.0" 
+                 iyy="${1/12*0.09065062*(0.0285**2 + 0.034**2)}" iyz="0.0"
                  izz="${1/12*0.09065062*(0.0285**2 + 0.0465**2)}" />
       </inertial>
     </link>
@@ -59,12 +59,12 @@
           <cylinder length="0.01" radius="0.021" />
         </geometry>
       </collision>
-      
+
       <inertial>
         <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2.0} 0.0 ${M_PI/2.0}" />
         <mass value="0.01200705" />
         <inertia ixx="${1/12*0.01200705*(3*(0.02399**2 + 0.0045**2) + 0.01**2)}" ixy="0.0" ixz="0.0"
-                 iyy="${1/12*0.01200705*(3*(0.02399**2 + 0.0045**2) + 0.01**2)}" iyz="0.0" 
+                 iyy="${1/12*0.01200705*(3*(0.02399**2 + 0.0045**2) + 0.01**2)}" iyz="0.0"
                  izz="${1/2*0.01200705*(0.02399**2 + 0.0045**2)}" />
       </inertial>
     </link>
@@ -96,8 +96,8 @@
       <inertial>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <mass value="1.85710709" />
-        <inertia ixx="${1/12*1.85710709*(0.013**2 + 0.15**2)}" ixy="0.0" ixz="0.0" 
-                 iyy="${1/12*1.85710709*(0.15**2 + 0.013**2)}" iyz="0.0" 
+        <inertia ixx="${1/12*1.85710709*(0.013**2 + 0.15**2)}" ixy="0.0" ixz="0.0"
+                 iyy="${1/12*1.85710709*(0.15**2 + 0.013**2)}" iyz="0.0"
                  izz="${1/12*1.85710709*(0.15**2 + 0.15**2)}" />
       </inertial>
     </link>
@@ -131,8 +131,8 @@
       <inertial>
         <origin xyz="0.0 0.0 -0.02" rpy="0.0 0.0 0.0" />
         <mass value="0.37382712" />
-        <inertia ixx="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" ixy="0.0" ixz="0.0" 
-                 iyy="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" iyz="0.0" 
+        <inertia ixx="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" ixy="0.0" ixz="0.0"
+                 iyy="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" iyz="0.0"
                  izz="${1/2*(0.118**2 + 0.104**2)}" />
       </inertial>
     </link>
@@ -173,7 +173,7 @@
         <origin xyz="0.0 0.0 0.0" rpy="0 0 ${M_PI/2.0}" />
         <mass value="0.42402038" />
         <inertia ixx="${3/5*0.42402038*0.206**2 + 3/20*0.42402038*0.110**2}" ixy="0.0" ixz="0.0"
-                 iyy="${3/5*0.42402038*0.206**2 + 3/20*0.42402038*0.110**2}" iyz="0.0" 
+                 iyy="${3/5*0.42402038*0.206**2 + 3/20*0.42402038*0.110**2}" iyz="0.0"
                  izz="${3/10*0.42402038*0.110**2}" />
       </inertial>
     </link>
@@ -205,19 +205,19 @@
         <origin xyz="0.0 0.0 0.258" rpy="0.0 0.0 ${M_PI/2.0}" />
         <mass value="0.49416354" />
         <inertia ixx="${1/12*0.49416354*(0.02**2 + 0.516**2)}" ixy="0.0" ixz="0.0"
-                 iyy="${1/12*0.49416354*(0.162**2 + 0.02**2)}" iyz="0.0" 
+                 iyy="${1/12*0.49416354*(0.162**2 + 0.02**2)}" iyz="0.0"
                  izz="${1/12*0.49416354*(0.162**2 + 0.516**2)}" />
       </inertial>
     </link>
 
-    <joint name="${prefix}_sobit_mini_cover" type="fixed">
+    <joint name="${prefix}_cover_joint" type="fixed">
       <parent link="${prefix}_roll_link" />
-      <child link="${prefix}_sobit_mini_cover" />
+      <child link="${prefix}_cover_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
     </joint>
 
-    <link name="${prefix}_sobit_mini_cover">
+    <link name="${prefix}_cover_link">
       <visual>
         <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
         <geometry>
@@ -228,43 +228,11 @@
       <inertial>
         <origin xyz="0.0 0.0 0.459" rpy="0.0 0.0 ${M_PI/2.0}" />
         <mass value="0.003" />
-        <inertia ixx="0.0" ixy="0.0" ixz="0.0" 
-                 iyy="0.0" iyz="0.0" 
+        <inertia ixx="0.0" ixy="0.0" ixz="0.0"
+                 iyy="0.0" iyz="0.0"
                  izz="0.0" />
       </inertial>
     </link>
-
-    <!--plug-in to distribute joint condition data-->
-    <gazebo>
-      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">  <!-- XXXXXXXXXX -->
-        <jointName>${prefix}_roll_joint</jointName>
-      </plugin>
-    </gazebo>
-
-
-    <!-- the following is the template to mimic a joint -->
-    <xacro:macro name="mimic_joint_plugin" params="name_prefix parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=1.0 robot_namespace:=''">
-      <gazebo>
-        <plugin name="${name_prefix}mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">  <!-- XXXXXXXXXX -->
-          <joint>${parent_joint}</joint>
-          <mimicJoint>${mimic_joint}</mimicJoint>
-          <xacro:if value="${has_pid}">                     <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
-            <hasPID />
-          </xacro:if>
-          <multiplier>${multiplier}</multiplier>
-          <offset>${offset}</offset>
-          <sensitiveness>${sensitiveness}</sensitiveness>   <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
-          <maxEffort>${max_effort}</maxEffort>              <!-- only taken into account if has_pid:=true [Nm] -->
-          <xacro:unless value="${robot_namespace == ''}">
-            <robotNamespace>${robot_namespace}</robotNamespace>
-          </xacro:unless>
-        </plugin>
-      </gazebo>
-    </xacro:macro>
-
-    <xacro:mimic_joint_plugin name_prefix="${prefix}_joint"
-    parent_joint="${prefix}_roll_joint" mimic_joint="${prefix}_big_gear_base_joint"
-    has_pid="false" multiplier="0.1896551724" max_effort="1.0" />
 
     <gazebo reference="${prefix}_small_gear_base_link">
       <material>Gazebo/Black</material>
@@ -284,7 +252,7 @@
     <gazebo reference="${prefix}_front_pole_link">
       <material>Gazebo/Black</material>
     </gazebo>
-    
+
     <xacro:body_transmission prefix="${prefix}"/>
   </xacro:macro>
 </robot>
