@@ -26,26 +26,52 @@ JointActionServer::JointActionServer(const rclcpp::NodeOptions & options = rclcp
       std::bind(&JointActionServer::handle_move_to_pose_goal, this, std::placeholders::_1, std::placeholders::_2),
       std::bind(&JointActionServer::handle_move_to_pose_cancel, this, std::placeholders::_1),
       std::bind(&JointActionServer::handle_move_to_pose_accepted, this, std::placeholders::_1));
+
+
+  // default grasp mode
   this->service_server_move_hand_to_coord_left_ = this->create_service<MoveHandToTargetCoord>(
       "move_hand_to_coord/left",
       [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
-        serve_move_hand_to_coord(request, response, false);  // when target hand is left, 3rd arg is 'false'
+        serve_move_hand_to_coord(request, response, false, false);  // when target hand is left, 3rd arg is 'false'
       });
   this->service_server_move_hand_to_tf_left_ = this->create_service<MoveHandToTargetTF>(
       "move_hand_to_tf/left",
       [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
-        serve_move_hand_to_tf(request, response, false);  // when target hand is left, 3rd arg is 'false'
+        serve_move_hand_to_tf(request, response, false, false);  // when target hand is left, 3rd arg is 'false'
       });
   this->service_server_move_hand_to_coord_right_ = this->create_service<MoveHandToTargetCoord>(
       "move_hand_to_coord/right",
       [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
-        serve_move_hand_to_coord(request, response, true);  // when target hand is right, 3rd arg is 'true'
+        serve_move_hand_to_coord(request, response, true, false);  // when target hand is right, 3rd arg is 'true'
       });
   this->service_server_move_hand_to_tf_right_ = this->create_service<MoveHandToTargetTF>(
       "move_hand_to_tf/right",
       [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
-        serve_move_hand_to_tf(request, response, true);  // when target hand is right, 3rd arg is 'true'
+        serve_move_hand_to_tf(request, response, true, false);  // when target hand is right, 3rd arg is 'true'
       });
+
+  // one link grasp mode
+  this->service_server_move_hand_to_coord_left_ = this->create_service<MoveHandToTargetCoord>(
+      "move_hand_to_coord/one_link/left",
+      [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
+        serve_move_hand_to_coord(request, response, false, true);  // when target hand is left, 3rd arg is 'false'
+      });
+  this->service_server_move_hand_to_tf_left_ = this->create_service<MoveHandToTargetTF>(
+      "move_hand_to_tf/one_link/left",
+      [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
+        serve_move_hand_to_tf(request, response, false, true);  // when target hand is left, 3rd arg is 'false'
+      });
+  this->service_server_move_hand_to_coord_right_ = this->create_service<MoveHandToTargetCoord>(
+      "move_hand_to_coord/one_link/right",
+      [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
+        serve_move_hand_to_coord(request, response, true, true);  // when target hand is right, 3rd arg is 'true'
+      });
+  this->service_server_move_hand_to_tf_right_ = this->create_service<MoveHandToTargetTF>(
+      "move_hand_to_tf/one_link/right",
+      [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
+        serve_move_hand_to_tf(request, response, true, true);  // when target hand is right, 3rd arg is 'true'
+      });
+
 
   this->sub_joint_state_ = this->create_subscription<sensor_msgs::msg::JointState>(
       "joint_states", qos_profile, std::bind(&JointActionServer::joint_state_callback, this, std::placeholders::_1));
@@ -54,7 +80,6 @@ JointActionServer::JointActionServer(const rclcpp::NodeOptions & options = rclcp
 
 
   //Declare the pose parameters
-
   this->declare_parameter("poses", std::vector<std::string>());
   auto pose_names = this->get_parameter("poses").as_string_array();
 
@@ -415,7 +440,7 @@ void JointActionServer::exe_move_to_pose(
 void JointActionServer::serve_move_hand_to_coord(
   const std::shared_ptr<MoveHandToTargetCoord::Request> request,
   std::shared_ptr<MoveHandToTargetCoord::Response> response,
-  bool is_right)
+  bool is_right, bool is_one_rink)
 {
 
   // Get namespace
@@ -471,7 +496,7 @@ void JointActionServer::serve_move_hand_to_coord(
   // 座標を元に逆運動学でbody_roll,arm_shoulder_roll,arm_shoulder_pan,arm_elbow_tilt,arm_wrist_tiltの5つのなすべき角度をvectorで算出
   std::vector<std::string> target_joint_names = {"body_roll_joint","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
   for (size_t i=1; i<target_joint_names.size(); i++) target_joint_names[i] = (is_right) ? ("r" + target_joint_names[i]) : ("l" + target_joint_names[i]);
-  std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, target_yaw);
+  std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, is_one_rink, target_yaw);
 
   // If inverse kinematics is outside the range of possible
   // もし逆運動学可能範囲外ならば・・・
@@ -514,7 +539,7 @@ void JointActionServer::serve_move_hand_to_coord(
 void JointActionServer::serve_move_hand_to_tf(
   const std::shared_ptr<MoveHandToTargetTF::Request> request,
   std::shared_ptr<MoveHandToTargetTF::Response> response,
-  bool is_right)
+  bool is_right, bool is_one_rink)
 {
 
   // Get namespace
@@ -601,7 +626,7 @@ void JointActionServer::serve_move_hand_to_tf(
   // 座標を元に逆運動学でbody_roll,arm_shoulder_roll,arm_shoulder_pan,arm_elbow_tilt,arm_wrist_tiltの5つのなすべき角度をvectorで算出
   std::vector<std::string> target_joint_names = {"body_roll_joint","_arm_shoulder_roll_joint", "_arm_shoulder_pan_joint", "_arm_elbow_tilt_joint", "_arm_wrist_tilt_joint"};
   for (size_t i=1; i<target_joint_names.size(); i++) target_joint_names[i] = (is_right) ? ("r" + target_joint_names[i]) : ("l" + target_joint_names[i]);
-  std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, target_yaw);
+  std::vector<double> target_joint_rad = inverse_kinematics(goal_coord, is_right, is_one_rink, target_yaw);
 
   // If inverse kinematics is outside the range of possible
   // もし逆運動学可能範囲外ならば・・・
@@ -777,7 +802,7 @@ geometry_msgs::msg::TransformStamped JointActionServer::forward_kinematics(
 
 std::vector<double> JointActionServer::inverse_kinematics(
   const geometry_msgs::msg::TransformStamped &goal_coord,  // 'goal_coord' is the coordinates of robot base.
-  const bool is_right,
+  const bool is_right, bool is_one_rink,
   const double target_yaw)
 {
 
@@ -802,41 +827,50 @@ std::vector<double> JointActionServer::inverse_kinematics(
   // return msg
   std::vector<double> target_joint_rad = {0.0, 0.0, -M_PI/2., 0.0, 0.0};
 
-  if (goal_coord_rotate.transform.translation.z < -(LengthShoulderElbow + LengthElbowWrist) ) {
-    RCLCPP_WARN(this->get_logger(), "The target position is too low (%.2f[m] < min:%.2f[m])", goal_coord_rotate.transform.translation.z, -(LengthShoulderElbow + LengthElbowWrist));
-    target_joint_rad.clear();
-    return target_joint_rad;
-  }
-  else if ((LengthShoulderElbow + LengthElbowWrist) < goal_coord_rotate.transform.translation.z) {
-    RCLCPP_WARN(this->get_logger(), "The target position is too tall (max:%.2f[m] < %.2f[m])", LengthShoulderElbow + LengthElbowWrist, goal_coord_rotate.transform.translation.z);
-    target_joint_rad.clear();
-    return target_joint_rad;
-  }
+  if (is_one_rink) { // one link graspable mode...
+    if ((LengthShoulderElbow + LengthElbowWrist + LengthHand/2.) < std::fabs(goal_coord_rotate.transform.translation.z)) {
+      RCLCPP_WARN(this->get_logger(), "The target position is too low or tall (min:%.2f[m] < max:%.2f[m] not in target:%.2f)", -(LengthShoulderElbow + LengthElbowWrist + LengthHand/2.), (LengthShoulderElbow + LengthElbowWrist + LengthHand/2.), goal_coord_rotate.transform.translation.z);
+      target_joint_rad.clear();
+      return target_joint_rad;
+    }
+    target_joint_rad[1] = M_PI - std::acos(goal_coord_rotate.transform.translation.z / (LengthShoulderElbow + LengthElbowWrist + LengthHand/2.));
+  } else {           // multi link (default) mode...
+    if (goal_coord_rotate.transform.translation.z < -(LengthShoulderElbow + LengthElbowWrist) ) {
+      RCLCPP_WARN(this->get_logger(), "The target position is too low (%.2f[m] < min:%.2f[m])", goal_coord_rotate.transform.translation.z, -(LengthShoulderElbow + LengthElbowWrist));
+      target_joint_rad.clear();
+      return target_joint_rad;
+    }
+    else if ((LengthShoulderElbow + LengthElbowWrist) < goal_coord_rotate.transform.translation.z) {
+      RCLCPP_WARN(this->get_logger(), "The target position is too tall (max:%.2f[m] < %.2f[m])", LengthShoulderElbow + LengthElbowWrist, goal_coord_rotate.transform.translation.z);
+      target_joint_rad.clear();
+      return target_joint_rad;
+    }
 
-  // ほぼ肩くらいの高さならば・・・(肩より下)
-  if ((-LengthShoulderElbow*std::cos(M_PI/4.) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < 0.)) {
-    target_joint_rad[1] = M_PI / 4.;
-  }
-  // ほぼ肘くらいの高さならば・・・(肩より下で肘より上)
-  else if ((-(LengthShoulderElbow + LengthElbowWrist*std::cos(M_PI/4.)) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < -LengthShoulderElbow*std::cos(M_PI/4.))) {
-    target_joint_rad[1] = 0.;
-  }
-  // ほぼ肩くらいの高さならば・・・(肩より上)
-  else if ((0 <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < LengthElbowWrist*std::cos(M_PI/4.))) {
-    target_joint_rad[1] = M_PI / 2.;
-  }
-  // どれにも該当しないならば・・・
-  else {
-    target_joint_rad[1] = M_PI - std::atan2(std::sqrt(std::pow(LengthShoulderElbow + LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z, 2)), goal_coord_rotate.transform.translation.z);
-  }
+    // ほぼ肩くらいの高さならば・・・(肩より下)
+    if ((-LengthShoulderElbow*std::cos(M_PI/4.) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < 0.)) {
+      target_joint_rad[1] = M_PI / 4.;
+    }
+    // ほぼ肘くらいの高さならば・・・(肩より下で肘より上)
+    else if ((-(LengthShoulderElbow + LengthElbowWrist*std::cos(M_PI/4.)) <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < -LengthShoulderElbow*std::cos(M_PI/4.))) {
+      target_joint_rad[1] = 0.;
+    }
+    // ほぼ肩くらいの高さならば・・・(肩より上)
+    else if ((0 <= goal_coord_rotate.transform.translation.z) && (goal_coord_rotate.transform.translation.z < LengthElbowWrist*std::cos(M_PI/4.))) {
+      target_joint_rad[1] = M_PI / 2.;
+    }
+    // どれにも該当しないならば・・・
+    else {
+      target_joint_rad[1] = M_PI - std::atan2(std::sqrt(std::pow(LengthShoulderElbow + LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z, 2)), goal_coord_rotate.transform.translation.z);
+    }
 
-  double e_x =  LengthShoulderElbow*std::sin(target_joint_rad[1]);
-  double e_z = -LengthShoulderElbow*std::cos(target_joint_rad[1]);
-  double w_x =  std::sqrt(std::pow(LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z - e_z, 2)) + e_x;
-  double w_z =  goal_coord_rotate.transform.translation.z;
+    double e_x =  LengthShoulderElbow*std::sin(target_joint_rad[1]);
+    double e_z = -LengthShoulderElbow*std::cos(target_joint_rad[1]);
+    double w_x =  std::sqrt(std::pow(LengthElbowWrist, 2) - std::pow(goal_coord_rotate.transform.translation.z - e_z, 2)) + e_x;
+    double w_z =  goal_coord_rotate.transform.translation.z;
 
-  target_joint_rad[3] = M_PI - std::atan2(w_x - e_x, w_z - e_z) - target_joint_rad[1];
-  target_joint_rad[4] = M_PI/2. - (target_joint_rad[1] + target_joint_rad[3]);
+    target_joint_rad[3] = M_PI - std::atan2(w_x - e_x, w_z - e_z) - target_joint_rad[1];
+    target_joint_rad[4] = M_PI/2. - (target_joint_rad[1] + target_joint_rad[3]);
+  }
 
   // 右と左で+/-の違いがあるので調整．
   if (is_right) {
