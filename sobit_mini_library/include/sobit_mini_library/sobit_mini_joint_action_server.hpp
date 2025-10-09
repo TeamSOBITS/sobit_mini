@@ -135,6 +135,10 @@ private:
   rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_left_;
   rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_right_;
   rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_right_;
+  rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_one_left_;
+  rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_one_left_;
+  rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_one_right_;
+  rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_one_right_;
 
   rclcpp_action::GoalResponse handle_move_joints_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveJoint::Goal> goal);
   rclcpp_action::GoalResponse handle_move_to_pose_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveToPose::Goal> goal);

@@ -51,22 +51,22 @@ JointActionServer::JointActionServer(const rclcpp::NodeOptions & options = rclcp
       });
 
   // one link grasp mode
-  this->service_server_move_hand_to_coord_left_ = this->create_service<MoveHandToTargetCoord>(
+  this->service_server_move_hand_to_coord_one_left_ = this->create_service<MoveHandToTargetCoord>(
       "move_hand_to_coord/one_link/left",
       [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
         serve_move_hand_to_coord(request, response, false, true);  // when target hand is left, 3rd arg is 'false'
       });
-  this->service_server_move_hand_to_tf_left_ = this->create_service<MoveHandToTargetTF>(
+  this->service_server_move_hand_to_tf_one_left_ = this->create_service<MoveHandToTargetTF>(
       "move_hand_to_tf/one_link/left",
       [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
         serve_move_hand_to_tf(request, response, false, true);  // when target hand is left, 3rd arg is 'false'
       });
-  this->service_server_move_hand_to_coord_right_ = this->create_service<MoveHandToTargetCoord>(
+  this->service_server_move_hand_to_coord_one_right_ = this->create_service<MoveHandToTargetCoord>(
       "move_hand_to_coord/one_link/right",
       [this](const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response) {
         serve_move_hand_to_coord(request, response, true, true);  // when target hand is right, 3rd arg is 'true'
       });
-  this->service_server_move_hand_to_tf_right_ = this->create_service<MoveHandToTargetTF>(
+  this->service_server_move_hand_to_tf_one_right_ = this->create_service<MoveHandToTargetTF>(
       "move_hand_to_tf/one_link/right",
       [this](const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response) {
         serve_move_hand_to_tf(request, response, true, true);  // when target hand is right, 3rd arg is 'true'
