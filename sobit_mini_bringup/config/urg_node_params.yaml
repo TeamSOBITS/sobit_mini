@@ -2,7 +2,8 @@
   ros__parameters:
     angle_max: 1.57
     angle_min: -1.57
-    ip_address: "172.16.10.10"
+    serial_port: "/dev/ttyACM1"
+    # ip_address: "172.16.10.10"
     ip_port: 10940
     serial_baud: 115200
     laser_frame_id: "lidar_laser"
