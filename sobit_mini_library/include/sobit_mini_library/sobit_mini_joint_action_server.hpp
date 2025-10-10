@@ -94,7 +94,7 @@ public:
     const double target_yaw);  // target_yaw should be eliminated in the future.
   std::vector<double> inverse_kinematics(
     const geometry_msgs::msg::TransformStamped &goal_coord,
-    const bool is_right,
+    const bool is_right, bool is_one_rink,
     const double target_yaw);  // target_yaw should be eliminated in the future.
   trajectory_msgs::msg::JointTrajectory set_joints(
     const std::vector<std::string> &target_joint_names,
@@ -135,6 +135,10 @@ private:
   rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_left_;
   rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_right_;
   rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_right_;
+  rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_one_left_;
+  rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_one_left_;
+  rclcpp::Service<MoveHandToTargetCoord>::SharedPtr service_server_move_hand_to_coord_one_right_;
+  rclcpp::Service<MoveHandToTargetTF>::SharedPtr service_server_move_hand_to_tf_one_right_;
 
   rclcpp_action::GoalResponse handle_move_joints_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveJoint::Goal> goal);
   rclcpp_action::GoalResponse handle_move_to_pose_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveToPose::Goal> goal);
@@ -147,8 +151,8 @@ private:
 
   void exe_move_joints(const std::shared_ptr<GoalHandleMoveJoints> goal_handle);
   void exe_move_to_pose(const std::shared_ptr<GoalHandleMoveToPose> goal_handle);
-  void serve_move_hand_to_coord(const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response, bool is_right);
-  void serve_move_hand_to_tf(const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response, bool is_right);
+  void serve_move_hand_to_coord(const std::shared_ptr<MoveHandToTargetCoord::Request> request, std::shared_ptr<MoveHandToTargetCoord::Response> response, bool is_right, bool is_one_rink);
+  void serve_move_hand_to_tf(const std::shared_ptr<MoveHandToTargetTF::Request> request, std::shared_ptr<MoveHandToTargetTF::Response> response, bool is_right, bool is_one_rink);
 
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr pub_joint_control_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr sub_joint_state_;
