@@ -795,7 +795,7 @@ geometry_msgs::msg::TransformStamped JointActionServer::forward_kinematics(
   temp_x = final_coord.transform.translation.x;
   temp_y = final_coord.transform.translation.y;
   final_coord.transform.translation.x = temp_x*std::cos(target_yaw + set_joint_rad[0]) - temp_y*std::sin(target_yaw + set_joint_rad[0]);
-  final_coord.transform.translation.x = temp_y*std::cos(target_yaw + set_joint_rad[0]) + temp_x*std::sin(target_yaw + set_joint_rad[0]);
+  final_coord.transform.translation.y = temp_y*std::cos(target_yaw + set_joint_rad[0]) + temp_x*std::sin(target_yaw + set_joint_rad[0]);
 
   return final_coord;
 }
