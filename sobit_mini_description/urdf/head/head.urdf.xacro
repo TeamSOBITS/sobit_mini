@@ -36,7 +36,7 @@
       <origin xyz="0.0 0.0 0.017" rpy="0.0 0.0 0.0" />
       <axis xyz="0 -1 0" />
       <!-- <axis xyz="0 1 0" /> -->
-      <limit effort="30" lower="-1" upper="1" velocity="${M_PI/2.0}" />
+      <limit effort="30" lower="-0.45" upper="0.45" velocity="${M_PI/2.0}" />
     </joint>
 
     <link name="${prefix}_tilt_link">
