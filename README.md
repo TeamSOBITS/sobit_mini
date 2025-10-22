@@ -11,58 +11,58 @@
 # SOBIT MINI
 
 <details>
-  <summary>Table of Contents</summary>
+  <summary>目次</summary>
   <ol>
-    <li><a href="#overview">Overview</a></li>
+    <li><a href="#概要">概要</a></li>
     <li>
-      <a href="#setup">Setup</a>
+      <a href="#セットアップ">セットアップ</a>
       <ul>
-        <li><a href="#environment-requirements">Environment Requirements</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#環境条件">環境条件</a></li>
+        <li><a href="#インストール方法">インストール方法</a></li>
       </ul>
     </li>
     <li>
-      <a href="#how-to-use">How to Use</a>
+      <a href="#操作方法">操作方法</a>
       <ul>
-        <li><a href="#rviz-visualization">Visualization on Rviz</a></li>
+        <li><a href="#rviz上の可視化">Rviz上の可視化</a></li>
       </ul>
     </li>
     <li>
-      <a href="#software">Software</a>
+      <a href="#ソフトウェア">ソフトウェア</a>
       <ul>
-        <li><a href="#joint-action-server">Joint Action Server</a></li>
-        <li><a href="#linear-action-server">Linear Action Server</a></li>
-        <li><a href="#pose-configuration">Pose Configuration</a></li>
+        <li><a href="#ジョイント関連のアクションサーバー">ジョイント関連のアクションサーバー</a></li>
+        <li><a href="#リニア関連のアクションサーバー">リニア関連のアクションサーバー</a></li>
+        <li><a href="#ポーズの設定方法">ポーズの設定方法</a></li>
       </ul>
     </li>
     <li>
-      <a href="#hardware">Hardware</a>
+      <a href="#ハードウェア">ハードウェア</a>
       <ul>
-        <li><a href="#how-to-download-parts">How to Download Parts</a></li>
-        <li><a href="#electronic-circuit-diagram">Electronic Circuit Diagram</a></li>
-        <li><a href="#robot-assembly">Robot Assembly</a></li>
-        <li><a href="#robot-features">Robot Features</a></li>
-        <li><a href="#bill-of-materials-bom">Bill of Materials (BOM)</a></li>
+        <li><a href="#パーツのダウンロード方法">パーツのダウンロード方法</a></li>
+        <li><a href="#電子回路図">電子回路図</a></li>
+        <li><a href="#ロボットの組み立て">ロボットの組み立て</a></li>
+        <li><a href="#ロボットの特徴">ロボットの特徴</a></li>
+        <li><a href="#部品リストbom">部品リスト（BOM）</a></li>
       </ul>
     </li>
-    <li><a href="#milestones">Milestones</a></li>
-    <li><a href="#references">References</a></li>
+    <li><a href="#マイルストーン">マイルストーン</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
   </ol>
 </details>
 
-## Overview
+## 概要
 ![SOBIT_MINI](sobit_mini/docs/img/sobit_mini.png)
 
-This is a library for controlling SOBIT MINI, a dual-arm mobile manipulator developed by SOBITS.
+SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）を動かすためのライブラリです．
 
 > [!warning]
-> If you are a beginner, make sure to operate the real robot under the supervision of experienced members.
+> 初心者の場合，実機のロボットを扱う際に，先輩方に付き添ってもらいながらロボットを動かしましょう．
 
-## Setup
-This section explains how to set up this repository.
+## セットアップ
+ここで，本レポジトリのセットアップ方法について説明します．
 
-### Environment Requirements
-Before proceeding to installation, make sure the following environment is prepared.
+### 環境条件
+まず，以下の環境を整えてから，次のインストール段階に進んでください．
 
 | System  | Version |
 | --- | --- |
@@ -71,49 +71,41 @@ Before proceeding to installation, make sure the following environment is prepar
 | Python | 3.10 |
 
 > [!NOTE]
-> For installing `Ubuntu` and `ROS`, refer to the [SOBIT Manual](https://github.com/TeamSOBITS/sobits_manual#%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6).
+> `Ubuntu`や`ROS`のインストール方法に関しては，[SOBIT Manual](https://github.com/TeamSOBITS/sobits_manual#%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)に参照してください．
 
-### Installation
+### インストール方法
 
-1. Move to the `src` folder of ROS2.
+1. ROS2の`src`フォルダに移動します．
     ```sh
     cd ~/colcon_ws/src/
     ```
 
-2. Clone this repository.
+2. 本レポジトリをcloneします．
    ```sh
    git clone -b feature/multi_control https://github.com/TeamSOBITS/sobit_mini
-````
-
-3. Move into the repository.
-
+   ```
+3. レポジトリの中へ移動します．
    ```sh
    cd sobit_mini/
    ```
-
-4. Install dependency packages.
-
+4. 依存パッケージをインストールします．
    ```sh
    bash install.sh
    ```
+5. パッケージをコンパイルします．
+    ```sh
+    cd ~/colcon_ws
+    colcon build --symlink-install
+    source ~/colcon_ws/install/setup.sh
+    ```
 
-5. Build the package.
+## 操作方法
 
-   ```sh
-   cd ~/colcon_ws
-   colcon build --symlink-install
-   source ~/colcon_ws/install/setup.sh
-   ```
-
-## How to Use
-
-1. Launch the `minimal.launch` file.
-
+1. [minimal.launch](sobit_mini_bringup/launch/minimal.launch.py)というlaunchファイルを起動します．
    ```sh
    ros2 launch sobit_mini_bringup minimal.launch.py
    ```
-2. [Optional] Change the robot pose.
-
+2. [任意] ロボットのポーズを変更してみましょう．
    ```sh
    ros2 action send_goal /sobit_mini/move_to_pose sobits_interfaces/action/MoveToPose "pose_name: 'detecting_pose'
    time_allowance:
@@ -121,37 +113,24 @@ Before proceeding to installation, make sure the following environment is prepar
       nanosec: 0"
    ```
 
-### Run with [sobits_gazebo_worlds](https://github.com/TeamSOBITS/sobits_gazebo_worlds.git)
-
-```sh
-ros2 launch sobit_mini_bringup gz_minimal.launch.py
-```
-
-If everything works correctly, the robot and environment will be displayed as follows.
-
-![SOBIT MINI Display with Rviz](sobit_mini/docs/img//sobit_mini_gazebo.png)
-
-### Rviz Visualization
-
-Before operating the real robot, you can visualize SOBIT MINI on Rviz to check the robot configuration.
+### Rviz上の可視化
+実機を動かす前段階で，Rviz上でSOBIT MINIを可視化し，ロボットの構成を表示することができます．
 
 ```sh
 ros2 launch sobit_mini_description display.launch.py
 ```
 
-If successful, Rviz will display the robot as follows.
+正常に動作した場合は，次のようにRvizが表示されます．
 
 ![SOBIT MINI Display with Rviz](sobit_mini/docs/img//sobit_mini_display.png)
 
-## Software
-
+## ソフトウェア
 <details>
-<summary>Summary of software related to SOBIT MINI</summary>
+<summary>SOBIT MINIと関わるソフトの情報まとめ</summary>
 
-### Joint Action Server
+### ジョイント関連のアクションサーバー
 
-1. `/sobit_mini/move_joint`: Move the specified joints to the target angles.
-
+1. `/sobit_mini/move_joint`：指定した関節を指定した角度に動かす
    ```sh
    ros2 action send_goal /sobit_mini/move_joint sobits_interfaces/action/MoveJoint "target_joint_names: ['head_camera_pan_joint', 'l_arm_shoulder_pan_joint']
    target_joint_rad: [0.5, -0.7]
@@ -159,28 +138,26 @@ If successful, Rviz will display the robot as follows.
       sec: 5
       nanosec: 0"
    ```
-
    <details>
-   <summary>List of SOBIT MINI joint names</summary>
+   <summary>SOBIT MINIのジョイント名</summary>
 
-   | Joint Name                |
-   | :------------------------ |
+   | ジョイント名 |
+   | :--- |
    | r_arm_shoulder_roll_joint |
-   | r_arm_shoulder_pan_joint  |
-   | r_arm_elbow_tilt_joint    |
-   | r_arm_wrist_tilt_joint    |
-   | r_hand_joint              |
+   | r_arm_shoulder_pan_joint |
+   | r_arm_elbow_tilt_joint |
+   | r_arm_wrist_tilt_joint |
+   | r_hand_joint |
    | l_arm_shoulder_roll_joint |
-   | l_arm_shoulder_pan_joint  |
-   | l_arm_elbow_tilt_joint    |
-   | l_arm_wrist_tilt_joint    |
-   | l_hand_joint              |
-   | body_roll_joint           |
-   | head_camera_pan_joint     |
-   | head_camera_tilt_joint    |
+   | l_arm_shoulder_pan_joint |
+   | l_arm_elbow_tilt_joint |
+   | l_arm_wrist_tilt_joint |
+   | l_hand_joint |
+   | body_roll_joint |
+   | head_camera_pan_joint |
+   | head_camera_tilt_joint |
 
-2. `/sobit_mini/move_to_pose`: Move to a predefined pose.
-
+2. `/sobit_mini/move_to_pose`：事前に指定したポーズに動かす
    ```sh
    ros2 action send_goal /sobit_mini/move_to_pose sobits_interfaces/action/MoveToPose "pose_name: 'initial_pose'
    time_allowance:
@@ -188,10 +165,9 @@ If successful, Rviz will display the robot as follows.
       nanosec: 0"
    ```
 
-### Linear Action Server
+### リニア関連のアクションサーバー
 
-1. `/sobit_mini/move_wheel_linear`: Move the robot at a specified speed.
-
+1. `/sobit_mini/move_wheel_linear`：指定した速度でロボットを移動させる
    ```sh
    ros2 action send_goal /sobit_mini/move_wheel_linear sobits_interfaces/action/MoveWheelLinear "target_point:
       x: 0.5
@@ -202,8 +178,7 @@ If successful, Rviz will display the robot as follows.
       nanosec: 0"
    ```
 
-2. `/sobit_mini/move_wheel_rotate`: Rotate the robot to a specified angle.
-
+2. `/sobit_mini/move_wheel_rotate`：指定した角度でロボットを回転させる
    ```sh
    ros2 action send_goal /sobit_mini/move_wheel_rotate sobits_interfaces/action/MoveWheelRotate "target_yaw: -1.57
    time_allowance:
@@ -211,10 +186,9 @@ If successful, Rviz will display the robot as follows.
       nanosec: 0"
    ```
 
-#### Pose Configuration
+#### ポーズの設定方法
 
-You can add or edit poses in the [sobit_mini_pose.yaml](sobit_mini_library/config/pose_list.yaml) file.
-The format is as follows:
+[sobit_mini_pose.yaml](sobit_mini_library/config/pose_list.yaml)というファイルでポーズの追加・編集ができます．以下のようなフォーマットになります．
 
 ```yaml
 /**:
@@ -237,81 +211,79 @@ The format is as follows:
       head_camera_pan     :  0.0
       head_camera_tilt    :  0.0
 ```
-
 </details>
 
-## Hardware
+## ハードウェア
 
-SOBIT MINI is published as open-source hardware on [Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8).
+SOBIT MINIはオープンソースハードウェアとして [Onshape](https://cad.onshape.com/documents/8875b6e7a5f6f87b4f951969/w/d265c3a1708d61e2a005595d/e/00fdacbdb703dc27e5e0d3f8) にて公開しております．
 
 ![SOBIT MINI in OnShape](sobit_mini/docs/img/sobit_mini_onshape.png)
 
 <details>
-<summary>See here for detailed hardware information.</summary>
+<summary>ハードウェアの詳細についてはこちらを確認してください．</summary>
 
-### How to Download Parts
+### パーツのダウンロード方法
 
-1. Access Onshape.
-2. Right-click on the part in the `Instance` list.
-3. A list will appear, click the `Export` button.
-4. In the displayed window, set the `Format` to `STEP`.
-5. Finally, click the blue `Export` button to start the download.
+1. Onshapeにアクセスしましょう．
+2. `Instance`の中にパーツを右クリックで選択します．
+3. 一覧が表示され，`Export`ボタンを押してください．
+4. 表示されたウィンドウの中に，`Format`という項目があります．`STEP`を選択してください．
+5. 最後に，青色の`Export`ボタンを押してダウンロードが開始されます．
 
-### Electronic Circuit Diagram
-
+### 電子回路図
 TBD
 
-### Robot Assembly
-
+### ロボットの組み立て
 TBD
 
-### Robot Features
+### ロボットの特徴
 
-| Item                 | Details                        |
-| -------------------- | ------------------------------ |
-| Max Linear Velocity  | 0.65 [m/s]                     |
-| Max Angular Velocity | 3.1415 [rad/s]                 |
-| Max Payload          | 0.35 [kg]                      |
-| Size (L x W x H)     | 512 x 418 x 1122 [mm]          |
-| Weight               | 11.6 [kg]                      |
-| Remote Controller    | PS3/PS4                        |
-| LiDAR                | UST-10LX                       |
-| RGB-D                | Intel Realsense D435F          |
-| Speaker              | Mono Speaker                   |
-| Microphone           | Condenser Microphone           |
-| Actuator (Arm)       | 2 x XM540-W150, 9 x XM430-W320 |
-| Mobility             | TurtleBot2                     |
-| Power Supply         | 2 x Makita 6.0Ah 18V           |
-| PC Connection        | USB                            |
+| 項目 | 詳細 |
+| --- | --- |
+| 最大直進速度 | 0.65[m/s] |
+| 最大回転速度 | 3.1415[rad/s] |
+| 最大ペイロード | 0.35[kg] |
+| サイズ (長さx幅x高さ) | 512x418x1122[mm] |
+| 重量 | 11.6[kg] |
+| リモートコントローラ | PS3/PS4 |
+| LiDAR | UST-10LX |
+| RGB-D | Intel Realsense D435F |
+| スピーカー | モノラルスピーカー |
+| マイク | コンデンサーマイク |
+| アクチュエータ (アーム) | 2 x XM540-W150, 9 x XM430-W320 |
+| 移動機構 | TurtleBot2 |
+| 電源 | 2 x Makita 6.0Ah 18V |
+| PC接続 | USB |
 
-### Bill of Materials (BOM)
+### 部品リスト（BOM）
 
-| Part | Model | Quantity | Purchase Link |
-| ---- | ----- | -------- | ------------- |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
-| ---  | ---   | 1        | [link]()      |
+| 部品 | 型番 | 個数 | 購入先 |
+| --- | --- | --- | --- |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
+| --- | --- | 1 | [link]() |
 
 </details>
 
-## Milestones
+## マイルストーン
+参考文献の記入・その他
+現時点のバッグや新規機能の依頼を確認するために[Issueページ][issues-url] をご覧ください．
 
-* Add references
-* Confirm and fix the operation of the library in the gazebo environment
+## 参考文献
+<!-- * [Dynamixel SDK](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/overview/)
+* [ROS Noetic](http://wiki.ros.org/noetic)
+* [ROS Control](http://wiki.ros.org/ros_control) -->
 
-Check the [Issue page][issues-url] for current bugs and feature requests.
-
-## References
 [contributors-shield]: https://img.shields.io/github/contributors/TeamSOBITS/sobit_mini.svg?style=for-the-badge
 [contributors-url]: https://github.com/TeamSOBITS/sobit_mini/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/TeamSOBITS/sobit_mini.svg?style=for-the-badge
