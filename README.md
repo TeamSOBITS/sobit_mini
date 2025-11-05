@@ -112,6 +112,13 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
       sec: 5
       nanosec: 0"
    ```
+### [sobits_gazebo_worlds](https://github.com/TeamSOBITS/sobits_gazebo_worlds.git)で動かす
+```sh
+ros2 launch sobit_mini_bringup gz_minimal.launch.py
+```
+正常に動作した場合は，次のようにロボットと環境が表示されます．
+
+![SOBIT MINI Display with Rviz](sobit_mini/docs/img//sobit_mini_gazebo.png)
 
 ### Rviz上の可視化
 実機を動かす前段階で，Rviz上でSOBIT MINIを可視化し，ロボットの構成を表示することができます．
@@ -276,7 +283,9 @@ TBD
 </details>
 
 ## マイルストーン
-参考文献の記入・その他
+- 参考文献の記入
+- gazebo環境内のライブラリの動作などの確認・修正
+
 現時点のバッグや新規機能の依頼を確認するために[Issueページ][issues-url] をご覧ください．
 
 ## 参考文献

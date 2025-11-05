@@ -6,59 +6,5 @@
       <mu1>1.0</mu1>
       <mu2>1.0</mu2>
     </gazebo>
-  
-    <gazebo>
-      <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
-        <jointName>right_hand_joint</jointName>
-        <updateRate>1000.0</updateRate>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
-
-
-    <!-- the following is the template to mimic a joint -->
-    <xacro:macro name="mimic_joint" params="name_prefix parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=1.0 robot_namespace:=''">
-      <gazebo>
-        <plugin name="${name_prefix}mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
-          <joint>${parent_joint}</joint>
-          <mimicJoint>${mimic_joint}</mimicJoint>
-          <xacro:if value="${has_pid}">                     <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
-            <hasPID />
-          </xacro:if>
-          <multiplier>${multiplier}</multiplier>
-          <offset>${offset}</offset>
-          <sensitiveness>${sensitiveness}</sensitiveness>   <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
-          <maxEffort>${max_effort}</maxEffort>              <!-- only taken into account if has_pid:=true [Nm] -->
-          <xacro:unless value="${robot_namespace == ''}">
-            <robotNamespace>${robot_namespace}</robotNamespace>
-          </xacro:unless>
-        </plugin>
-      </gazebo>
-    </xacro:macro>
-
-  <xacro:macro name="gazebo">
-    <!-- Gazebo -->
-    <gazebo>
-      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>/$(arg robot_namespace)</robotNamespace>
-        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-        <legacyModeNS>true</legacyModeNS>
-      </plugin>
-    </gazebo>
-
-
-    <!-- <xacro:mimic_joint_plugin name_prefix="${prefix}_joint"
-    parent_joint="${prefix}_joint" mimic_joint="${prefix}_left_finger_joint"
-    has_pid="false" multiplier="1.0" max_effort="1.0" />
-
-    <gazebo reference="${prefix}_right_finger_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-    <gazebo reference="${prefix}_left_finger_link">
-      <material>Gazebo/Black</material>
-    </gazebo>
-
-    <xacro:r_hand_transmission prefix="${prefix}"/> -->
-
   </xacro:macro>
 </robot>

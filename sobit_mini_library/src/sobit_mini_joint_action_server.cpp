@@ -391,7 +391,7 @@ void JointActionServer::exe_move_to_pose(
       dt.sec = 0;
       dt.nanosec = static_cast<uint32_t>(0.1 * 10E9);
       this->pub_joint_control_->publish(set_joints({}, {}, dt));
-  
+
       return;
     }
 
@@ -477,7 +477,7 @@ void JointActionServer::serve_move_hand_to_coord(
   }
 
   // target_yawにロボットの回転角度を代入
-  // calculate the target_yaw to move base of grasping object 
+  // calculate the target_yaw to move base of grasping object
   double target_linear, target_yaw;
   double shoulder_rotate_x, shoulder_rotate_y;
   if (is_right) {
@@ -607,7 +607,7 @@ void JointActionServer::serve_move_hand_to_tf(
   }
 
   // target_yawにロボットの回転角度を代入
-  // calculate the target_yaw to move base of grasping object 
+  // calculate the target_yaw to move base of grasping object
   double target_linear, target_yaw;
   double shoulder_rotate_x, shoulder_rotate_y;
   if (is_right) {
@@ -688,7 +688,7 @@ trajectory_msgs::msg::JointTrajectory JointActionServer::set_joints(
   for (size_t i = 0; i < JointNames.size(); i++) {
     full_target_joint_rad.push_back(this->curt_joint_state_[JointNames[i]]);
   }
-  
+
   // Update the target joint rad
   for (size_t i = 0; i < target_joint_names.size(); i++) {
     auto it = std::find(JointNames.begin(), JointNames.end(), target_joint_names[i]);

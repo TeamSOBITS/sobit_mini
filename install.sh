@@ -11,7 +11,8 @@ ros_packages=(
     "realsense_ros" \
     "urg_node" \
     "kobuki_ros" \
-    "turtlebot2_description"
+    "turtlebot2_description" \
+    "sobits_gazebo_worlds"
 )
 
 for ((i = 0; i < ${#ros_packages[@]}; i++)) {

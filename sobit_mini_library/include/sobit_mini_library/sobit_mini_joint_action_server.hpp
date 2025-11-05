@@ -29,7 +29,7 @@
 namespace sobit_mini
 {
 
-struct PoseParams 
+struct PoseParams
 {
   std::string pose_name;
   double r_arm_shoulder_roll;
@@ -173,7 +173,7 @@ inline geometry_msgs::msg::Vector3 JointActionServer::get_euler_from_quat(
   tf_quat.normalize();
   tf2::Matrix3x3(tf_quat).getRPY(euler.x, euler.y, euler.z);
 
-  return euler;  
+  return euler;
 }
 
 inline geometry_msgs::msg::Quaternion JointActionServer::get_quat_from_euler(

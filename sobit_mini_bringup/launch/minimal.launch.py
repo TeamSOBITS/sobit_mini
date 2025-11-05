@@ -13,12 +13,10 @@
 # limitations under the License.
 
 
-
 import os
 
 from ament_index_python.packages import get_package_share_directory
 
-# from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 
 from launch import LaunchDescription
@@ -26,18 +24,8 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 
-import yaml 
-import launch_ros
+import yaml
 from launch import LaunchDescription
-# from launch_ros.actions import Node
-
-# from launch_ros.actions import Node
-
-
-
-
-
-
 
 
 def generate_launch_description():
@@ -50,8 +38,9 @@ def generate_launch_description():
 
     urg_config = os.path.join(get_package_share_directory(
         bringup_pkg), "config", "urg_node_params.yaml")
-    
-    kobuki_param_file = os.path.join(get_package_share_directory("sobit_mini_bringup"), "config", "kobuki_node_params.yaml")
+
+    kobuki_param_file = os.path.join(get_package_share_directory(
+        "sobit_mini_bringup"), "config", "kobuki_node_params.yaml")
     with open(kobuki_param_file, "r") as f:
         kobuki_params = yaml.safe_load(f)["kobuki_ros_node"]["ros__parameters"]
 
@@ -74,9 +63,9 @@ def generate_launch_description():
             ]),
             launch_arguments={
                 'robot_name': 'sobit_mini',
-                'robot_coords_x': '0', # x 
-                'robot_coords_y': '0', # y
-                'robot_coords_Y': '0', # yaw
+                'robot_coords_x': '0',  # x
+                'robot_coords_y': '0',  # y
+                'robot_coords_Y': '0',  # yaw
             }.items()
         ),
         Node(
@@ -105,9 +94,9 @@ def generate_launch_description():
                 ])
             ]),
             launch_arguments={
-                "config_file" : urg_config,
-                "use_namespace" : "true",
-                "namespace" : robot_name,
+                "config_file": urg_config,
+                "use_namespace": "true",
+                "namespace": robot_name,
             }.items()
         ),
         IncludeLaunchDescription(
