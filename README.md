@@ -82,7 +82,7 @@ SOBITSが開発した双腕型モバイルマニピュレータ（SOBIT MINI）�
 
 2. 本レポジトリをcloneします．
    ```sh
-   git clone -b feature/multi_control https://github.com/TeamSOBITS/sobit_mini
+   git clone -b humble-devel https://github.com/TeamSOBITS/sobit_mini
    ```
 3. レポジトリの中へ移動します．
    ```sh
