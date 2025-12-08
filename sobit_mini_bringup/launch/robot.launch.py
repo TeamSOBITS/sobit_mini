@@ -8,6 +8,7 @@ from launch.event_handlers import OnProcessExit
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+from launch_ros.descriptions import ComposableNode
 
 import yaml
 import xacro
@@ -194,7 +195,7 @@ def launch_gz(context, *args, **kwargs):
                         "/" + robot_name + "/head_camera_base/color/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
                         "/" + robot_name + "/head_camera_base/color/image_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                         "/" + robot_name + "/head_camera_base/depth/image_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        "/" + robot_name + "/head_camera_base/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
+                        # "/" + robot_name + "/head_camera_base/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
                         "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
 
                         "/" + robot_name + "/scan/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
@@ -203,15 +204,31 @@ def launch_gz(context, *args, **kwargs):
             output='screen'
         )
 
-        # gz_tf_head_cam_node = Node(
-        #     package='tf2_ros',
-        #     executable='static_transform_publisher',
-        #     arguments=['--frame-id', robot_name + '/head_camera_depth_optical_frame',
-        #                '--child-frame-id', robot_name + '/head_pitch_link/head_camera_depth',
-        #                '--pitch', '-1.57',
-        #                '--roll', '1.57'],
-        #     output='screen',
-        # )
+        gz_tf_head_cam_node = Node(
+            package='tf2_ros',
+            namespace=robot_name,
+            executable='static_transform_publisher',
+            arguments=['--frame-id', robot_name + '/head_camera_link',
+                       '--child-frame-id', robot_name + '/head_camera_optical_frame',
+                       '--roll', '-1.57',
+                       '--yaw', '-1.57',
+                    ],
+            output='screen',
+        )
+
+        point_cloud_node = Node(
+            package='depth_image_proc',
+            executable='point_cloud_xyzrgb_node',
+            name='point_cloud_node',
+            namespace=robot_name,
+            parameters=[{'queue_size': 10}],
+            remappings=[
+                ('/'+robot_name+'/rgb/image_rect_color',        '/'+robot_name+'/head_camera_base/color/image_raw'),
+                ('/'+robot_name+'/depth_registered/image_rect', '/'+robot_name+'/head_camera_base/depth/image_raw'),
+                ('/'+robot_name+'/rgb/camera_info',             '/'+robot_name+'/head_camera_base/color/camera_info'),
+                ('/'+robot_name+'/points',                      '/'+robot_name+'/head_camera_base/depth/points'),
+            ],
+        )
 
         diff_controller = ExecuteProcess(
             cmd=['ros2', 'control', 'load_controller',
@@ -289,7 +306,8 @@ def launch_gz(context, *args, **kwargs):
         return [
             gz_spawn_entity_node,
             gz_bridge_node,
-            # gz_tf_head_cam_node,
+            gz_tf_head_cam_node,
+            point_cloud_node,
             RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=gz_spawn_entity_node,

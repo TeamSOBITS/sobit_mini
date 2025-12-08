@@ -9,7 +9,7 @@
         <sensor name="head_camera_color" type="camera">
           <pose>0.05 0.0 0.0 0.0 0.0 0.0</pose>
           
-          <ignition_frame_id>${robot_name}/head_camera_link</ignition_frame_id>
+          <ignition_frame_id>${robot_name}/head_camera_optical_frame</ignition_frame_id>
           <topic>${robot_name}/head_camera_base/color/image_raw</topic>
 
           <always_on>1</always_on>
@@ -36,11 +36,9 @@
     <xacro:if value="${enable_gz_head_cam_depth}">
       <gazebo reference="head_camera_link">
         <sensor name="head_camera_depth" type="depth">
-          <!-- <pose>0.0 0.0 ${0.0175/2} ${M_PI/2} -${M_PI/2} 0.0</pose> -->
-          <!-- <pose>0.0 0.0 -0.6 0.0 0.0 0.0</pose> -->
           <pose>0.05 0.0 0.0 0.0 0.0 0.0</pose>
 
-          <ignition_frame_id>${robot_name}/head_camera_link</ignition_frame_id>
+          <ignition_frame_id>${robot_name}/head_camera_optical_frame</ignition_frame_id>
           <topic>${robot_name}/head_camera_base/depth/image_raw</topic>
 
           <always_on>1</always_on>
