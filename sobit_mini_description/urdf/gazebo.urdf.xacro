@@ -1,19 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- SOBIT MINI (Gazebo) -->
 <robot name="sobit_mini_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="gazebo_sensors" params="robot_name enable_gz_front_cam_color:=True enable_gz_back_cam_color:=True enable_gz_head_cam_color:=True enable_gz_head_cam_depth:=True enable_gz_hand_cam_color:=True enable_gz_hand_cam_depth:=True enable_gz_lidar:=True enable_gz_imu:=True">
+  <xacro:macro name="gazebo_sensors" params="robot_name enable_gz_head_cam_color:=True enable_gz_head_cam_depth:=True enable_gz_lidar:=True">
 
+    <!-- Sensor - Head Camera (Color) -->
+    <xacro:if value="${enable_gz_head_cam_color}">
+      <gazebo reference="head_camera_link">
+        <sensor name="head_camera_color" type="camera">
+          <pose>0.05 0.0 0.0 0.0 0.0 0.0</pose>
+          
+          <ignition_frame_id>${robot_name}/head_camera_link</ignition_frame_id>
+          <topic>${robot_name}/head_camera_base/color/image_raw</topic>
 
+          <always_on>1</always_on>
+          <visualize>true</visualize>
+          <update_rate>1</update_rate>
+
+          <camera name="head_camera_color">
+            <horizontal_fov>1.21126</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>RGB_INT8</format>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+          </camera>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+
+    <!-- Sensor - Head Camera (Depth) -->
+    <xacro:if value="${enable_gz_head_cam_depth}">
+      <gazebo reference="head_camera_link">
+        <sensor name="head_camera_depth" type="depth">
+          <!-- <pose>0.0 0.0 ${0.0175/2} ${M_PI/2} -${M_PI/2} 0.0</pose> -->
+          <!-- <pose>0.0 0.0 -0.6 0.0 0.0 0.0</pose> -->
+          <pose>0.05 0.0 0.0 0.0 0.0 0.0</pose>
+
+          <ignition_frame_id>${robot_name}/head_camera_link</ignition_frame_id>
+          <topic>${robot_name}/head_camera_base/depth/image_raw</topic>
+
+          <always_on>1</always_on>
+          <visualize>true</visualize>
+          <update_rate>1</update_rate>
+
+          <camera name="head_camera_depth">
+            <horizontal_fov>1.48702</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+          </camera>
+        </sensor>
+      </gazebo>
+    </xacro:if>
 
     <!-- Sensor: LiDAR -->
     <xacro:if value="${enable_gz_lidar}">
-      <gazebo reference="sim_laser_frame">
+      <gazebo reference="lidar_laser">
         <sensor name="lidar" type="gpu_lidar">
           <pose>0 0 0 0 0 0</pose>
 
-          <ignition_frame_id>${robot_name}/sim_laser_frame</ignition_frame_id>
-          <!-- <gz_frame_id>${robot_name}/sim_laser_frame</gz_frame_id> -->
-          <topic>${robot_name}/lidar/scan</topic>
+          <ignition_frame_id>${robot_name}/lidar_laser</ignition_frame_id>
+          <topic>${robot_name}/scan</topic>
 
           <always_on>1</always_on>
           <visualize>true</visualize>
@@ -24,8 +80,8 @@
               <horizontal>
                 <samples>640</samples>
                 <resolution>1</resolution>
-                <min_angle>-2.4870942</min_angle>
-                <max_angle>2.4870942</max_angle>
+                <min_angle>-1.5708</min_angle>
+                <max_angle>1.5708</max_angle>
               </horizontal>
               <vertical>
                 <samples>1</samples>
@@ -45,22 +101,8 @@
     </xacro:if>
 
 
-    <!-- Publish Pose -->
-    <!-- <gazebo>
-      <plugin
-          filename="gz-sim-pose-publisher-system"
-          name="gz::sim::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <publish_collision_pose>false</publish_collision_pose>
-        <publish_visual_pose>false</publish_visual_pose>
-        <publish_sensor_pose>false</publish_sensor_pose>
-        <publish_nested_model_pose>true</publish_nested_model_pose>
-      </plugin>
-    </gazebo> -->
-
     <!-- Publish Joint States -->
     <gazebo>
-      <!-- <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher"> -->
       <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
         <topic>${robot_name}/joint_states</topic>
       </plugin>

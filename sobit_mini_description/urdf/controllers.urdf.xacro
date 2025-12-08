@@ -253,6 +253,17 @@
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
+      <xacro:if value="${$(arg enable_gz)}">
+        <joint name="body_big_gear_base_joint">
+          <param name="mimic">body_roll_joint</param>
+          <param name="multiplier">0.1896551724</param>
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+          <state_interface name="effort"/>
+        </joint>
+      </xacro:if>
     </ros2_control>
 
     <!-- Differential Drive -->

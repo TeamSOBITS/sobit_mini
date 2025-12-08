@@ -73,6 +73,7 @@ sudo apt-get install -y \
 sudo apt-get install -y \
     ros-"$ROS_DISTRO"-ros-gz \
     ros-"$ROS_DISTRO"-ign-ros2-control \
-    ros-"$ROS_DISTRO"-ign-ros2-control-demos
+    ros-"$ROS_DISTRO"-ign-ros2-control-demos \
+    ros-"$ROS_DISTRO"-topic-tools
 
 echo "╚══╣ Setup: SOBIT MINI (FINISHED) ╠══╝"
