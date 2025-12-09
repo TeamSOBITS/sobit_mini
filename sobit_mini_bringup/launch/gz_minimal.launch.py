@@ -56,10 +56,12 @@ def generate_launch_description():
             launch_arguments={
                 'robot_name': robot_name if robot_id == 0 else robot_name + '_' + str(robot_id),
                 'robot_coords_x': '-5.5', # x 
-                'robot_coords_y': '1.5', # y
-                'robot_coords_Y': '0', # yaw
-                'enable_gz' : 'True',
+                'robot_coords_y': '1.5',  # y
+                'robot_coords_Y': '0.0',  # yaw
                 'enable_gz_lidar' : 'True',
+                'enable_gz_head_cam_color': 'True',
+                'enable_gz_head_cam_depth': 'True',
+                'enable_gz' : 'True',
             }.items()
         ),
         # Launch Robot No. 2
@@ -73,11 +75,13 @@ def generate_launch_description():
         #     ]),
         #     launch_arguments={
         #         'robot_name': robot_name if (robot_id+1) == 0 else robot_name + '_' + str(robot_id+1),
-        #         'robot_coords_x': '0', # x 
-        #         'robot_coords_y': '0', # y
-        #         'robot_coords_Y': '0', # yaw
-        #         'enable_gz': 'True',
+        #         'robot_coords_x': '-5.5', # x 
+        #         'robot_coords_y': '-2.5', # y
+        #         'robot_coords_Y': '0.0',  # yaw
         #         'enable_gz_lidar' : 'True',
+        #         'enable_gz_head_cam_color': 'True',
+        #         'enable_gz_head_cam_depth': 'True',
+        #         'enable_gz': 'True',
         #     }.items()
         # ),
     ])
