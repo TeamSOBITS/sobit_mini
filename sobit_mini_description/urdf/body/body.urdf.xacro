@@ -133,7 +133,7 @@
         <mass value="0.37382712" />
         <inertia ixx="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" ixy="0.0" ixz="0.0"
                  iyy="${1/12*0.37382712*(3*(0.118**2 + 0.104**2) + 0.033**2)}" iyz="0.0"
-                 izz="${1/2*(0.118**2 + 0.104**2)}" />
+                 izz="${1/2*0.37382712*(0.118**2 + 0.104**2)}" />
       </inertial>
     </link>
 
@@ -141,7 +141,7 @@
       <parent link="${prefix}_roll_link" />
       <child link="${prefix}_big_gear_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-      <axis xyz="0 0 1" />
+      <axis xyz="0 0 -1" />
     </joint>
 
     <link name="${prefix}_big_gear_link"/>
