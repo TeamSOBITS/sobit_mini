@@ -39,7 +39,7 @@
           <pose>0.05 0.0 0.0 0.0 0.0 0.0</pose>
 
           <ignition_frame_id>${robot_name}/head_camera_optical_frame</ignition_frame_id>
-          <topic>${robot_name}/head_camera_base/depth/image_raw</topic>
+          <topic>${robot_name}/head_camera_base/depth/image_rect_raw</topic>
 
           <always_on>1</always_on>
           <visualize>true</visualize>

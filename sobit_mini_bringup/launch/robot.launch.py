@@ -114,6 +114,9 @@ def launch_gz(context, *args, **kwargs):
                     'realsense_bringup.launch.py'
                 ])
             ]),
+            launch_arguments={
+                "camera_namespace" : robot_name,
+            }.items()
         )
         rviz_config = PathJoinSubstitution([
             FindPackageShare('sobit_mini_bringup'),
@@ -194,7 +197,7 @@ def launch_gz(context, *args, **kwargs):
                         # "/" + robot_name + "/base_back_camera/depth" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                         "/" + robot_name + "/head_camera_base/color/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
                         "/" + robot_name + "/head_camera_base/color/image_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        "/" + robot_name + "/head_camera_base/depth/image_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
+                        "/" + robot_name + "/sobit_mini/head_camera_base/depth/image_rect_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
                         # "/" + robot_name + "/head_camera_base/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
                         "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
 
@@ -257,7 +260,7 @@ def launch_gz(context, *args, **kwargs):
         rviz_config = PathJoinSubstitution([
             FindPackageShare('sobit_mini_bringup'),
             'rviz',
-            'gazebo.rviz'
+            'real.rviz'
         ])
 
 
