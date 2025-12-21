@@ -287,7 +287,7 @@ def launch_gz(context, *args, **kwargs):
     )
 
     if enable_gz == 'False':
-        return {
+        return [
             kobuki_node,
             urg_node,
             camera_node,
@@ -303,7 +303,7 @@ def launch_gz(context, *args, **kwargs):
                 )
             ),
             rviz_node,
-        }
+        ]
     
     else:
         return [
