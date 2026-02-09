@@ -29,6 +29,9 @@
   <xacro:arg name="enable_gz_head_cam_color" default="True" />
   <xacro:arg name="enable_gz_head_cam_depth" default="True" />
 
+  <!-- DXL Ports -->
+  <xacro:arg name="dxl_sm_port"  default="/dev/ttyUSB0" />
+
   <xacro:arg name="robot_name" default="sobit_mini" />
 
   <xacro:controllers name="joints_control" enable_gz="$(arg enable_gz)" robot_name="$(arg robot_name)" />

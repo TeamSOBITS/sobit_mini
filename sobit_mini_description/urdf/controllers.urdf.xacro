@@ -12,8 +12,9 @@
           <!-- <plugin>gazebo_ros2_control/GazeboHardware</plugin> -->
         </xacro:if>
         <xacro:unless value="${$(arg enable_gz)}">
+          <xacro:property name="dxl_sm_port" value="$(arg dxl_sm_port)"/>
           <plugin>dynamixel_hardware/DynamixelHardware</plugin>
-          <param name="port_name">/dev/ttyUSB0</param>
+          <param name="port_name">${dxl_sm_port}</param>
           <param name="baud_rate">1000000</param>
           <!-- <param name="use_dummy">true</param> -->
         </xacro:unless>

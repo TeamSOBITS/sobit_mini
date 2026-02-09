@@ -6,12 +6,11 @@ DIR=$(pwd)
 cd ..
 
 ros_packages=(
-    "sobits_interfaces" \
-    "dynamixel_hardware" \
-    "realsense_ros" \
-    "urg_node" \
-    "kobuki_ros" \
-    "turtlebot2_description" \
+    "sobits_interfaces"
+    "dynamixel_hardware"
+    "realsense_ros"
+    "urg_node"
+    "turtlebot2_ros2"
     "sobits_gazebo_worlds"
 )
 
@@ -27,15 +26,17 @@ for ((i = 0; i < ${#ros_packages[@]}; i++)) {
     fi
 }
 
-cd "$DIR" || exit
+cd "$DIR"
 
-python3 -m pip install transforms3d
+# Download required dependencies
+python3 -m pip install --break-system-packages \
+    transforms3d
 
-sudo apt-get update
-sudo apt-get install -y \
+sudo apt update
+sudo apt install -y \
     ros-"$ROS_DISTRO"-ecl-linear-algebra \
+    ros-"$ROS_DISTRO"-ecl-geometry \
     ros-"$ROS_DISTRO"-kobuki-ros-interfaces \
-    ros-"$ROS_DISTRO"-kobuki-core \
     ros-"$ROS_DISTRO"-laser-proc \
     ros-"$ROS_DISTRO"-urg-c \
     ros-"$ROS_DISTRO"-urg-node \
@@ -54,6 +55,7 @@ sudo apt-get install -y \
     ros-"$ROS_DISTRO"-trajectory-msgs \
     ros-"$ROS_DISTRO"-geometry-msgs \
     ros-"$ROS_DISTRO"-joy \
+    ros-"$ROS_DISTRO"-joy-linux \
     ros-"$ROS_DISTRO"-ros2-control \
     ros-"$ROS_DISTRO"-ros2-controllers \
     ros-"$ROS_DISTRO"-control-toolbox \
@@ -61,19 +63,38 @@ sudo apt-get install -y \
     ros-"$ROS_DISTRO"-velocity-controllers \
     ros-"$ROS_DISTRO"-effort-controllers \
     ros-"$ROS_DISTRO"-joint-trajectory-controller \
-    ros-"$ROS_DISTRO"-joint-group-impedance-controller \
     ros-"$ROS_DISTRO"-joint-state-broadcaster \
-    ros-"$ROS_DISTRO"-robot-controllers \
-    ros-"$ROS_DISTRO"-robot-controllers-interface \
     ros-"$ROS_DISTRO"-urdf \
     ros-"$ROS_DISTRO"-urdf-launch \
     ros-"$ROS_DISTRO"-xacro \
-    ros-"$ROS_DISTRO"-tf-transformations
-
-sudo apt-get install -y \
+    ros-"$ROS_DISTRO"-tf-transformations \
+    ros-"$ROS_DISTRO"-gz-ros2-control \
+    ros-"$ROS_DISTRO"-actuator-msgs \
+    ros-"$ROS_DISTRO"-gps-msgs \
     ros-"$ROS_DISTRO"-ros-gz \
-    ros-"$ROS_DISTRO"-ign-ros2-control \
-    ros-"$ROS_DISTRO"-ign-ros2-control-demos \
+    ros-"$ROS_DISTRO"-ros-gz-bridge \
+    ros-"$ROS_DISTRO"-ros-gz-sim \
+    ros-"$ROS_DISTRO"-ros-gz-interfaces \
     ros-"$ROS_DISTRO"-topic-tools
+
+
+# Set up environment variables
+echo "" >> /home/$USERNAME/.bashrc
+echo "# SOBIT MINI environment variables" >> /home/$USERNAME/.bashrc
+echo "export DXL_SM_PORT=`realpath /dev/serial/by-id/usb-BestTechnology_E143_E143-if00-port0`" >> /home/$USERNAME/.bashrc
+echo "export KOBUKI_SM_PORT=`realpath /dev/serial/by-id/usb-Yujin_Robot_iClebo_Kobuki_kobuki_AI06FCC2-if00-port0`" >> /home/$USERNAME/.bashrc
+echo "export HOKUYO_SM_PORT=`realpath /dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00`" >> /home/$USERNAME/.bashrc
+echo "" >> /home/$USERNAME/.bashrc
+source /home/$USERNAME/.bashrc
+
+# # Reload udev rules
+sudo udevadm control --reload-rules
+
+# # Trigger the new rules
+sudo udevadm trigger
+
+
+# Go back to previous directory
+cd ${DIR}
 
 echo "╚══╣ Setup: SOBIT MINI (FINISHED) ╠══╝"

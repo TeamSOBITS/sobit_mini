@@ -47,6 +47,19 @@ def launch_gz(context, *args, **kwargs):
     enable_gz_lidar = LaunchConfiguration('enable_gz_lidar').perform(context)
     enable_gz_head_cam_color = LaunchConfiguration('enable_gz_head_cam_color').perform(context)
     enable_gz_head_cam_depth = LaunchConfiguration('enable_gz_head_cam_depth').perform(context)
+
+    # Find Dynamixel Port name, Kobuki Port name and Hokuyo(URG) Port name from DXL_SM_PORT/KOBUKI_SM_PORT/HOKUYO_SM_PORT environment variable
+    dxl_sm_port = ''
+    kobuki_sm_port = ''
+    # hokuyo_sm_port = ''
+    if enable_gz == 'False':
+        dxl_sm_port = str(os.environ.get('DXL_SM_PORT'))
+        print('Dynamixel SOBIT MINI Port : ' + dxl_sm_port)
+        kobuki_sm_port = str(os.environ.get('KOBUKI_SM_PORT'))
+        print('Kobuki SOBIT MINI Port : ' + kobuki_sm_port)
+        # hokuyo_sm_port = str(os.environ.get('HOKUYO_SM_PORT'))
+        # print('Hokuyo(URG) SOBIT MINI Port : ' + hokuyo_sm_port)
+
     robot_description = os.path.join(get_package_share_directory(
         'sobit_mini_description'), 
         'robots',
@@ -60,6 +73,7 @@ def launch_gz(context, *args, **kwargs):
             'enable_gz_lidar' : enable_gz_lidar,
             'enable_gz_head_cam_color' : enable_gz_head_cam_color,
             'enable_gz_head_cam_depth' : enable_gz_head_cam_depth,
+            'dxl_sm_port' : dxl_sm_port,
         })
 
 
@@ -68,6 +82,7 @@ def launch_gz(context, *args, **kwargs):
     kobuki_param_file = os.path.join(get_package_share_directory("sobit_mini_bringup"), "config", "kobuki_node_params.yaml")
     with open(kobuki_param_file, "r") as f:
         kobuki_params = yaml.safe_load(f)["kobuki_ros_node"]["ros__parameters"]
+    kobuki_params["device_port"] = kobuki_sm_port
 
 
     if enable_gz == 'False':
@@ -81,9 +96,11 @@ def launch_gz(context, *args, **kwargs):
             package="controller_manager",
             executable="ros2_control_node",
             namespace=robot_name,
-            parameters=[
-                {"robot_description": robot_description_config.toxml()}, controller_config],
-            output="screen",
+            parameters=[controller_config],
+            remappings=[
+                ("controller_manager/robot_description", "robot_description"),
+            ],
+            output="both",
         )
         kobuki_node = Node(
             package="kobuki_node",
@@ -124,34 +141,26 @@ def launch_gz(context, *args, **kwargs):
             'real.rviz'
         ])
 
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller',
-             '--set-state', 'active',
-             '--controller-manager', robot_name+'/controller_manager',
-            #  '--use-sim-time',
-             'joint_state_broadcaster'
-        ],
-        output='screen'
+    joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        name='joint_state_broadcaster',
+        namespace=robot_name,
+        arguments=[
+            'joint_state_broadcaster',
+            '-c', 'controller_manager',
+            ],
     )
 
-    joint_trajectory_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller',
-             '--set-state', 'active',
-             '--controller-manager', robot_name+'/controller_manager',
-            #  '--use-sim-time',
-             'joint_trajectory_controller'
-        ],
-        output='screen'
-    )
-
-    velocity_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller',
-             '--set-state', 'configured',
-             '--controller-manager', robot_name+'/controller_manager',
-            #  '--use-sim-time',
-             'velocity_controller'
-        ],
-        output='screen'
+    joint_trajectory_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        name='joint_trajectory_controller',
+        namespace=robot_name,
+        arguments=[
+            'joint_trajectory_controller',
+            '-c', 'controller_manager', '--activate'
+            ],
     )
 
     robot_state_publisher_node = Node(
@@ -233,14 +242,15 @@ def launch_gz(context, *args, **kwargs):
             ],
         )
 
-        diff_controller = ExecuteProcess(
-            cmd=['ros2', 'control', 'load_controller',
-                '--set-state', 'active',
-                '--controller-manager', robot_name+'/controller_manager',
-                #  '--use-sim-time',
-                'diff_controller'
-            ],
-            output='screen'
+        diff_controller = Node(
+            package='controller_manager',
+            executable='spawner',
+            name='diff_controller',
+            namespace=robot_name,
+            arguments=[
+                'diff_controller',
+                '-c', 'controller_manager', '--activate'
+                ],
         )
 
         vel_remap_node = Node(
@@ -260,7 +270,7 @@ def launch_gz(context, *args, **kwargs):
         rviz_config = PathJoinSubstitution([
             FindPackageShare('sobit_mini_bringup'),
             'rviz',
-            'real.rviz'
+            'gazebo.rviz'
         ])
 
 
@@ -293,7 +303,6 @@ def launch_gz(context, *args, **kwargs):
             camera_node,
             ros2_control_node,
             joint_state_broadcaster,
-            velocity_controller,
             joint_trajectory_controller,
             robot_state_publisher_node,
             RegisterEventHandler(
@@ -321,12 +330,6 @@ def launch_gz(context, *args, **kwargs):
                 event_handler=OnProcessExit(
                     target_action=joint_state_broadcaster,
                     on_exit=[joint_trajectory_controller],
-                )
-            ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=joint_state_broadcaster,
-                    on_exit=[velocity_controller],
                 )
             ),
             RegisterEventHandler(
