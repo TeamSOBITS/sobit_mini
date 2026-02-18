@@ -49,6 +49,7 @@ sudo apt install -y \
     ros-"$ROS_DISTRO"-transmission-interface \
     ros-"$ROS_DISTRO"-controller-interface \
     ros-"$ROS_DISTRO"-controller-manager \
+    ros-"$ROS_DISTRO"-controller-manager-msgs \
     ros-"$ROS_DISTRO"-tf2 \
     ros-"$ROS_DISTRO"-tf2-ros \
     ros-"$ROS_DISTRO"-sensor-msgs \
@@ -76,7 +77,6 @@ sudo apt install -y \
     ros-"$ROS_DISTRO"-ros-gz-sim \
     ros-"$ROS_DISTRO"-ros-gz-interfaces \
     ros-"$ROS_DISTRO"-topic-tools
-
 
 # Set up environment variables
 echo "" >> /home/$USERNAME/.bashrc
