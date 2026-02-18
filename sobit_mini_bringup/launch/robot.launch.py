@@ -196,22 +196,22 @@ def launch_gz(context, *args, **kwargs):
             executable='parameter_bridge',
             namespace=robot_name,
             arguments=[
-                        "/" + robot_name + "/joint_states" + "@sensor_msgs/msg/JointState" + "[ignition.msgs.Model",
-                        # "/model/" + robot_name + "/pose" + "@geometry_msgs/msg/Pose" + "[ignition.msgs.Pose",
-                        # "/" + robot_name + "/base_front_camera/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
-                        # "/" + robot_name + "/base_front_camera/color" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        # "/" + robot_name + "/base_front_camera/depth" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        # "/" + robot_name + "/base_back_camera/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
-                        # "/" + robot_name + "/base_back_camera/color" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        # "/" + robot_name + "/base_back_camera/depth" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        "/" + robot_name + "/head_camera_base/color/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
-                        "/" + robot_name + "/head_camera_base/color/image_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        "/" + robot_name + "/sobit_mini/head_camera_base/depth/image_rect_raw" + "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                        # "/" + robot_name + "/head_camera_base/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
-                        "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
+                        "/" + robot_name + "/joint_states" + "@sensor_msgs/msg/JointState" + "[gz.msgs.Model",
+                        # "/model/" + robot_name + "/pose" + "@geometry_msgs/msg/Pose" + "[gz.msgs.Pose",
+                        # "/" + robot_name + "/base_front_camera/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[gz.msgs.CameraInfo",
+                        # "/" + robot_name + "/base_front_camera/color" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        # "/" + robot_name + "/base_front_camera/depth" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        # "/" + robot_name + "/base_back_camera/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[gz.msgs.CameraInfo",
+                        # "/" + robot_name + "/base_back_camera/color" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        # "/" + robot_name + "/base_back_camera/depth" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        "/" + robot_name + "/head_camera_base/camera_info" + "@sensor_msgs/msg/CameraInfo" + "[gz.msgs.CameraInfo",
+                        "/" + robot_name + "/head_camera_base/color" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        "/" + robot_name + "/head_camera_base/depth" + "@sensor_msgs/msg/Image" + "[gz.msgs.Image",
+                        "/" + robot_name + "/head_camera_base/depth/points" + "@sensor_msgs/msg/PointCloud2" + "[gz.msgs.PointCloudPacked",
+                        "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" + "[gz.msgs.LaserScan",
 
-                        "/" + robot_name + "/scan/points" + "@sensor_msgs/msg/PointCloud2" + "[ignition.msgs.PointCloudPacked",
-                        "/" + robot_name + "/imu" + "@sensor_msgs/msg/Imu" + "[ignition.msgs.IMU",
+                        # "/" + robot_name + "/scan/points" + "@sensor_msgs/msg/PointCloud2" + "[gz.msgs.PointCloudPacked",
+                        "/" + robot_name + "/imu" + "@sensor_msgs/msg/Imu" + "[gz.msgs.IMU",
                     ],
             output='screen'
         )
@@ -226,20 +226,6 @@ def launch_gz(context, *args, **kwargs):
                        '--yaw', '-1.57',
                     ],
             output='screen',
-        )
-
-        point_cloud_node = Node(
-            package='depth_image_proc',
-            executable='point_cloud_xyzrgb_node',
-            name='point_cloud_node',
-            namespace=robot_name,
-            parameters=[{'queue_size': 10}],
-            remappings=[
-                ('/'+robot_name+'/rgb/image_rect_color',        '/'+robot_name+'/head_camera_base/color/image_raw'),
-                ('/'+robot_name+'/depth_registered/image_rect', '/'+robot_name+'/head_camera_base/depth/image_raw'),
-                ('/'+robot_name+'/rgb/camera_info',             '/'+robot_name+'/head_camera_base/color/camera_info'),
-                ('/'+robot_name+'/points',                      '/'+robot_name+'/head_camera_base/depth/points'),
-            ],
         )
 
         diff_controller = Node(
@@ -319,7 +305,6 @@ def launch_gz(context, *args, **kwargs):
             gz_spawn_entity_node,
             gz_bridge_node,
             gz_tf_head_cam_node,
-            point_cloud_node,
             RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=gz_spawn_entity_node,
