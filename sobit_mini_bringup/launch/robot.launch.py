@@ -179,24 +179,6 @@ def launch_gz(context, *args, **kwargs):
         output='screen'
     )
 
-    # joint_trajectory_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller',
-    #          '--set-state', 'active',
-    #          '--controller-manager', robot_name+'/controller_manager',
-    #          'joint_trajectory_controller'
-    #     ],
-    #     output='screen'
-    # )
-
-    # velocity_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller',
-    #          '--set-state', 'configured',
-    #          '--controller-manager', robot_name+'/controller_manager',
-    #          'velocity_controller'
-    #     ],
-    #     output='screen'
-    # )
-
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -230,20 +212,12 @@ def launch_gz(context, *args, **kwargs):
             executable='parameter_bridge',
             namespace=robot_name,
             arguments=[
-                "/" + robot_name + "/joint_states" +
-                    "@sensor_msgs/msg/JointState" + "[ignition.msgs.Model",
-                "/" + robot_name + "/head_camera_base/color/camera_info" +
-                "@sensor_msgs/msg/CameraInfo" + "[ignition.msgs.CameraInfo",
-                "/" + robot_name + "/head_camera_base/color/image_raw" +
-                "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                "/" + robot_name + "/sobit_mini/head_camera_base/depth/image_rect_raw" +
-                "@sensor_msgs/msg/Image" + "[ignition.msgs.Image",
-                "/" + robot_name + "/scan" + "@sensor_msgs/msg/LaserScan" +
-                "[ignition.msgs.LaserScan",
-                "/" + robot_name + "/scan/points" + "@sensor_msgs/msg/PointCloud2" +
-                "[ignition.msgs.PointCloudPacked",
-                "/" + robot_name + "/imu" +
-                "@sensor_msgs/msg/Imu" + "[ignition.msgs.IMU",
+                "/" + robot_name + "/joint_states@sensor_msgs/msg/JointState[ignition.msgs.Model",
+                "/" + robot_name + "/head_camera_base/color/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
+                "/" + robot_name + "/head_camera_base/color/image_raw@sensor_msgs/msg/Image[ignition.msgs.Image",
+                "/" + robot_name + "/head_camera_base/depth/image_rect_raw@sensor_msgs/msg/Image[ignition.msgs.Image",
+                "/" + robot_name + "/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
+                "/" + robot_name + "/imu@sensor_msgs/msg/Imu[ignition.msgs.IMU",
             ],
             output='screen'
         )
@@ -258,24 +232,6 @@ def launch_gz(context, *args, **kwargs):
                        '--yaw', '-1.57',
                        ],
             output='screen',
-        )
-
-        point_cloud_node = Node(
-            package='depth_image_proc',
-            executable='point_cloud_xyzrgb_node',
-            name='point_cloud_node',
-            namespace=robot_name,
-            parameters=[{'queue_size': 10}],
-            remappings=[
-                ('/'+robot_name+'/rgb/image_rect_color',        '/' +
-                 robot_name+'/head_camera_base/color/image_raw'),
-                ('/'+robot_name+'/depth_registered/image_rect',
-                 '/'+robot_name+'/head_camera_base/depth/image_raw'),
-                ('/'+robot_name+'/rgb/camera_info',             '/' +
-                 robot_name+'/head_camera_base/color/camera_info'),
-                ('/'+robot_name+'/points',                      '/' +
-                 robot_name+'/head_camera_base/depth/points'),
-            ],
         )
 
         diff_controller = ExecuteProcess(
@@ -354,13 +310,11 @@ def launch_gz(context, *args, **kwargs):
             rviz_node,
         ]
 
-
     else:
         return [
             gz_spawn_entity_node,
             gz_bridge_node,
             gz_tf_head_cam_node,
-            point_cloud_node,
             RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=gz_spawn_entity_node,
