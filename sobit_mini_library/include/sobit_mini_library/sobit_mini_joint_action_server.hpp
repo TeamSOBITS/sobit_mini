@@ -70,57 +70,87 @@ public:
   using GetHandToTargetCoord = sobits_interfaces::srv::GetHandToTargetCoord;
   using GetHandToTargetTF = sobits_interfaces::srv::GetHandToTargetTF;
 
-  using GoalHandleMoveJoints =
-    rclcpp_action::ServerGoalHandle<sobits_interfaces::action::MoveJoint>;
-  using GoalHandleMoveToPose =
-    rclcpp_action::ServerGoalHandle<sobits_interfaces::action::MoveToPose>;
+  using GoalHandleMoveJoints = rclcpp_action::ServerGoalHandle<sobits_interfaces::action::MoveJoint>;
+  using GoalHandleMoveToPose = rclcpp_action::ServerGoalHandle<sobits_interfaces::action::MoveToPose>;
 
   explicit JointActionServer(const rclcpp::NodeOptions &options);
   ~JointActionServer();
 
-  geometry_msgs::msg::Vector3 get_euler_from_quat(const geometry_msgs::msg::Quaternion &quat);
-  geometry_msgs::msg::Quaternion get_quat_from_euler(const geometry_msgs::msg::Vector3 &rpy);
-  geometry_msgs::msg::TransformStamped
-  forward_kinematics(const std::vector<double> &target_joint_rad, const bool is_right,
-                     const double target_yaw);
-  std::vector<double> inverse_kinematics(const geometry_msgs::msg::TransformStamped &goal_coord,
-                                         const bool is_right, bool is_one_rink,
-                                         const double target_yaw);
+  geometry_msgs::msg::Vector3 get_euler_from_quat(
+    const geometry_msgs::msg::Quaternion &quat
+  );
+
+  geometry_msgs::msg::Quaternion get_quat_from_euler(
+    const geometry_msgs::msg::Vector3 &rpy
+  );
+
+  geometry_msgs::msg::TransformStamped forward_kinematics(
+    const std::vector<double> &target_joint_rad,
+    const bool is_right,
+    const double target_yaw
+  );
+
+  std::vector<double> inverse_kinematics(
+    const geometry_msgs::msg::TransformStamped &goal_coord,
+    const bool is_right,
+    bool is_one_rink,
+    const double target_yaw
+  );
+
   trajectory_msgs::msg::JointTrajectory set_joints(
-    const std::vector<std::string> &target_joint_names, const std::vector<double> &target_joint_rad,
-    const builtin_interfaces::msg::Duration &time_allowance, const std::string &group_name);
+    const std::vector<std::string> &target_joint_names,
+    const std::vector<double> &target_joint_rad,
+    const builtin_interfaces::msg::Duration &time_allowance,
+    const std::string &group_name
+  );
 
 private:
-  const std::vector<std::string> JointNames = {"r_arm_shoulder_roll_joint",
-                                               "r_arm_shoulder_pan_joint",
-                                               "r_arm_elbow_tilt_joint",
-                                               "r_arm_wrist_tilt_joint",
-                                               "r_hand_joint",
-                                               "l_arm_shoulder_roll_joint",
-                                               "l_arm_shoulder_pan_joint",
-                                               "l_arm_elbow_tilt_joint",
-                                               "l_arm_wrist_tilt_joint",
-                                               "l_hand_joint",
-                                               "body_roll_joint",
-                                               "head_camera_pan_joint",
-                                               "head_camera_tilt_joint"};
+  const std::vector<std::string> JointNames = {
+    "r_arm_shoulder_roll_joint",
+    "r_arm_shoulder_pan_joint",
+    "r_arm_elbow_tilt_joint",
+    "r_arm_wrist_tilt_joint",
+    "r_hand_joint",
+    "l_arm_shoulder_roll_joint",
+    "l_arm_shoulder_pan_joint",
+    "l_arm_elbow_tilt_joint",
+    "l_arm_wrist_tilt_joint",
+    "l_hand_joint",
+    "body_roll_joint",
+    "head_camera_pan_joint",
+    "head_camera_tilt_joint"
+  };
 
   const std::vector<std::string> JointNamesArmLeft = {
-    "l_arm_shoulder_roll_joint", "l_arm_shoulder_pan_joint", "l_arm_elbow_tilt_joint",
-    "l_arm_wrist_tilt_joint"};
+    "l_arm_shoulder_roll_joint",
+    "l_arm_shoulder_pan_joint",
+    "l_arm_elbow_tilt_joint",
+    "l_arm_wrist_tilt_joint"
+  };
 
   const std::vector<std::string> JointNamesArmRight = {
-    "r_arm_shoulder_roll_joint", "r_arm_shoulder_pan_joint", "r_arm_elbow_tilt_joint",
-    "r_arm_wrist_tilt_joint"};
+    "r_arm_shoulder_roll_joint",
+    "r_arm_shoulder_pan_joint",
+    "r_arm_elbow_tilt_joint",
+    "r_arm_wrist_tilt_joint"
+  };
 
-  const std::vector<std::string> JointNamesHandLeft = {"l_hand_joint"};
+  const std::vector<std::string> JointNamesHandLeft = {
+    "l_hand_joint"
+  };
 
-  const std::vector<std::string> JointNamesHandRight = {"r_hand_joint"};
+  const std::vector<std::string> JointNamesHandRight = {
+    "r_hand_joint"
+  };
 
-  const std::vector<std::string> JointNamesHead = {"head_camera_pan_joint",
-                                                   "head_camera_tilt_joint"};
+  const std::vector<std::string> JointNamesHead = {
+    "head_camera_pan_joint",
+    "head_camera_tilt_joint"
+  };
 
-  const std::vector<std::string> JointNamesBody = {"body_roll_joint"};
+  const std::vector<std::string> JointNamesBody = {
+    "body_roll_joint"
+  };
 
   static constexpr double BaseToShoulderDX = 0.0;
   static constexpr double BaseToShoulderDY = 0.195;
@@ -135,6 +165,7 @@ private:
 
   rclcpp_action::Server<MoveJoint>::SharedPtr action_server_move_joints_;
   rclcpp_action::Server<MoveToPose>::SharedPtr action_server_move_to_pose_;
+
   rclcpp::Service<GetHandToTargetCoord>::SharedPtr service_server_get_hand_to_coord_left_;
   rclcpp::Service<GetHandToTargetTF>::SharedPtr service_server_get_hand_to_tf_left_;
   rclcpp::Service<GetHandToTargetCoord>::SharedPtr service_server_get_hand_to_coord_right_;
@@ -144,28 +175,53 @@ private:
   rclcpp::Service<GetHandToTargetCoord>::SharedPtr service_server_get_hand_to_coord_one_right_;
   rclcpp::Service<GetHandToTargetTF>::SharedPtr service_server_get_hand_to_tf_one_right_;
 
-  rclcpp_action::GoalResponse handle_move_joints_goal(const rclcpp_action::GoalUUID &uuid,
-                                                      std::shared_ptr<const MoveJoint::Goal> goal);
-  rclcpp_action::GoalResponse
-  handle_move_to_pose_goal(const rclcpp_action::GoalUUID &uuid,
-                           std::shared_ptr<const MoveToPose::Goal> goal);
+  rclcpp_action::GoalResponse handle_move_joints_goal(
+    const rclcpp_action::GoalUUID &uuid,
+    std::shared_ptr<const MoveJoint::Goal> goal
+  );
 
-  rclcpp_action::CancelResponse
-  handle_move_joints_cancel(const std::shared_ptr<GoalHandleMoveJoints> goal_handle);
-  rclcpp_action::CancelResponse
-  handle_move_to_pose_cancel(const std::shared_ptr<GoalHandleMoveToPose> goal_handle);
+  rclcpp_action::GoalResponse handle_move_to_pose_goal(
+    const rclcpp_action::GoalUUID &uuid,
+    std::shared_ptr<const MoveToPose::Goal> goal
+  );
 
-  void handle_move_joints_accepted(const std::shared_ptr<GoalHandleMoveJoints> goal_handle);
-  void handle_move_to_pose_accepted(const std::shared_ptr<GoalHandleMoveToPose> goal_handle);
+  rclcpp_action::CancelResponse handle_move_joints_cancel(
+    const std::shared_ptr<GoalHandleMoveJoints> goal_handle
+  );
 
-  void exe_move_joints(const std::shared_ptr<GoalHandleMoveJoints> goal_handle);
-  void exe_move_to_pose(const std::shared_ptr<GoalHandleMoveToPose> goal_handle);
-  void serve_get_hand_to_coord(const std::shared_ptr<GetHandToTargetCoord::Request> request,
-                               std::shared_ptr<GetHandToTargetCoord::Response> response,
-                               bool is_right, bool is_one_rink);
-  void serve_get_hand_to_tf(const std::shared_ptr<GetHandToTargetTF::Request> request,
-                            std::shared_ptr<GetHandToTargetTF::Response> response, bool is_right,
-                            bool is_one_rink);
+  rclcpp_action::CancelResponse handle_move_to_pose_cancel(
+    const std::shared_ptr<GoalHandleMoveToPose> goal_handle
+  );
+
+  void handle_move_joints_accepted(
+    const std::shared_ptr<GoalHandleMoveJoints> goal_handle
+  );
+
+  void handle_move_to_pose_accepted(
+    const std::shared_ptr<GoalHandleMoveToPose> goal_handle
+  );
+
+  void exe_move_joints(
+    const std::shared_ptr<GoalHandleMoveJoints> goal_handle
+  );
+
+  void exe_move_to_pose(
+    const std::shared_ptr<GoalHandleMoveToPose> goal_handle
+  );
+
+  void serve_get_hand_to_coord(
+    const std::shared_ptr<GetHandToTargetCoord::Request> request,
+    std::shared_ptr<GetHandToTargetCoord::Response> response,
+    bool is_right,
+    bool is_one_rink
+  );
+
+  void serve_get_hand_to_tf(
+    const std::shared_ptr<GetHandToTargetTF::Request> request,
+    std::shared_ptr<GetHandToTargetTF::Response> response,
+    bool is_right,
+    bool is_one_rink
+  );
 
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr pub_head_joint_control_;
   rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr pub_arm_left_joint_control_;
