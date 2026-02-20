@@ -161,7 +161,7 @@ void WheelActionServer::exe_move_wheel_linear(
 
     // Calculate the elapsed time
     rclcpp::Duration dur_elapsed_time = curt_time - start_time;
-    double elapsed_time = dur_elapsed_time.nanoseconds() / 1e9; 
+    double elapsed_time = dur_elapsed_time.nanoseconds() / 1e9;
 
     double vel_linear = 0.0;
 
@@ -183,7 +183,7 @@ void WheelActionServer::exe_move_wheel_linear(
     // double derivative_dist = error_dist - prev_error_dist;
 
     // // Calculate the output velocity
-    // out_vel.linear.x = 
+    // out_vel.linear.x =
     //     kp * error_dist +
     //     ki * integral_dist +
     //     kd * derivative_dist;
@@ -278,7 +278,7 @@ void WheelActionServer::exe_move_wheel_rotate(
 
     // Calculate the elapsed time
     rclcpp::Duration dur_elapsed_time = curt_time - start_time;
-    double elapsed_time = dur_elapsed_time.nanoseconds() / 1e9; 
+    double elapsed_time = dur_elapsed_time.nanoseconds() / 1e9;
 
     double vel_angular = 0.0;
 
