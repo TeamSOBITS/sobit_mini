@@ -75,9 +75,19 @@ JointActionServer::JointActionServer(const rclcpp::NodeOptions & options = rclcp
 
   this->sub_joint_state_ = this->create_subscription<sensor_msgs::msg::JointState>(
       "joint_states", qos_profile, std::bind(&JointActionServer::joint_state_callback, this, std::placeholders::_1));
-  this->pub_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
-      "joint_trajectory_controller/joint_trajectory", qos_profile);
 
+  this->pub_head_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "head_position_controller/joint_trajectory", qos_profile);
+  this->pub_arm_left_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "arm_left_position_controller/joint_trajectory", qos_profile);
+  this->pub_arm_right_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "arm_right_position_controller/joint_trajectory", qos_profile);
+  this->pub_hand_left_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "hand_left_position_controller/joint_trajectory", qos_profile);
+  this->pub_hand_right_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "hand_right_position_controller/joint_trajectory", qos_profile);
+  this->pub_body_joint_control_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+      "body_position_controller/joint_trajectory", qos_profile);
 
   //Declare the pose parameters
   this->declare_parameter("poses", std::vector<std::string>());
@@ -128,7 +138,12 @@ JointActionServer::~JointActionServer()
   this->action_server_move_to_pose_.reset();
 
   this->sub_joint_state_.reset();
-  this->pub_joint_control_.reset();
+  this->pub_head_joint_control_.reset();
+  this->pub_arm_left_joint_control_.reset();
+  this->pub_arm_right_joint_control_.reset();
+  this->pub_hand_left_joint_control_.reset();
+  this->pub_hand_right_joint_control_.reset();
+  this->pub_body_joint_control_.reset();
 
   RCLCPP_INFO(this->get_logger(), "JointActionServer has been terminated.");
 }
@@ -196,7 +211,6 @@ void JointActionServer::exe_move_joints(
   const auto goal = goal_handle->get_goal();
   auto result = std::make_shared<MoveJoint::Result>();
 
-  // Check if the number of joint names and joint rad are the same
   if (goal->target_joint_names.size() != goal->target_joint_rad.size()) {
     RCLCPP_ERROR(this->get_logger(), "Invalid goal request. The number of joint names and joint rad are different");
     result->success = false;
@@ -207,7 +221,6 @@ void JointActionServer::exe_move_joints(
     return;
   }
 
-  // Check if the joint names are valid
   for (size_t i = 0; i < goal->target_joint_names.size(); i++) {
     if (std::find(JointNames.begin(), JointNames.end(), goal->target_joint_names[i]) == JointNames.end()) {
       RCLCPP_ERROR(this->get_logger(), "The joint name does not exist: %s", goal->target_joint_names[i].c_str());
@@ -220,34 +233,28 @@ void JointActionServer::exe_move_joints(
     }
   }
 
-  // TODO: Check if the joint rad are within the joint limits
-
-  // Publish the joint trajectory
-  trajectory_msgs::msg::JointTrajectory joint_trajectory;
-  joint_trajectory = set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance);
-
   try {
-    this->pub_joint_control_->publish(joint_trajectory);
+    this->pub_head_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "head"));
+    this->pub_arm_left_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "arm_left"));
+    this->pub_arm_right_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "arm_right"));
+    this->pub_hand_left_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "hand_left"));
+    this->pub_hand_right_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "hand_right"));
+    this->pub_body_joint_control_->publish(set_joints(goal->target_joint_names, goal->target_joint_rad, goal->time_allowance, "body"));
   } catch (const std::exception &ex) {
     RCLCPP_ERROR(this->get_logger(), "Failed to publish the joint trajectory: %s", ex.what());
-
     result->success = false;
     result->message = "[FAIL] Failed to publish the joint trajectory";
     result->total_elapsed_time.sec = 0;
     result->total_elapsed_time.nanosec = 0;
     goal_handle->abort(result);
-
     return;
   }
 
-  // Publish feedback
   auto start_time = this->now();
-  // rclcpp::Rate loop_rate(10);
 
   while (this->now() - start_time < goal->time_allowance) {
     if (goal_handle->is_canceling()) {
       RCLCPP_INFO(this->get_logger(), "Goal has been canceled");
-
       result->success = false;
       result->message = "[CANCEL] Goal has been canceled";
       result->total_elapsed_time.sec = (this->now() - start_time).seconds();
@@ -257,8 +264,12 @@ void JointActionServer::exe_move_joints(
       builtin_interfaces::msg::Duration dt;
       dt.sec = 0;
       dt.nanosec = static_cast<uint32_t>(0.1 * 10E9);
-      this->pub_joint_control_->publish(set_joints({}, {}, dt));
-
+      this->pub_head_joint_control_->publish(set_joints({}, {}, dt, "head"));
+      this->pub_arm_left_joint_control_->publish(set_joints({}, {}, dt, "arm_left"));
+      this->pub_arm_right_joint_control_->publish(set_joints({}, {}, dt, "arm_right"));
+      this->pub_hand_left_joint_control_->publish(set_joints({}, {}, dt, "hand_left"));
+      this->pub_hand_right_joint_control_->publish(set_joints({}, {}, dt, "hand_right"));
+      this->pub_body_joint_control_->publish(set_joints({}, {}, dt, "body"));
       return;
     }
 
@@ -269,39 +280,26 @@ void JointActionServer::exe_move_joints(
     }
     feedback->move_time.sec = (this->now() - start_time).seconds();
     feedback->move_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
-
     goal_handle->publish_feedback(feedback);
-
-    // rclcpp::spin_some(this->get_node_base_interface());
-    // loop_rate.sleep();
-
   }
 
-  // Check if goal was reached
   for (size_t i = 0; i < goal->target_joint_names.size(); i++) {
-    // TODO: set tolerance with parameter or msg
     if (std::abs(this->curt_joint_state_[goal->target_joint_names[i]] - goal->target_joint_rad[i]) > 0.1) {
       RCLCPP_ERROR(this->get_logger(), "Failed to reach the goal");
-
       result->success = false;
       result->message = "[FAIL] Failed to reach the goal";
       result->total_elapsed_time.sec = (this->now() - start_time).seconds();
       result->total_elapsed_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
       goal_handle->abort(result);
-
       return;
     }
   }
 
-  // Clear the current joint state
   curt_joint_state_.clear();
-
-  // Publish the result
   result->success = true;
   result->message = "Goal has been succeeded";
   result->total_elapsed_time.sec = (this->now() - start_time).seconds();
   result->total_elapsed_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
-
   goal_handle->succeed(result);
 }
 
@@ -313,7 +311,6 @@ void JointActionServer::exe_move_to_pose(
   const auto goal = goal_handle->get_goal();
   auto result = std::make_shared<MoveToPose::Result>();
 
-  // Check if the pose name is valid
   if (std::find_if(poses_.begin(), poses_.end(), [&](const PoseParams &pose) { return pose.pose_name == goal->pose_name; }) == poses_.end()) {
     RCLCPP_ERROR(this->get_logger(), "Invalid pose name: %s", goal->pose_name.c_str());
     result->success = false;
@@ -324,7 +321,6 @@ void JointActionServer::exe_move_to_pose(
     return;
   }
 
-  // Get the target joint rad from the pose name
   std::vector<double> target_joint_rad;
   for (const auto &pose : poses_) {
     if (pose.pose_name == goal->pose_name) {
@@ -347,40 +343,36 @@ void JointActionServer::exe_move_to_pose(
 
   if (target_joint_rad.size() == 0) {
     RCLCPP_ERROR(this->get_logger(), "Failed to not find the pose name : %s", goal->pose_name.c_str());
-
     result->success = false;
     result->message = "[FAIL] Failed to not find the pose name : " +  goal->pose_name;
     result->total_elapsed_time.sec = 0;
     result->total_elapsed_time.nanosec = 0;
     goal_handle->abort(result);
+    return;
   }
 
-  // Publish the joint trajectory
-  trajectory_msgs::msg::JointTrajectory joint_trajectory;
-  joint_trajectory = set_joints(JointNames, target_joint_rad, goal->time_allowance);
-
   try {
-    this->pub_joint_control_->publish(joint_trajectory);
+    this->pub_head_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "head"));
+    this->pub_arm_left_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "arm_left"));
+    this->pub_arm_right_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "arm_right"));
+    this->pub_hand_left_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "hand_left"));
+    this->pub_hand_right_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "hand_right"));
+    this->pub_body_joint_control_->publish(set_joints(JointNames, target_joint_rad, goal->time_allowance, "body"));
   } catch (const std::exception &ex) {
     RCLCPP_ERROR(this->get_logger(), "Failed to publish the joint trajectory: %s", ex.what());
-
     result->success = false;
     result->message = "[FAIL] Failed to publish the joint trajectory";
     result->total_elapsed_time.sec = 0;
     result->total_elapsed_time.nanosec = 0;
     goal_handle->abort(result);
-
     return;
   }
 
-  // Publish feedback
   auto start_time = this->now();
-  // rclcpp::Rate loop_rate(10);
 
   while (this->now() - start_time < goal->time_allowance) {
     if (goal_handle->is_canceling()) {
       RCLCPP_INFO(this->get_logger(), "Goal has been canceled");
-
       result->success = false;
       result->message = "[CANCEL] Goal has been canceled";
       result->total_elapsed_time.sec = (this->now() - start_time).seconds();
@@ -390,8 +382,12 @@ void JointActionServer::exe_move_to_pose(
       builtin_interfaces::msg::Duration dt;
       dt.sec = 0;
       dt.nanosec = static_cast<uint32_t>(0.1 * 10E9);
-      this->pub_joint_control_->publish(set_joints({}, {}, dt));
-
+      this->pub_head_joint_control_->publish(set_joints({}, {}, dt, "head"));
+      this->pub_arm_left_joint_control_->publish(set_joints({}, {}, dt, "arm_left"));
+      this->pub_arm_right_joint_control_->publish(set_joints({}, {}, dt, "arm_right"));
+      this->pub_hand_left_joint_control_->publish(set_joints({}, {}, dt, "hand_left"));
+      this->pub_hand_right_joint_control_->publish(set_joints({}, {}, dt, "hand_right"));
+      this->pub_body_joint_control_->publish(set_joints({}, {}, dt, "body"));
       return;
     }
 
@@ -402,38 +398,26 @@ void JointActionServer::exe_move_to_pose(
     }
     feedback->move_time.sec = (this->now() - start_time).seconds();
     feedback->move_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
-
     goal_handle->publish_feedback(feedback);
-
-    // rclcpp::spin_some(this->get_node_base_interface());
-    // loop_rate.sleep();
   }
 
-  // Check if goal was reached
   for (size_t i = 0; i < JointNames.size(); i++) {
-    // TODO: set tolerance with parameter or msg
     if (std::abs(this->curt_joint_state_[JointNames[i]] - target_joint_rad[i]) > 0.1) {
       RCLCPP_ERROR(this->get_logger(), "Failed to reach the goal");
-
       result->success = false;
       result->message = "[FAIL] Failed to reach the goal";
       result->total_elapsed_time.sec = (this->now() - start_time).seconds();
       result->total_elapsed_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
       goal_handle->abort(result);
-
       return;
     }
   }
 
-  // Clear the current joint state
   curt_joint_state_.clear();
-
-  // Publish the result
   result->message = "[SUCCESS] Goal has been succeeded";
   result->success = true;
   result->total_elapsed_time.sec = (this->now() - start_time).seconds();
   result->total_elapsed_time.nanosec = (this->now() - start_time).nanoseconds() % int(10E9);
-
   goal_handle->succeed(result);
 }
 
@@ -681,35 +665,31 @@ void JointActionServer::joint_state_callback(
 trajectory_msgs::msg::JointTrajectory JointActionServer::set_joints(
   const std::vector<std::string> &target_joint_names,
   const std::vector<double> &target_joint_rad,
-  const builtin_interfaces::msg::Duration &time_allowance)
+  const builtin_interfaces::msg::Duration &time_allowance,
+  const std::string &group_name)
 {
-  // Get current joint state from kCurrentJointState
-  std::vector<double> full_target_joint_rad;
-  for (size_t i = 0; i < JointNames.size(); i++) {
-    full_target_joint_rad.push_back(this->curt_joint_state_[JointNames[i]]);
-  }
-
-  // Update the target joint rad
-  for (size_t i = 0; i < target_joint_names.size(); i++) {
-    auto it = std::find(JointNames.begin(), JointNames.end(), target_joint_names[i]);
-    full_target_joint_rad[std::distance(JointNames.begin(), it)] = target_joint_rad[i];
-  }
+  std::vector<std::string> group_joints;
+  if      (group_name == "head")       group_joints = JointNamesHead;
+  else if (group_name == "arm_left")   group_joints = JointNamesArmLeft;
+  else if (group_name == "arm_right")  group_joints = JointNamesArmRight;
+  else if (group_name == "hand_left")  group_joints = JointNamesHandLeft;
+  else if (group_name == "hand_right") group_joints = JointNamesHandRight;
+  else if (group_name == "body")       group_joints = JointNamesBody;
 
   auto joint_trajectory = trajectory_msgs::msg::JointTrajectory();
   joint_trajectory.header.stamp = this->now();
   joint_trajectory.points.resize(1);
   joint_trajectory.points[0].time_from_start = time_allowance;
-  for (size_t i = 0; i < JointNames.size(); i++) {
-    joint_trajectory.points[0].positions.push_back(full_target_joint_rad[i]);
-    joint_trajectory.joint_names.push_back(JointNames[i]);
 
-    // // Add sub joints
-    // if (joint_trajectory.joint_names[i] == JointNames[JointIds::SUB_JOINT]) {
-    //   joint_trajectory.points[0].positions.push_back(-full_target_joint_rad[i]);
-    //   joint_trajectory.joint_names.push_back("SUB JOINT");
-    // }
+  for (const auto &joint_name : group_joints) {
+    double pos = this->curt_joint_state_[joint_name];
+    auto it = std::find(target_joint_names.begin(), target_joint_names.end(), joint_name);
+    if (it != target_joint_names.end()) {
+      pos = target_joint_rad[std::distance(target_joint_names.begin(), it)];
+    }
+    joint_trajectory.joint_names.push_back(joint_name);
+    joint_trajectory.points[0].positions.push_back(pos);
   }
-
   return joint_trajectory;
 }
 
