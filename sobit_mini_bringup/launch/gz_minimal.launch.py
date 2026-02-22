@@ -24,9 +24,24 @@ def generate_launch_description():
     )
 
     world_file = os.path.join(get_package_share_directory(
-        'sobits_gazebo_worlds'), 
+        'sobits_gazebo_worlds'),
         'worlds',
         'rcjo2025_arena.world.xacro'
+    )
+
+    # RViz config (gazebo用)
+    rviz_config = PathJoinSubstitution([
+        FindPackageShare('sobit_mini_bringup'),
+        'rviz',
+        'gazebo.rviz'
+    ])
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config],
     )
 
     return LaunchDescription([
@@ -40,10 +55,11 @@ def generate_launch_description():
                 ])
             ]),
             launch_arguments={
-                'gz_args' : ' -r -v 4 ' + world_file,
+                'gz_args': ' -r -v 4 ' + world_file,
             }.items()
         ),
         gz_bridge_node,
+
         # Launch Robot No. 1
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
@@ -55,15 +71,16 @@ def generate_launch_description():
             ]),
             launch_arguments={
                 'robot_name': robot_name if robot_id == 0 else robot_name + '_' + str(robot_id),
-                'robot_coords_x': '-5.5', # x 
-                'robot_coords_y': '1.5',  # y
-                'robot_coords_Y': '0.0',  # yaw
-                'enable_gz_lidar' : 'True',
+                'robot_coords_x': '-5.5',  # x
+                'robot_coords_y': '1.5',   # y
+                'robot_coords_Y': '0.0',   # yaw
+                'enable_gz_lidar': 'True',
                 'enable_gz_head_cam_color': 'True',
                 'enable_gz_head_cam_depth': 'True',
-                'enable_gz' : 'True',
+                'enable_gz': 'True',
             }.items()
         ),
+
         # Launch Robot No. 2
         # IncludeLaunchDescription(
         #     PythonLaunchDescriptionSource([
@@ -75,13 +92,16 @@ def generate_launch_description():
         #     ]),
         #     launch_arguments={
         #         'robot_name': robot_name if (robot_id+1) == 0 else robot_name + '_' + str(robot_id+1),
-        #         'robot_coords_x': '-5.5', # x 
+        #         'robot_coords_x': '-5.5', # x
         #         'robot_coords_y': '-2.5', # y
         #         'robot_coords_Y': '0.0',  # yaw
-        #         'enable_gz_lidar' : 'True',
+        #         'enable_gz_lidar': 'True',
         #         'enable_gz_head_cam_color': 'True',
         #         'enable_gz_head_cam_depth': 'True',
         #         'enable_gz': 'True',
         #     }.items()
         # ),
+
+        # Launch RViz
+        rviz_node,
     ])
