@@ -14,7 +14,6 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
 
-
 namespace sobit_mini
 {
 
@@ -31,9 +30,12 @@ public:
   ~WheelActionServer();
 
   geometry_msgs::msg::Vector3 get_euler_from_quat(
-    const geometry_msgs::msg::Quaternion& quat);
+    const geometry_msgs::msg::Quaternion& quat
+  );
+
   geometry_msgs::msg::Quaternion get_quat_from_euler(
-    const geometry_msgs::msg::Vector3& rpy);
+    const geometry_msgs::msg::Vector3& rpy
+  );
 
 private:
   nav_msgs::msg::Odometry init_odom_;
@@ -43,24 +45,45 @@ private:
   rclcpp_action::Server<MoveWheelLinear>::SharedPtr action_server_move_wheel_linear_;
   rclcpp_action::Server<MoveWheelRotate>::SharedPtr action_server_move_wheel_rotate_;
 
-  rclcpp_action::GoalResponse handle_move_wheel_linear_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveWheelLinear::Goal> goal);
-  rclcpp_action::GoalResponse handle_move_wheel_rotate_goal(const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const MoveWheelRotate::Goal> goal);
+  rclcpp_action::GoalResponse handle_move_wheel_linear_goal(
+    const rclcpp_action::GoalUUID & uuid,
+    std::shared_ptr<const MoveWheelLinear::Goal> goal
+  );
 
-  rclcpp_action::CancelResponse handle_move_wheel_linear_cancel(const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle);
-  rclcpp_action::CancelResponse handle_move_wheel_rotate_cancel(const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle);
+  rclcpp_action::GoalResponse handle_move_wheel_rotate_goal(
+    const rclcpp_action::GoalUUID & uuid,
+    std::shared_ptr<const MoveWheelRotate::Goal> goal
+  );
 
-  void handle_move_wheel_linear_accepted(const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle);
-  void handle_move_wheel_rotate_accepted(const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle);
+  rclcpp_action::CancelResponse handle_move_wheel_linear_cancel(
+    const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle
+  );
 
-  void exe_move_wheel_linear(const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle);
-  void exe_move_wheel_rotate(const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle);
+  rclcpp_action::CancelResponse handle_move_wheel_rotate_cancel(
+    const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle
+  );
 
+  void handle_move_wheel_linear_accepted(
+    const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle
+  );
+
+  void handle_move_wheel_rotate_accepted(
+    const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle
+  );
+
+  void exe_move_wheel_linear(
+    const std::shared_ptr<GoalHandleMoveWheelLinear> goal_handle
+  );
+
+  void exe_move_wheel_rotate(
+    const std::shared_ptr<GoalHandleMoveWheelRotate> goal_handle
+  );
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_cmd_vel_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub_odom_;
 
   void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
-}; // class WheelActionServer
+};
 
 inline geometry_msgs::msg::Vector3 WheelActionServer::get_euler_from_quat(
   const geometry_msgs::msg::Quaternion& msg_quat)
@@ -72,7 +95,7 @@ inline geometry_msgs::msg::Vector3 WheelActionServer::get_euler_from_quat(
   tf_quat.normalize();
   tf2::Matrix3x3(tf_quat).getRPY(euler.x, euler.y, euler.z);
 
-  return euler;  
+  return euler;
 }
 
 inline geometry_msgs::msg::Quaternion WheelActionServer::get_quat_from_euler(
