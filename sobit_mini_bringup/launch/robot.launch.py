@@ -279,11 +279,11 @@ def launch_gz(context, *args, **kwargs):
         )
 
         vel_remap_node = Node(
-            package="topic_tools",
-            executable="relay",
+            package="twist_stamper",
+            executable="twist_stamper",
+            namespace=robot_name,
             name="vel_remap",
-            arguments=[f"/{robot_name}/commands/velocity",
-                       f"/{robot_name}/diff_controller/cmd_vel_unstamped"]
+            arguments=["-r", f"cmd_vel_in:=/{robot_name}/commands/velocity", "-r", f"cmd_vel_out:=/{robot_name}/diff_controller/cmd_vel", "-p", f"frame_id:={robot_name}/base_footprint"]
         )
 
         odom_remap_node = Node(

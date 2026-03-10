@@ -76,7 +76,8 @@ sudo apt install -y \
     ros-"$ROS_DISTRO"-ros-gz-bridge \
     ros-"$ROS_DISTRO"-ros-gz-sim \
     ros-"$ROS_DISTRO"-ros-gz-interfaces \
-    ros-"$ROS_DISTRO"-topic-tools
+    ros-"$ROS_DISTRO"-topic-tools \
+    ros-"$ROS_DISTRO"-twist-stamper
 
 # Set up environment variables
 echo "" >> /home/$USERNAME/.bashrc

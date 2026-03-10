@@ -12,29 +12,49 @@ from launch_ros.actions import Node
 def generate_launch_description():
     robot_name = 'sobit_mini'
     robot_id = 0
+    world_model = 'rcjo2025' # empty, wrs, small_house, rcjo2025
 
     gz_bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-                    "/clock" + "@rosgraph_msgs/msg/Clock" + "[ignition.msgs.Clock",
-                    "/tf" + "@tf2_msgs/msg/TFMessage" + "[ignition.msgs.Pose_V",
+                    "/clock" + "@rosgraph_msgs/msg/Clock" + "[gz.msgs.Clock",
+                    "/tf" + "@tf2_msgs/msg/TFMessage" + "[gz.msgs.Pose_V",
                    ],
         output='screen'
     )
 
-    world_file = os.path.join(get_package_share_directory(
-        'sobits_gazebo_worlds'),
-        'worlds',
-        'rcjo2025_arena.world.xacro'
-    )
+    world_file = ''
+    if world_model == 'empty':
+        world_file = os.path.join(get_package_share_directory(
+            'sobit_mini_description'), 
+            'worlds',
+            'empty_w_physics.sdf'
+        )
+    elif world_model == 'wrs':
+        world_file = os.path.join(get_package_share_directory(
+            'tmc_wrs_gz_worlds'), 
+            'worlds',
+            'wrs2020.world.xacro'
+        )
+    elif world_model == 'small_house':
+        world_file = os.path.join(get_package_share_directory(
+            'aws_small_house_world'), 
+            'worlds',
+            'small_house.world'
+        )
+    elif world_model == 'rcjo2025':
+        world_file = os.path.join(get_package_share_directory(
+            'sobits_gazebo_worlds'), 
+            'worlds',
+            'rcjo2025_arena.world.xacro'
+        )
 
     rviz_config = PathJoinSubstitution([
-        FindPackageShare('sobit_mini_bringup'),
-        'rviz',
-        'gazebo.rviz'
+            FindPackageShare('sobit_mini_bringup'),
+            'rviz',
+            'gazebo.rviz'
     ])
-
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
