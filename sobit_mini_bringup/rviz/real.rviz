@@ -488,10 +488,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6253979802131653
+      Pitch: 0.29039818048477173
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.9135901927948
+      Yaw: 3.5835866928100586
     Saved: ~
 Window Geometry:
   Align Depth Image:
