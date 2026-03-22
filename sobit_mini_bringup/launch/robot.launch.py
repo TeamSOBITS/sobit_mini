@@ -82,6 +82,9 @@ def launch_gz(context, *args, **kwargs):
     with open(kobuki_param_file, "r") as f:
         kobuki_params = yaml.safe_load(f)["kobuki_ros_node"]["ros__parameters"]
 
+    head_cam_config = os.path.join(get_package_share_directory(
+        'sobit_mini_bringup'),'config','head_camera_node_params.yaml')
+
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
@@ -204,17 +207,11 @@ def launch_gz(context, *args, **kwargs):
                 "namespace": robot_name,
             }.items()
         )
-        camera_node = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([FindPackageShare("sobit_mini_bringup"), 'launch', 'realsense_bringup.launch.py'])
-            ]),
-            launch_arguments={"camera_namespace": robot_name}.items()
-        )
 
         return [
             kobuki_node,
             urg_node,
-            camera_node,
+            head_camera_node,
             ros2_control_node,
             joint_state_broadcaster,
             robot_state_publisher_node,
