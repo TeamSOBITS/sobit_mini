@@ -208,6 +208,18 @@ def launch_gz(context, *args, **kwargs):
             }.items()
         )
 
+        head_camera_node = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([
+                    FindPackageShare('realsense2_camera'),'launch','rs_launch.py'])
+            ]),
+            launch_arguments={
+                'camera_name': 'head_camera_base',
+                'camera_namespace': robot_name,
+                'config_file': head_cam_config,
+            }.items(),
+        )
+
         return [
             kobuki_node,
             urg_node,
