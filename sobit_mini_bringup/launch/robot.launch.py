@@ -23,6 +23,7 @@ def generate_launch_description():
         'robot_coords_x', default_value='0')
     arg_robot_coords_y = DeclareLaunchArgument(
         'robot_coords_y', default_value='0')
+    arg_robot_coords_z = DeclareLaunchArgument('robot_coords_z', default_value='0.05')
     arg_robot_coords_Y = DeclareLaunchArgument(
         'robot_coords_Y', default_value='0')
 
@@ -38,6 +39,7 @@ def generate_launch_description():
         arg_robot_name,
         arg_robot_coords_x,
         arg_robot_coords_y,
+        arg_robot_coords_z,
         arg_robot_coords_Y,
         arg_enable_gz,
         arg_enable_gz_lidar,
@@ -51,6 +53,7 @@ def launch_gz(context, *args, **kwargs):
     robot_name = LaunchConfiguration('robot_name').perform(context)
     robot_coords_x = LaunchConfiguration('robot_coords_x').perform(context)
     robot_coords_y = LaunchConfiguration('robot_coords_y').perform(context)
+    robot_coords_z = LaunchConfiguration('robot_coords_z').perform(context)
     robot_coords_Y = LaunchConfiguration('robot_coords_Y').perform(context)
     enable_gz = LaunchConfiguration('enable_gz').perform(context)
     enable_gz_lidar = LaunchConfiguration('enable_gz_lidar').perform(context)
@@ -245,6 +248,7 @@ def launch_gz(context, *args, **kwargs):
                 '-name', robot_name,
                 '-x', robot_coords_x,
                 '-y', robot_coords_y,
+                '-z', robot_coords_z,
                 '-Y', robot_coords_Y,
             ],
             output='screen',
@@ -256,6 +260,9 @@ def launch_gz(context, *args, **kwargs):
         name="parameter_bridge",
         namespace=robot_name,
         arguments=[
+            # gz -> ROS: Gazebo GUI teleop (gz.msgs.Twist on /<robot_name>/cmd_vel).
+            # Remapped below onto commands/velocity (the twist_stamper input).
+            "/" + robot_name + "/cmd_vel@geometry_msgs/msg/Twist[gz.msgs.Twist",
             "/" + robot_name + "/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
             "/" + robot_name + "/head_camera_base/color/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
             "/" + robot_name + "/head_camera_base/color/image_raw@sensor_msgs/msg/Image[gz.msgs.Image",
@@ -263,6 +270,10 @@ def launch_gz(context, *args, **kwargs):
             "/" + robot_name + "/head_camera_base/depth/image_rect_raw/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
             "/" + robot_name + "/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
             "/" + robot_name + "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+        ],
+        remappings=[
+            ("/" + robot_name + "/cmd_vel",
+             "/" + robot_name + "/commands/velocity"),
         ],
         output='screen'
         )
