@@ -18,7 +18,8 @@ import xacro
 def generate_launch_description():
     arg_robot_name = DeclareLaunchArgument(
         'robot_name', default_value='sobit_mini')
-
+    arg_spawn_entity = DeclareLaunchArgument(
+        'spawn_entity', default_value='True')
     arg_robot_coords_x = DeclareLaunchArgument(
         'robot_coords_x', default_value='0')
     arg_robot_coords_y = DeclareLaunchArgument(
@@ -37,6 +38,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         arg_robot_name,
+        arg_spawn_entity,
         arg_robot_coords_x,
         arg_robot_coords_y,
         arg_robot_coords_z,
@@ -51,6 +53,7 @@ def generate_launch_description():
 
 def launch_gz(context, *args, **kwargs):
     robot_name = LaunchConfiguration('robot_name').perform(context)
+    spawn_entity = LaunchConfiguration('spawn_entity').perform(context)
     robot_coords_x = LaunchConfiguration('robot_coords_x').perform(context)
     robot_coords_y = LaunchConfiguration('robot_coords_y').perform(context)
     robot_coords_z = LaunchConfiguration('robot_coords_z').perform(context)
@@ -306,32 +309,39 @@ def launch_gz(context, *args, **kwargs):
                        f"/{robot_name}/odom"]
         )
 
-        return [
-            gz_spawn_entity_node,
+        actions = [
             gz_bridge_node,
             gz_tf_head_cam_node,
             robot_state_publisher_node,
-            RegisterEventHandler(
+        ]
+
+        if spawn_entity == 'True':
+            actions.append(gz_spawn_entity_node)
+            actions.append(RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=gz_spawn_entity_node,
                     on_exit=[joint_state_broadcaster],
                 )
-            ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=joint_state_broadcaster,
-                    on_exit=[
-                        head_position_controller,
-                        arm_left_position_controller,
-                        arm_right_position_controller,
-                        hand_left_position_controller,
-                        hand_right_position_controller,
-                        body_position_controller,
-                        diff_controller,
-                        vel_remap_node,
-                        odom_remap_node,
-                        action_server_launch
-                    ],
-                )
-            ),
-        ]
+            ))
+        else:
+            actions.append(joint_state_broadcaster)
+
+        actions.append(RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=joint_state_broadcaster,
+                on_exit=[
+                    head_position_controller,
+                    arm_left_position_controller,
+                    arm_right_position_controller,
+                    hand_left_position_controller,
+                    hand_right_position_controller,
+                    body_position_controller,
+                    diff_controller,
+                    vel_remap_node,
+                    odom_remap_node,
+                    action_server_launch
+                ],
+            )
+        ))
+
+        return actions
