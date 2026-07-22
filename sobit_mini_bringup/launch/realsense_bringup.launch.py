@@ -41,7 +41,7 @@ configurable_parameters = [{'name': 'camera_name',                  'default': '
                            {'name': 'enable_infra',                 'default': 'false', 'description': 'enable infra0 stream'},
                            {'name': 'enable_infra1',                'default': 'false', 'description': 'enable infra1 stream'},
                            {'name': 'enable_infra2',                'default': 'false', 'description': 'enable infra2 stream'},
-                           {'name': 'depth_module.depth_profile',   'default': '640,480,30', 'description': 'depth stream profile'},
+                           {'name': 'depth_module.depth_profile',   'default': '640,480,15', 'description': 'depth stream profile'},
                            {'name': 'depth_module.depth_format',    'default': 'Z16', 'description': 'depth stream format'},
                            {'name': 'depth_module.infra_profile',   'default': '640,480,30', 'description': 'infra streams (0/1/2) profile'},
                            {'name': 'depth_module.infra_format',    'default': 'RGB8', 'description': 'infra0 stream format'},
